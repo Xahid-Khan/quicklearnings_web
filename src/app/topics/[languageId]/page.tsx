@@ -31,7 +31,7 @@ export default function Topic({ params }: { params: { languageId: string } }) {
   }
 
   return (
-    <main className='flex min-h-screen flex-row flex-wrap items-center justify-center'>
+    <main className='flex min-h-[90vh] flex-row flex-wrap items-center justify-center'>
       <SpeedDial
         ariaLabel='SpeedDial basic example'
         sx={{ position: 'fixed', bottom: 16, right: 16 }}

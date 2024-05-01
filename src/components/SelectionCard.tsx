@@ -15,7 +15,7 @@ interface SelectionCardProps {
 
 const SelectionCard = ({ title, description, action }: SelectionCardProps) => {
   return (
-    <Card sx={{ maxWidth: 350, margin: '10px' }}>
+    <Card sx={{ width: 350, margin: '10px' }}>
       <CardActionArea onClick={action}>
         <CardMedia
           component={'img'}
@@ -27,7 +27,11 @@ const SelectionCard = ({ title, description, action }: SelectionCardProps) => {
           <Typography gutterBottom variant='h5' component={'div'}>
             {title}
           </Typography>
-          <Typography variant='body2' color={'text.secondary'}>
+          <Typography
+            variant='body2'
+            color={'text.secondary'}
+            style={{ height: 80, overflow: 'hidden' }}
+          >
             {description && description !== ''
               ? description
               : 'No description provided...'}

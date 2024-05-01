@@ -135,7 +135,7 @@ const NavigationBar = () => {
                   onClick={() => {
                     handleCloseNavMenu()
                     const route =
-                      page == 'Languages' ? '' : `${page.toLowerCase()}/0`
+                      page == 'Languages' ? '' : `${page.toLowerCase()}/all`
                     router.push('/' + route)
                   }}
                   sx={{ my: 2, color: 'white', display: 'block' }}
