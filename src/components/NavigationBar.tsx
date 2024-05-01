@@ -15,13 +15,16 @@ import MenuIcon from '@mui/icons-material/Menu'
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 const pages = ['Languages', 'Topics']
-const settings = ['Logout']
+const settings = ['']
 
 const NavigationBar = () => {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const quizStarted = searchParams?.get('quiz_started')
+  console.log('quizStarted', quizStarted)
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
 
@@ -108,6 +111,19 @@ const NavigationBar = () => {
                     <Typography textAlign='center'>{page}</Typography>
                   </MenuItem>
                 ))}
+                <MenuItem
+                  key={'quiz'}
+                  onClick={() => {
+                    handleCloseNavMenu()
+                    router.push('/quiz')
+                  }}
+                >
+                  {quizStarted ? null : (
+                    <Button variant='contained' color='primary'>
+                      <Typography textAlign='center'>{'Start Quiz'}</Typography>
+                    </Button>
+                  )}
+                </MenuItem>
               </Menu>
             </Box>
             <Typography
@@ -144,7 +160,22 @@ const NavigationBar = () => {
                 </Button>
               ))}
             </Box>
-
+            {quizStarted ? null : (
+              <Box sx={{ flexGrow: 0.25, display: { xs: 'none', md: 'flex' } }}>
+                <Button
+                  key={'QuizPage'}
+                  onClick={() => {
+                    handleCloseNavMenu()
+                    router.push('/quiz')
+                  }}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                  variant='contained'
+                  color={`${quizStarted ? 'error' : 'primary'}`}
+                >
+                  Start Quiz
+                </Button>
+              </Box>
+            )}
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title='Open settings'>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

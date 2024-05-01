@@ -30,6 +30,18 @@ interface QuizData {
   notes?: string
 }
 
+interface QuizViewData {
+  answer: string
+  created_at: string
+  hint: string
+  id: number
+  notes: string
+  question: string
+  topic_id: number
+  language_id: number
+  user_id: string
+}
+
 interface QuizDataResponse {
   data: QuizData[]
   count: number
@@ -37,4 +49,19 @@ interface QuizDataResponse {
 
 interface ErrorResponse {
   message: string
+}
+
+interface QuizLanguageOption {
+  id: number | string
+  label: string
+}
+
+interface QuizTopicOption {
+  id: number | string
+  label: string
+}
+
+interface QuizOptionResponse {
+  languages: QuizLanguageOption[]
+  topics: QuizTopicOption[]
 }

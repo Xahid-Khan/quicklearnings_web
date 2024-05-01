@@ -30,7 +30,7 @@ export default function Home() {
   }
 
   return (
-    <main className='flex min-h-screen flex-col items-center justify-center'>
+    <main className='flex min-h-[90vh] flex-col items-center justify-center'>
       <SpeedDial
         ariaLabel='SpeedDial basic example'
         sx={{ position: 'absolute', bottom: 16, right: 16 }}

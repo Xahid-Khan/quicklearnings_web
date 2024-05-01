@@ -15,7 +15,7 @@ interface SelectionCardProps {
 
 const SelectionCard = ({ title, description, action }: SelectionCardProps) => {
   return (
-    <Card sx={{ width: 350, margin: '10px' }}>
+    <Card sx={{ width: 340, margin: '10px' }}>
       <CardActionArea onClick={action}>
         <CardMedia
           component={'img'}
