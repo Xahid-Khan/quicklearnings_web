@@ -1,52 +1,53 @@
 'use client'
 import Loading from '@/src/components/LoadingScreen'
 import { useEffect, useState } from 'react'
-import SelectionCard from '../components/SelectionCard'
+import SelectionCard from '@/src/components/SelectionCard'
 import { useRouter } from 'next/navigation'
 import { SpeedDial, SpeedDialIcon } from '@mui/material'
 
-export default function Home() {
+export default function Topic({ params }: { params: { languageId: string } }) {
   const router = useRouter()
   const [loading, setLoading] = useState<boolean>(true)
   const [data, setData] = useState<Language[] | Topic[]>([])
 
   useEffect(() => {
     const getData = async () => {
-      const response = await fetch('/api/language')
+      const response = await fetch('/api/topic/' + params.languageId)
       if (response.ok) {
-        const languages = await response.json()
-        console.log(languages)
-        setData(languages)
-        setLoading(false)
+        const topics = await response.json()
+        setData(topics)
+        setTimeout(() => {
+          setLoading(false)
+        }, 2000)
       }
     }
     getData()
 
     return
-  }, [])
+  }, [params.languageId])
 
   if (loading) {
     return <Loading />
   }
 
   return (
-    <main className='flex min-h-screen flex-col items-center justify-center'>
+    <main className='flex min-h-screen flex-row flex-wrap items-center justify-center'>
       <SpeedDial
         ariaLabel='SpeedDial basic example'
-        sx={{ position: 'absolute', bottom: 16, right: 16 }}
+        sx={{ position: 'fixed', bottom: 16, right: 16 }}
         icon={<SpeedDialIcon />}
         onClick={() => {
-          console.log('ADD NEW LANGUAGE')
+          console.log('ADD NEW TOPIC')
         }}
       />
       {data.length == 0 ? (
         <SelectionCard
           title={'NO DATA FOUND'}
-          description={'Click the "+" to add language'}
+          description={'CLICK HERE TO GO BACK TO HOME PAGE'}
           action={() => {
             router.push('/')
           }}
-          key={'Language-DATA'}
+          key={'TOPIC-DATA'}
         />
       ) : (
         data.map((val: Language, index) => (
@@ -54,7 +55,7 @@ export default function Home() {
             title={val.title}
             description={val.description ?? null}
             action={() => {
-              router.push('/topics/' + val.id)
+              router.push('/data/' + val.id)
             }}
             key={'language' + index}
           />
