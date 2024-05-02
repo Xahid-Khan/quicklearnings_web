@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAllLanguages } from './language'
 import { getErrorResponseWithStatusCode } from '@/src/lib/errorHander'
+import { ErrorResponse, Language } from '@/src/lib/data_types'
 
 export async function GET(
   req: NextRequest

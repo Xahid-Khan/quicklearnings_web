@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getDataByTopicId } from '@/src/app/api/data/data'
 import { getPaginationParams } from '@/src/utils/utils'
+import { QuizDataResponse } from '@/src/lib/data_types'
+
+export const dynamic = 'force-dynamic'
 
 export async function GET(
   req: NextRequest,

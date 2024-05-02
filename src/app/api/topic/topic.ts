@@ -1,7 +1,8 @@
+import { Topic } from '@/src/lib/data_types'
 import { supabase } from '@/src/utils/config'
 
 interface TopicParams {
-  language_id?: string
+  language_id: string
 }
 
 export const getAllTopics = async ({

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAllTopics } from '../topic'
 import { getErrorResponseWithStatusCode } from '@/src/lib/errorHander'
+import { ErrorResponse, Topic } from '@/src/lib/data_types'
 
 export async function GET(
   req: NextRequest,

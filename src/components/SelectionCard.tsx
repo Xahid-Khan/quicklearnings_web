@@ -5,7 +5,6 @@ import {
   Typography
 } from '@mui/material'
 import Card from '@mui/material/Card'
-import { useRouter } from 'next/router'
 
 interface SelectionCardProps {
   title: string

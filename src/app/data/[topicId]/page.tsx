@@ -12,6 +12,7 @@ import {
   Typography
 } from '@mui/material'
 import SelectionCard from '@/src/components/SelectionCard'
+import { QuizData } from '@/src/lib/data_types'
 
 export default function Data({ params }: { params: { topicId: string } }) {
   const router = useRouter()
@@ -58,6 +59,7 @@ export default function Data({ params }: { params: { topicId: string } }) {
         sx={{ position: 'fixed', bottom: 16, right: 16 }}
         icon={<SpeedDialIcon />}
         onClick={() => {
+          //TODO:
           console.log('ADD NEW DATA')
         }}
       />
@@ -78,8 +80,8 @@ export default function Data({ params }: { params: { topicId: string } }) {
           data.map((val: QuizData, index) => (
             <Accordion
               key={val.id}
-              expanded={expanded === val.id}
-              onChange={handleChange(val.id)}
+              expanded={expanded === String(val.id)}
+              onChange={handleChange(String(val.id))}
               sx={{ minWidth: '100%', margin: 0 }}
             >
               <AccordionSummary

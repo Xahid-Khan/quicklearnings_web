@@ -1,10 +1,11 @@
 'use client'
+import Loading from '@/src/components/LoadingScreen'
 import QuizScreen from '@/src/components/Quiz'
 import QuizOptions from '@/src/components/QuizOptions'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 
-const Quiz = () => {
+const DynamicQuiz = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const quizStarted = searchParams?.get('quiz_started')
@@ -39,6 +40,14 @@ const Quiz = () => {
         />
       )}
     </main>
+  )
+}
+
+const Quiz = () => {
+  return (
+    <Suspense fallback={<Loading />}>
+      <DynamicQuiz />
+    </Suspense>
   )
 }
 

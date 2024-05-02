@@ -1,4 +1,4 @@
-import { Stepper, Step, StepLabel, Slider, styled } from '@mui/material'
+import { Slider, styled } from '@mui/material'
 
 interface QuizStepperProps {
   activeIndex: number
@@ -59,7 +59,7 @@ const QuizStepper = ({ activeIndex, limit }: QuizStepperProps) => {
       value={activeIndex}
       step={5}
       marks={labels}
-      min={0}
+      min={1}
       max={limit}
     />
   )

@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useState } from 'react'
 import QuizStepper from '@/src/components/QuizStepper'
 // import QuizElement from '@/src/components/QuizElement'
@@ -12,6 +13,8 @@ import {
 } from '@mui/material'
 import Loading from './LoadingScreen'
 import Image from 'next/image'
+import { QuizViewData } from '../lib/data_types'
+import { useRouter } from 'next/navigation'
 
 interface QuizProps {
   languageId: string | number
@@ -20,12 +23,14 @@ interface QuizProps {
 }
 
 interface OptionsProps {
-  id: number
-  answer: string
-  hint: string
+  id: number | null
+  answer: string | null
+  hint: string | null
 }
 
 const QuizScreen = ({ languageId, topicId, limit }: QuizProps) => {
+  const router = useRouter()
+  const quizLimit = Number(limit)
   const [loading, setLoading] = useState(true)
   const [quizData, setQuizData] = useState<QuizViewData[]>([])
   const [quizIndex, setQuizIndex] = useState(0)
@@ -33,6 +38,7 @@ const QuizScreen = ({ languageId, topicId, limit }: QuizProps) => {
   const [selected, setSelected] = useState<string>('')
   const [correctAnswer, setCorrectAnswer] = useState<boolean>(false)
   const [wrongAnswer, setWrongAnswer] = useState<boolean>(false)
+  const [finished, setFinished] = useState<boolean>(false)
 
   const generateOptions = (
     currentIndex: number,
@@ -42,17 +48,17 @@ const QuizScreen = ({ languageId, topicId, limit }: QuizProps) => {
     const idTracker: number[] = []
     const currentData = data.length > 0 ? data : quizData
     while (optionsList.length < 3) {
-      const randomIndex = Math.floor(Math.random() * Number(limit))
+      const randomIndex = Math.floor(Math.random() * Number(quizLimit))
       if (
         currentData[currentIndex].answer != currentData[randomIndex].answer &&
-        !idTracker.includes(currentData[randomIndex].id)
+        !idTracker.includes(currentData[randomIndex].id ?? 0)
       ) {
         optionsList.push({
           id: currentData[randomIndex].id,
           answer: currentData[randomIndex].answer,
           hint: currentData[randomIndex].hint
         })
-        idTracker.push(currentData[randomIndex].id)
+        idTracker.push(currentData[randomIndex].id ?? 0)
       }
     }
     optionsList.push({
@@ -67,7 +73,9 @@ const QuizScreen = ({ languageId, topicId, limit }: QuizProps) => {
   useEffect(() => {
     const fetchQuizData = async () => {
       const response = await fetch(
-        `/api/quiz?languageId=${languageId}&topicId=${topicId}&limit=${limit}`
+        `/api/quiz?languageId=${languageId}&topicId=${topicId}&limit=${
+          quizLimit + 20
+        }`
       )
       if (response.ok) {
         const data: QuizViewData[] = await response.json()
@@ -84,6 +92,10 @@ const QuizScreen = ({ languageId, topicId, limit }: QuizProps) => {
     return <Loading />
   }
 
+  const quizFinished = () => {
+    router.replace('/quiz/result')
+  }
+
   const handleAnswerSubmission = () => {
     if (selected == quizData[quizIndex].answer) {
       setCorrectAnswer(true)
@@ -96,14 +108,14 @@ const QuizScreen = ({ languageId, topicId, limit }: QuizProps) => {
 
   const nextQuestion = () => {
     const newIndex = quizIndex + 1
-    if (newIndex <= Number(limit) - 1) {
+    if (newIndex <= quizLimit - 1) {
       setOptions([])
       setQuizIndex(newIndex)
       const quizOptions = generateOptions(newIndex)
       setSelected('')
       setOptions(quizOptions)
     } else {
-      console.log('FINISHED AT >>>', quizData.length, quizIndex)
+      quizFinished()
     }
     setCorrectAnswer(false)
     setWrongAnswer(false)
@@ -111,14 +123,8 @@ const QuizScreen = ({ languageId, topicId, limit }: QuizProps) => {
 
   return (
     <div className='min-w-[75%] min-h-[75vh] rounded flex flex-col justify-between bg-slate-300 p-3 my-5'>
-      <QuizStepper activeIndex={quizIndex} limit={Number(limit)} />
+      <QuizStepper activeIndex={quizIndex + 1} limit={quizLimit} />
       <Divider sx={{ margin: '10px 0' }} />
-      {/* <QuizElement
-        question={quizData[quizIndex].question}
-        options={options}
-        selected={selected}
-        setSelected={setSelected}
-      /> */}
       <div className='min-w-full min-h-full flex flex-row flex-wrap justify-around'>
         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
           <Card sx={{ minWidth: 340, maxWidth: 450 }}>
@@ -147,7 +153,7 @@ const QuizScreen = ({ languageId, topicId, limit }: QuizProps) => {
           {options.map((value) => (
             <Card
               key={value.answer}
-              onClick={() => setSelected(value.answer)}
+              onClick={() => setSelected(value.answer ?? '')}
               sx={{
                 minWidth: 340,
                 maxWidth: 450,
@@ -177,10 +183,18 @@ const QuizScreen = ({ languageId, topicId, limit }: QuizProps) => {
           sx={{ width: 300, height: 50, fontSize: '1.25rem' }}
           disabled={selected == ''}
           onClick={
-            correctAnswer || wrongAnswer ? nextQuestion : handleAnswerSubmission
+            finished
+              ? quizFinished
+              : correctAnswer || wrongAnswer
+              ? nextQuestion
+              : handleAnswerSubmission
           }
         >
-          {correctAnswer || wrongAnswer ? 'Next Question' : 'Check Answer'}
+          {finished
+            ? 'Finished'
+            : correctAnswer || wrongAnswer
+            ? 'Next Question'
+            : 'Check Answer'}
         </Button>
       </div>
       <Image

@@ -1,6 +1,5 @@
-import { Database } from '@/src/lib/supabase'
+import { QuizViewData } from '@/src/lib/data_types'
 import { supabase } from '@/src/utils/config'
-import { Language } from '@mui/icons-material'
 
 interface QuizOptionProps {
   languageId?: string | number | null
@@ -13,12 +12,11 @@ interface QuizProps {
   limit: string | number
 }
 
-type QuizTableRow = Database['public']['Views']['random_data']['Row']
 export const getQuizData = async ({
   languageId,
   topicId,
   limit
-}: QuizProps): Promise<QuizTableRow[]> => {
+}: QuizProps): Promise<QuizViewData[]> => {
   const randomize = [0, '0']
   let query = supabase.from('random_data').select('*').limit(Number(limit))
   if (!randomize.includes(topicId)) query = query.eq('topic_id', topicId)

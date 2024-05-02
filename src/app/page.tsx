@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import SelectionCard from '../components/SelectionCard'
 import { useRouter } from 'next/navigation'
 import { SpeedDial, SpeedDialIcon } from '@mui/material'
+import { Language, Topic } from '../lib/data_types'
 
 export default function Home() {
   const router = useRouter()

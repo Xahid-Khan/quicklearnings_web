@@ -6,7 +6,7 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export interface Database {
+export type Database = {
   graphql_public: {
     Tables: {
       [_ in never]: never
@@ -67,17 +67,17 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'public_data_topic_id_fkey'
-            columns: ['topic_id']
-            referencedRelation: 'topic'
-            referencedColumns: ['id']
+            foreignKeyName: "public_data_topic_id_fkey"
+            columns: ["topic_id"]
+            referencedRelation: "topic"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'public_data_user_id_fkey'
-            columns: ['user_id']
-            referencedRelation: 'users'
-            referencedColumns: ['id']
-          }
+            foreignKeyName: "public_data_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
         ]
       }
       language: {
@@ -131,11 +131,11 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'public_topic_language_id_fkey'
-            columns: ['language_id']
-            referencedRelation: 'language'
-            referencedColumns: ['id']
-          }
+            foreignKeyName: "public_topic_language_id_fkey"
+            columns: ["language_id"]
+            referencedRelation: "language"
+            referencedColumns: ["id"]
+          },
         ]
       }
     }
@@ -146,44 +146,30 @@ export interface Database {
           created_at: string | null
           hint: string | null
           id: number | null
-          notes: string | null
+          language_id: number | null
           question: string | null
           topic_id: number | null
           user_id: string | null
         }
-        Insert: {
-          answer?: string | null
-          created_at?: string | null
-          hint?: string | null
-          id?: number | null
-          notes?: string | null
-          question?: string | null
-          topic_id?: number | null
-          user_id?: string | null
-        }
-        Update: {
-          answer?: string | null
-          created_at?: string | null
-          hint?: string | null
-          id?: number | null
-          notes?: string | null
-          question?: string | null
-          topic_id?: number | null
-          user_id?: string | null
-        }
         Relationships: [
           {
-            foreignKeyName: 'public_data_topic_id_fkey'
-            columns: ['topic_id']
-            referencedRelation: 'topic'
-            referencedColumns: ['id']
+            foreignKeyName: "public_data_topic_id_fkey"
+            columns: ["topic_id"]
+            referencedRelation: "topic"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'public_data_user_id_fkey'
-            columns: ['user_id']
-            referencedRelation: 'users'
-            referencedColumns: ['id']
-          }
+            foreignKeyName: "public_data_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_topic_language_id_fkey"
+            columns: ["language_id"]
+            referencedRelation: "language"
+            referencedColumns: ["id"]
+          },
         ]
       }
     }
@@ -301,11 +287,11 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'objects_bucketId_fkey'
-            columns: ['bucket_id']
-            referencedRelation: 'buckets'
-            referencedColumns: ['id']
-          }
+            foreignKeyName: "objects_bucketId_fkey"
+            columns: ["bucket_id"]
+            referencedRelation: "buckets"
+            referencedColumns: ["id"]
+          },
         ]
       }
       s3_multipart_uploads: {
@@ -341,11 +327,11 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 's3_multipart_uploads_bucket_id_fkey'
-            columns: ['bucket_id']
-            referencedRelation: 'buckets'
-            referencedColumns: ['id']
-          }
+            foreignKeyName: "s3_multipart_uploads_bucket_id_fkey"
+            columns: ["bucket_id"]
+            referencedRelation: "buckets"
+            referencedColumns: ["id"]
+          },
         ]
       }
       s3_multipart_uploads_parts: {
@@ -387,17 +373,17 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 's3_multipart_uploads_parts_bucket_id_fkey'
-            columns: ['bucket_id']
-            referencedRelation: 'buckets'
-            referencedColumns: ['id']
+            foreignKeyName: "s3_multipart_uploads_parts_bucket_id_fkey"
+            columns: ["bucket_id"]
+            referencedRelation: "buckets"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 's3_multipart_uploads_parts_upload_id_fkey'
-            columns: ['upload_id']
-            referencedRelation: 's3_multipart_uploads'
-            referencedColumns: ['id']
-          }
+            foreignKeyName: "s3_multipart_uploads_parts_upload_id_fkey"
+            columns: ["upload_id"]
+            referencedRelation: "s3_multipart_uploads"
+            referencedColumns: ["id"]
+          },
         ]
       }
     }
@@ -500,84 +486,84 @@ export interface Database {
   }
 }
 
-type PublicSchema = Database[Extract<keyof Database, 'public'>]
+type PublicSchema = Database[Extract<keyof Database, "public">]
 
 export type Tables<
   PublicTableNameOrOptions extends
-    | keyof (PublicSchema['Tables'] & PublicSchema['Views'])
+    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof (Database[PublicTableNameOrOptions['schema']]['Tables'] &
-        Database[PublicTableNameOrOptions['schema']]['Views'])
-    : never = never
+    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+        Database[PublicTableNameOrOptions["schema"]]["Views"])
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[PublicTableNameOrOptions['schema']]['Tables'] &
-      Database[PublicTableNameOrOptions['schema']]['Views'])[TableName] extends {
+  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R
     }
     ? R
     : never
-  : PublicTableNameOrOptions extends keyof (PublicSchema['Tables'] &
-      PublicSchema['Views'])
-  ? (PublicSchema['Tables'] &
-      PublicSchema['Views'])[PublicTableNameOrOptions] extends {
-      Row: infer R
-    }
-    ? R
+  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
+        PublicSchema["Views"])
+    ? (PublicSchema["Tables"] &
+        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
     : never
-  : never
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
-    | keyof PublicSchema['Tables']
+    | keyof PublicSchema["Tables"]
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions['schema']]['Tables']
-    : never = never
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions['schema']]['Tables'][TableName] extends {
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I
     }
     ? I
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema['Tables']
-  ? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
-      Insert: infer I
-    }
-    ? I
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
     : never
-  : never
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
-    | keyof PublicSchema['Tables']
+    | keyof PublicSchema["Tables"]
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions['schema']]['Tables']
-    : never = never
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions['schema']]['Tables'][TableName] extends {
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
     }
     ? U
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema['Tables']
-  ? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
-      Update: infer U
-    }
-    ? U
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
     : never
-  : never
 
 export type Enums<
   PublicEnumNameOrOptions extends
-    | keyof PublicSchema['Enums']
+    | keyof PublicSchema["Enums"]
     | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicEnumNameOrOptions['schema']]['Enums']
-    : never = never
+    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
+    : never = never,
 > = PublicEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicEnumNameOrOptions['schema']]['Enums'][EnumName]
-  : PublicEnumNameOrOptions extends keyof PublicSchema['Enums']
-  ? PublicSchema['Enums'][PublicEnumNameOrOptions]
-  : never
+  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
+    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never

@@ -1,3 +1,4 @@
+import { Language } from '@/src/lib/data_types'
 import { supabase } from '@/src/utils/config'
 
 export const getAllLanguages = async (): Promise<Language[]> => {

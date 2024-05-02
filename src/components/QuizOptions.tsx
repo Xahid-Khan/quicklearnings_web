@@ -9,6 +9,7 @@ import {
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import Loading from './LoadingScreen'
+import { QuizLanguageOption, QuizTopicOption } from '../lib/data_types'
 
 interface QuizOptionProps {
   setLanguageId: (val: number | string) => void

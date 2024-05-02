@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getQuizData, getQuizOptions } from '@/src/app/api/quiz/quiz'
 import { getErrorResponseWithStatusCode } from '@/src/lib/errorHander'
+import {
+  ErrorResponse,
+  QuizOptionResponse,
+  QuizViewData
+} from '@/src/lib/data_types'
+
+export const dynamic = 'force-dynamic'
 
 export async function GET(
   req: NextRequest

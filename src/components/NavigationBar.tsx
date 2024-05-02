@@ -12,9 +12,7 @@ import {
   Avatar
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
-
 import { useState } from 'react'
-import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 const pages = ['Languages', 'Topics']
@@ -24,7 +22,6 @@ const NavigationBar = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const quizStarted = searchParams?.get('quiz_started')
-  console.log('quizStarted', quizStarted)
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
 

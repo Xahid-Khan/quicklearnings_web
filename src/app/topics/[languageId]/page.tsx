@@ -4,8 +4,13 @@ import { useEffect, useState } from 'react'
 import SelectionCard from '@/src/components/SelectionCard'
 import { useRouter } from 'next/navigation'
 import { SpeedDial, SpeedDialIcon } from '@mui/material'
+import { Language, Topic } from '@/src/lib/data_types'
 
-export default function Topic({ params }: { params: { languageId: string } }) {
+export default function TopicPage({
+  params
+}: {
+  params: { languageId: string }
+}) {
   const router = useRouter()
   const [loading, setLoading] = useState<boolean>(true)
   const [data, setData] = useState<Language[] | Topic[]>([])

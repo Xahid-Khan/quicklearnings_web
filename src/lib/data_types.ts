@@ -1,67 +1,42 @@
-interface Language {
-  id?: string
-  title: string
-  created_at: {
-    seconds: number
-    nanoseconds: number
-  }
-  description?: string
-}
+import { Database } from './supabase'
 
-interface Topic {
-  id?: string
-  title: string
-  created_at: {
-    seconds: number
-    nanoseconds: number
-  }
-  description?: string
-}
+export type Language = Database['public']['Tables']['language']['Row']
+export type Topic = Database['public']['Tables']['topic']['Row']
+export type QuizData = Database['public']['Tables']['data']['Row']
+export type QuizViewData = Database['public']['Views']['random_data']['Row']
 
-interface QuizData {
-  id: string
-  question: string
-  answer: string
-  hint: string
-  created_at: {
-    seconds: number
-    nanoseconds: number
-  }
-  notes?: string
-}
+// export interface QuizViewData {
+//   answer: string
+//   created_at: string
+//   hint: string
+//   id: number
+//   notes: string
+//   question: string
+//   topic_id: number
+//   language_id: number
+//   user_id: string
+// }
 
-interface QuizViewData {
-  answer: string
-  created_at: string
-  hint: string
-  id: number
-  notes: string
-  question: string
-  topic_id: number
-  language_id: number
-  user_id: string
-}
-
-interface QuizDataResponse {
+export interface QuizDataResponse {
   data: QuizData[]
   count: number
 }
 
-interface ErrorResponse {
+export interface ErrorResponse {
   message: string
 }
 
-interface QuizLanguageOption {
+export interface QuizLanguageOption {
   id: number | string
   label: string
 }
 
-interface QuizTopicOption {
+export interface QuizTopicOption {
   id: number | string
   label: string
 }
 
-interface QuizOptionResponse {
+export interface QuizOptionResponse {
   languages: QuizLanguageOption[]
   topics: QuizTopicOption[]
 }
