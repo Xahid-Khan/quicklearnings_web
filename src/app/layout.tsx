@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import NavigationBar from '../components/NavigationBar'
 import { Suspense } from 'react'
+import { AuthModalProvider } from '../contexts/authModal'
+import { UserProvider } from '../contexts/userContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,10 +22,14 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={inter.className} suppressHydrationWarning={true}>
-        <Suspense fallback={<div>Loading...</div>}>
-          <NavigationBar />
-        </Suspense>
-        {children}
+        <UserProvider>
+          <AuthModalProvider>
+            <Suspense fallback={<div>Loading...</div>}>
+              <NavigationBar />
+            </Suspense>
+            {children}
+          </AuthModalProvider>
+        </UserProvider>
       </body>
     </html>
   )

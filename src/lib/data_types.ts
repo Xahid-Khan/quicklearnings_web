@@ -1,21 +1,9 @@
 import { Database } from './supabase'
 
-export type Language = Database['public']['Tables']['language']['Row']
+export type Subject = Database['public']['Tables']['subject']['Row']
 export type Topic = Database['public']['Tables']['topic']['Row']
 export type QuizData = Database['public']['Tables']['data']['Row']
 export type QuizViewData = Database['public']['Views']['random_data']['Row']
-
-// export interface QuizViewData {
-//   answer: string
-//   created_at: string
-//   hint: string
-//   id: number
-//   notes: string
-//   question: string
-//   topic_id: number
-//   language_id: number
-//   user_id: string
-// }
 
 export interface QuizDataResponse {
   data: QuizData[]
@@ -26,7 +14,7 @@ export interface ErrorResponse {
   message: string
 }
 
-export interface QuizLanguageOption {
+export interface QuizSubjectOption {
   id: number | string
   label: string
 }
@@ -37,6 +25,21 @@ export interface QuizTopicOption {
 }
 
 export interface QuizOptionResponse {
-  languages: QuizLanguageOption[]
+  subjects: QuizSubjectOption[]
   topics: QuizTopicOption[]
+}
+
+export interface UserSession {
+  session: {
+    access_token: string
+    expires_at?: number
+    expires_in: number
+    refresh_token: string
+    token_type: string
+    user: {
+      created_at: string
+      email?: string
+    }
+  } | null
+  userId: string | null
 }

@@ -9,11 +9,11 @@ const DynamicQuiz = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const quizStarted = searchParams?.get('quiz_started')
-  const languageIdParam = searchParams?.get('languageId')
+  const subjectIdParam = searchParams?.get('subjectId')
   const topicIdParam = searchParams?.get('topicId')
   const limitParam = searchParams?.get('limit')
-  const [languageId, setLanguageId] = useState<number | string>(
-    languageIdParam ?? 0
+  const [subjectId, setSubjectId] = useState<number | string>(
+    subjectIdParam ?? 0
   )
   const [topicId, setTopicId] = useState<number | string>(topicIdParam ?? 0)
   const [limit, setLimit] = useState<number | string>(limitParam ?? 30)
@@ -23,17 +23,17 @@ const DynamicQuiz = () => {
 
   const handleStartQuizButton = () => {
     router.push(
-      `/quiz?quiz_started=true&languageId=${languageId}&topicId=${topicId}&limit=${limit}`
+      `/quiz?quiz_started=true&subjectId=${subjectId}&topicId=${topicId}&limit=${limit}`
     )
     setStartQuiz(true)
   }
   return (
     <main className='flex min-h-[90vh] flex-col items-center justify-center'>
       {startQuiz ? (
-        <QuizScreen languageId={languageId} topicId={topicId} limit={limit} />
+        <QuizScreen subjectId={subjectId} topicId={topicId} limit={limit} />
       ) : (
         <QuizOptions
-          setLanguageId={setLanguageId}
+          setSubjectId={setSubjectId}
           setTopicId={setTopicId}
           setLimit={setLimit}
           handleStartQuizButton={handleStartQuizButton}

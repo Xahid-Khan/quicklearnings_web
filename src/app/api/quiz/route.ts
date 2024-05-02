@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getQuizData, getQuizOptions } from '@/src/app/api/quiz/quiz'
-import { getErrorResponseWithStatusCode } from '@/src/lib/errorHander'
+import { getErrorResponseWithStatusCode } from '@/src/lib/errorHandler'
 import {
   ErrorResponse,
   QuizOptionResponse,
@@ -14,18 +14,18 @@ export async function GET(
 ): Promise<NextResponse<QuizOptionResponse | QuizViewData[] | ErrorResponse>> {
   try {
     const searchParams = new URLSearchParams(new URL(req.url).searchParams)
-    const languageId = searchParams.get('languageId')
+    const subjectId = searchParams.get('subjectId')
     const topicId = searchParams.get('topicId')
     const limit = searchParams.get('limit') ?? 30
-    if (languageId && topicId && limit) {
-      const data = await getQuizData({ languageId, topicId, limit })
+    if (subjectId && topicId && limit) {
+      const data = await getQuizData({ subjectId, topicId, limit })
       return NextResponse.json(data, { status: 200 })
     } else {
-      const { languages, topics } = await getQuizOptions({
-        languageId,
+      const { subjects, topics } = await getQuizOptions({
+        subjectId,
         topicId
       })
-      return NextResponse.json({ languages, topics }, { status: 200 })
+      return NextResponse.json({ subjects, topics }, { status: 200 })
     }
   } catch (err) {
     return getErrorResponseWithStatusCode(err, req.nextUrl.pathname)

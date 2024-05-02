@@ -1,5 +1,5 @@
 import { QuizDataResponse } from '@/src/lib/data_types'
-import { supabase } from '@/src/utils/config'
+import getSupabaseInstance from '@/src/utils/config'
 
 export const getDataByTopicId = async (
   topicId: string,
@@ -7,6 +7,7 @@ export const getDataByTopicId = async (
   page: number
 ): Promise<QuizDataResponse> => {
   const from = page * limit
+  const supabase = getSupabaseInstance()
   const { data, error, count } = await supabase
     .from('data')
     .select('*', { count: 'exact' })

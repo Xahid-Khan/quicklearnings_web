@@ -4,20 +4,20 @@ import { useEffect, useState } from 'react'
 import SelectionCard from '@/src/components/SelectionCard'
 import { useRouter } from 'next/navigation'
 import { SpeedDial, SpeedDialIcon } from '@mui/material'
-import { Language, Topic } from '@/src/lib/data_types'
+import { Subject, Topic } from '@/src/lib/data_types'
 
 export default function TopicPage({
   params
 }: {
-  params: { languageId: string }
+  params: { subjectId: string }
 }) {
   const router = useRouter()
   const [loading, setLoading] = useState<boolean>(true)
-  const [data, setData] = useState<Language[] | Topic[]>([])
+  const [data, setData] = useState<Subject[] | Topic[]>([])
 
   useEffect(() => {
     const getData = async () => {
-      const response = await fetch('/api/topic/' + params.languageId)
+      const response = await fetch('/api/topic/' + params.subjectId)
       if (response.ok) {
         const topics = await response.json()
         setData(topics)
@@ -29,7 +29,7 @@ export default function TopicPage({
     getData()
 
     return
-  }, [params.languageId])
+  }, [params.subjectId])
 
   if (loading) {
     return <Loading />
@@ -55,14 +55,14 @@ export default function TopicPage({
           key={'TOPIC-DATA'}
         />
       ) : (
-        data.map((val: Language, index) => (
+        data.map((val: Subject, index) => (
           <SelectionCard
             title={val.title}
             description={val.description ?? null}
             action={() => {
               router.push('/data/' + val.id)
             }}
-            key={'language' + index}
+            key={'subject' + index}
           />
         ))
       )}
