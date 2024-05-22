@@ -17,7 +17,7 @@ import { QuizViewData } from '../lib/data_types'
 import { useRouter } from 'next/navigation'
 
 interface QuizProps {
-  languageId: string | number
+  subjectId: string | number
   topicId: string | number
   limit: string | number
 }
@@ -28,7 +28,7 @@ interface OptionsProps {
   hint: string | null
 }
 
-const QuizScreen = ({ languageId, topicId, limit }: QuizProps) => {
+const QuizScreen = ({ subjectId, topicId, limit }: QuizProps) => {
   const router = useRouter()
   const quizLimit = Number(limit)
   const [loading, setLoading] = useState(true)
@@ -48,7 +48,7 @@ const QuizScreen = ({ languageId, topicId, limit }: QuizProps) => {
     const idTracker: number[] = []
     const currentData = data.length > 0 ? data : quizData
     while (optionsList.length < 3) {
-      const randomIndex = Math.floor(Math.random() * Number(quizLimit))
+      const randomIndex = Math.floor(Math.random() * quizLimit)
       if (
         currentData[currentIndex].answer != currentData[randomIndex].answer &&
         !idTracker.includes(currentData[randomIndex].id ?? 0)
@@ -73,7 +73,7 @@ const QuizScreen = ({ languageId, topicId, limit }: QuizProps) => {
   useEffect(() => {
     const fetchQuizData = async () => {
       const response = await fetch(
-        `/api/quiz?languageId=${languageId}&topicId=${topicId}&limit=${
+        `/api/quiz?subjectId=${subjectId}&topicId=${topicId}&limit=${
           quizLimit + 20
         }`
       )

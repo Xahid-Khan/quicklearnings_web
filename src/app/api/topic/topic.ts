@@ -1,18 +1,17 @@
 import { Topic } from '@/src/lib/data_types'
-import { supabase } from '@/src/utils/config'
+import getSupabaseInstance from '@/src/utils/config'
 
 interface TopicParams {
-  language_id: string
+  subject_id: string
 }
 
 export const getAllTopics = async ({
-  language_id
+  subject_id
 }: TopicParams): Promise<Topic[]> => {
+  const supabase = getSupabaseInstance()
   const query = supabase.from('topic').select('*')
   const { data, error } =
-    language_id == 'all'
-      ? await query
-      : await query.eq('language_id', language_id)
+    subject_id == 'all' ? await query : await query.eq('subject_id', subject_id)
   if (error) {
     throw new Error(error.message, { cause: 502 })
   }

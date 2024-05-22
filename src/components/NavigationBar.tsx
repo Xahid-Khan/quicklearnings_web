@@ -9,21 +9,27 @@ import {
   MenuItem,
   Button,
   Tooltip,
-  Avatar
+  Avatar,
+  Divider
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-
-const pages = ['Languages', 'Topics']
-const settings = ['']
+import AuthenticationModal from './authentication/AuthenticationModal'
+import { useAuthModalContext } from '@/src/contexts/authModal'
+import { useUserContext } from '@/src/contexts/userContext'
 
 const NavigationBar = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const quizStarted = searchParams?.get('quiz_started')
+  const { setAuthModalIsOpen } = useAuthModalContext()
+  const { userId, signOut } = useUserContext()
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
+
+  const pages = ['Subjects', 'Topics']
+  const settings = ['Account', userId ? 'Sign Out' : 'Sign In']
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
@@ -95,19 +101,6 @@ const NavigationBar = () => {
                   display: { xs: 'block', md: 'none' }
                 }}
               >
-                {pages.map((page) => (
-                  <MenuItem
-                    key={page}
-                    onClick={() => {
-                      handleCloseNavMenu()
-                      const route =
-                        page == 'Languages' ? '' : `${page.toLowerCase()}/0`
-                      router.push('/' + route)
-                    }}
-                  >
-                    <Typography textAlign='center'>{page}</Typography>
-                  </MenuItem>
-                ))}
                 <MenuItem
                   key={'quiz'}
                   onClick={() => {
@@ -121,6 +114,42 @@ const NavigationBar = () => {
                     </Button>
                   )}
                 </MenuItem>
+                {pages.map((page) => (
+                  <MenuItem
+                    key={page}
+                    onClick={() => {
+                      handleCloseNavMenu()
+                      const route =
+                        page == 'Subjects' ? '' : `${page.toLowerCase()}/0`
+                      router.push('/' + route)
+                    }}
+                  >
+                    <Typography textAlign='center'>{page}</Typography>
+                  </MenuItem>
+                ))}
+                <MenuItem
+                  key={'account'}
+                  onClick={() => {
+                    handleCloseNavMenu()
+                    userId ? router.push('/') : setAuthModalIsOpen(true)
+                  }}
+                >
+                  <Typography textAlign='center'>{'Account'}</Typography>
+                </MenuItem>
+                {userId ? (
+                  <>
+                    <Divider />
+                    <MenuItem
+                      key={'log-out'}
+                      onClick={() => {
+                        signOut()
+                        router.push('/')
+                      }}
+                    >
+                      <Typography textAlign='center'>{'Log out'}</Typography>
+                    </MenuItem>
+                  </>
+                ) : null}
               </Menu>
             </Box>
             <Typography
@@ -148,7 +177,7 @@ const NavigationBar = () => {
                   onClick={() => {
                     handleCloseNavMenu()
                     const route =
-                      page == 'Languages' ? '' : `${page.toLowerCase()}/all`
+                      page == 'Subjects' ? '' : `${page.toLowerCase()}/all`
                     router.push('/' + route)
                   }}
                   sx={{ my: 2, color: 'white', display: 'block' }}
@@ -173,7 +202,7 @@ const NavigationBar = () => {
                 </Button>
               </Box>
             )}
-            <Box sx={{ flexGrow: 0 }}>
+            <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' } }}>
               <Tooltip title='Open settings'>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar alt='Remy Sharp' src='/logo.png' />
@@ -199,8 +228,12 @@ const NavigationBar = () => {
                   <MenuItem
                     key={setting}
                     onClick={() => {
+                      if (setting == 'Sign Out') {
+                        signOut()
+                      } else if (setting == 'Sign In') {
+                        setAuthModalIsOpen(true)
+                      }
                       handleCloseUserMenu()
-                      console.log('SIGN OUT')
                     }}
                   >
                     <Typography textAlign='center'>{setting}</Typography>
@@ -211,6 +244,7 @@ const NavigationBar = () => {
           </Toolbar>
         </AppBar>
       </div>
+      <AuthenticationModal />
     </div>
   )
 }

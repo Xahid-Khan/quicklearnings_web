@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server'
+import { EMAIL_REGEX, PASSWORD_REGEX } from '@/src/app/api/constants'
 
 export const getPaginationParams = (
   req: NextRequest
@@ -9,4 +10,12 @@ export const getPaginationParams = (
   const limitParam = searchParams.get('limit')
   const limit = limitParam ? Number(limitParam) : 25
   return { page, limit }
+}
+
+export const validateEmail = (email: string): Boolean => {
+  return EMAIL_REGEX.test(email)
+}
+
+export const validatePassword = (password: string): Boolean => {
+  return PASSWORD_REGEX.test(password)
 }

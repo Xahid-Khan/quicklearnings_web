@@ -9,24 +9,24 @@ import {
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import Loading from './LoadingScreen'
-import { QuizLanguageOption, QuizTopicOption } from '../lib/data_types'
+import { QuizSubjectOption, QuizTopicOption } from '../lib/data_types'
 
 interface QuizOptionProps {
-  setLanguageId: (val: number | string) => void
+  setSubjectId: (val: number | string) => void
   setTopicId: (val: number | string) => void
   setLimit: (val: number | string) => void
   handleStartQuizButton: () => void
 }
 
 const QuizOptions = ({
-  setLanguageId,
+  setSubjectId,
   setTopicId,
   setLimit,
   handleStartQuizButton
 }: QuizOptionProps) => {
   const [loading, setLoading] = useState(true)
   const [loadingTopics, setLoadingTopics] = useState(true)
-  const [languages, setLanguages] = useState<QuizLanguageOption[]>([
+  const [subjects, setSubjects] = useState<QuizSubjectOption[]>([
     { id: 0, label: 'Random' }
   ])
   const [topics, setTopics] = useState<QuizTopicOption[]>([
@@ -35,12 +35,12 @@ const QuizOptions = ({
 
   const fetchData = async (langId: string | number | null) => {
     const response = await fetch(
-      `/api/quiz` + (langId ? '?languageId=' + langId : '')
+      `/api/quiz` + (langId ? '?subjectId=' + langId : '')
     )
     if (response.ok) {
       setLoadingTopics(true)
       const data = await response.json()
-      setLanguages([{ id: 0, label: 'Random' }, ...data.languages])
+      setSubjects([{ id: 0, label: 'Random' }, ...data.subjects])
       data.topics.length > 0
         ? setTopics([{ id: 0, label: 'Random' }, ...data.topics])
         : setTopics([])
@@ -72,14 +72,14 @@ const QuizOptions = ({
         <div className='w-full flex justify-center'>
           <div className='quizOptionList flex flex-row flex-wrap items-center my-5'>
             <label className='w-52'>
-              <Typography>SELECT LANGUAGE</Typography>
+              <Typography>SELECT SUBJECT</Typography>
             </label>
             <Autocomplete
               disablePortal
               disableClearable
-              id='autocomplete-language-selection'
+              id='autocomplete-subject-selection'
               defaultValue={{ id: 0, label: 'Random' }}
-              options={languages}
+              options={subjects}
               isOptionEqualToValue={(
                 option: { id: number | string; label: string },
                 value: { id: number | string; label: string }
@@ -87,10 +87,10 @@ const QuizOptions = ({
               sx={{ width: 300 }}
               onChange={async (_, value) => {
                 await fetchData(value.id)
-                setLanguageId(value.id)
+                setSubjectId(value.id)
               }}
               renderInput={(params) => {
-                return <TextField {...params} id={params.id} label='Language' />
+                return <TextField {...params} id={params.id} label='Subject' />
               }}
             />
           </div>

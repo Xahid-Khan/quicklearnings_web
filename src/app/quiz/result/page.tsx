@@ -4,7 +4,7 @@ const QuizResult = () => {
       <h1>Congratulation...!!!</h1>
       <p>
         {
-          "This page is still work in progress, soon you'll be able to see your results here."
+          "This page is still under development, soon you'll be able to see your results here."
         }
       </p>
     </main>
