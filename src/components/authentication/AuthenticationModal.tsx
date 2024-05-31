@@ -1,23 +1,11 @@
-import {
-  Modal,
-  Box,
-  Typography,
-  Divider,
-  TextField,
-  Button,
-  LinearProgress
-} from '@mui/material'
-import { ReactElement, useRef, useState } from 'react'
-import { useAuthModalContext } from '../../contexts/authModal'
+import { Modal, Box } from '@mui/material'
+import { useRef } from 'react'
+import { useAuthModalContext } from '@/src/contexts/authContext'
 import CloseIcon from '@mui/icons-material/Close'
-import Image from 'next/image'
-import WebTitle from '../WebTitle'
-// import { signInUser, signUpUser } from '../app/api-client/user/useUserMutation'
-import { validateEmail, validatePassword } from '../../utils/utils'
-import { useUserContext } from '@/src/contexts/userContext'
-import { ShowPasswordResetModal } from './ShowPasswordResetModal'
-import { ShowSignUpModal } from './ShowSignUpModal'
-import { ShowLoginModal } from './ShowLoginModal'
+import WebTitle from '@/src/components/WebTitle'
+import { ShowPasswordResetModal } from '@/src/components/authentication/ShowPasswordResetModal'
+import { ShowSignUpModal } from '@/src/components/authentication/ShowSignUpModal'
+import { ShowLoginModal } from '@/src/components/authentication/ShowLoginModal'
 
 const AuthenticationModal = () => {
   const rootRef = useRef<HTMLDivElement>(null)

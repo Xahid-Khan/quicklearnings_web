@@ -1,4 +1,4 @@
-import { useAuthModalContext } from '@/src/contexts/authModal'
+import { useAuthModalContext } from '@/src/contexts/authContext'
 import { useUserContext } from '@/src/contexts/userContext'
 import { validateEmail } from '@/src/utils/utils'
 import Image from 'next/image'

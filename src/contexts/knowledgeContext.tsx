@@ -1,0 +1,274 @@
+'use client'
+import {
+  createContext,
+  Dispatch,
+  ReactElement,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState
+} from 'react'
+import { QuizData } from '@/src/lib/data_types'
+import { TopicDropDownArray, TopicView } from '@/src/lib/topicContacts'
+import {
+  getTopicDetailsById,
+  getTopicOptionsQuery
+} from '@/src/app/api-client/topic/useTopicQuery'
+import { useSearchParams } from 'next/navigation'
+import { Knowledge, UpdateKnowledge } from '@/src/lib/knowledgeContracts'
+import {
+  deleteKnowledgeByIdMutation,
+  saveKnowledgeMutation,
+  updateKnowledgeMutation
+} from '@/src/app/api-client/knowledge/useKnowledgeMutation'
+import {
+  getKnowledgeDataByIdQuery,
+  getKnowledgeDataQuery
+} from '@/src/app/api-client/knowledge/useKnowledgeQuery'
+
+import * as dash from 'lodash'
+
+interface KnowledgeContext {
+  readonly topicId: number | null
+  readonly setTopicId: Dispatch<SetStateAction<number | null>>
+  readonly warningModalOpen: boolean
+  readonly setWarningModalOpen: Dispatch<SetStateAction<boolean>>
+  readonly loading: boolean
+  readonly setLoading: Dispatch<SetStateAction<boolean>>
+  readonly knowledgeToEdit: Knowledge | null
+  readonly setKnowledgeToEdit: Dispatch<SetStateAction<Knowledge | null>>
+  readonly knowledgeToDelete: QuizData | null
+  readonly setKnowledgeToDelete: Dispatch<SetStateAction<QuizData | null>>
+  readonly topicOptionList: TopicDropDownArray
+  readonly data: QuizData[]
+  readonly setData: Dispatch<SetStateAction<QuizData[]>>
+  readonly page: number
+  readonly setPage: Dispatch<SetStateAction<number>>
+  readonly pageCount: number
+  readonly setPageCount: Dispatch<SetStateAction<number>>
+  readonly limit: number
+  readonly setLimit: Dispatch<SetStateAction<number>>
+  readonly expanded: string | false
+  readonly setExpanded: Dispatch<SetStateAction<string | false>>
+  readonly topicDetails: TopicView | null
+  readonly closeModal: () => void
+  readonly fetchData: () => void
+  readonly saveNewKnowledge: (knowledge: UpdateKnowledge) => void
+  readonly updateKnowledgeData: (Knowledge: Knowledge) => void
+  readonly getKnowledgeDataById: (
+    id: string,
+    setLoadingState: Dispatch<SetStateAction<boolean>>
+  ) => void
+  readonly deleteKnowledgeById: () => void
+}
+
+const knowledgeContext = createContext<KnowledgeContext>({
+  topicId: null,
+  setTopicId: () => {},
+  warningModalOpen: false,
+  setWarningModalOpen: () => {},
+  loading: true,
+  setLoading: () => {},
+  knowledgeToEdit: null,
+  setKnowledgeToEdit: () => {},
+  knowledgeToDelete: null,
+  setKnowledgeToDelete: () => {},
+  topicDetails: null,
+  topicOptionList: [],
+  data: [],
+  setData: () => {},
+  page: 1,
+  setPage: () => {},
+  pageCount: 0,
+  setPageCount: () => {},
+  limit: 25,
+  setLimit: () => {},
+  expanded: false,
+  setExpanded: () => {},
+  closeModal: () => {},
+  fetchData: () => {},
+  saveNewKnowledge: async (knowledge: UpdateKnowledge) => {},
+  updateKnowledgeData: async (knowledge: Knowledge) => {},
+  getKnowledgeDataById: async (
+    id: string,
+    setLoadingState: Dispatch<SetStateAction<boolean>>
+  ) => {},
+  deleteKnowledgeById: () => {}
+})
+
+export const KnowledgeProvider = ({
+  children
+}: {
+  readonly children: ReactNode
+}): ReactElement => {
+  const searchParams = useSearchParams()
+  const currentPage = searchParams?.get('page')
+  const currentLimit = searchParams?.get('limit')
+
+  const [topicId, setTopicId] = useState<number | null>(null)
+  const [data, setData] = useState<QuizData[]>([])
+  const [page, setPage] = useState<number>(
+    currentPage ? Number(currentPage) : 1
+  )
+  const [pageCount, setPageCount] = useState<number>(0)
+  const [limit, setLimit] = useState<number>(
+    currentLimit ? Number(currentLimit) : 25
+  )
+  const [expanded, setExpanded] = useState<string | false>(false)
+
+  const [warningModalOpen, setWarningModalOpen] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [knowledgeToEdit, setKnowledgeToEdit] = useState<Knowledge | null>(null)
+  const [knowledgeToDelete, setKnowledgeToDelete] = useState<QuizData | null>(
+    null
+  )
+  const [topicDetails, setTopicDetails] = useState<TopicView | null>(null)
+  const [topicOptionList, setTopicOptionList] = useState<TopicDropDownArray>([])
+
+  const getTopicDetails = async () => {
+    if (topicId) {
+      const outcome = await getTopicDetailsById(topicId)
+      if (typeof outcome != 'string') setTopicDetails(outcome)
+    }
+  }
+
+  const getTopicOptionList = async () => {
+    const outcome = await getTopicOptionsQuery()
+    if (typeof outcome == 'string') {
+      console.error(outcome)
+    } else {
+      setTopicOptionList(outcome)
+    }
+  }
+
+  const fetchData = async () => {
+    if (topicId) {
+      const outcome = await getKnowledgeDataQuery({ topicId, page, limit })
+      if (typeof outcome != 'string') {
+        setData(outcome.data)
+        setPageCount(outcome.count)
+        setLoading(false)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (topicId) {
+      getTopicDetails()
+    }
+    if (topicOptionList.length == 0) getTopicOptionList()
+    fetchData()
+    return
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [topicId])
+
+  const closeModal = () => {
+    setWarningModalOpen(false)
+    setKnowledgeToDelete(null)
+    setKnowledgeToEdit(null)
+  }
+
+  const deleteKnowledgeById = async (): Promise<void> => {
+    if (knowledgeToDelete) {
+      const outcome = await deleteKnowledgeByIdMutation(knowledgeToDelete?.id)
+      if (typeof outcome == 'string') {
+        console.error(outcome)
+      } else {
+        setData(data.filter((item) => item.id != knowledgeToDelete.id))
+      }
+      setWarningModalOpen(false)
+      setKnowledgeToDelete(null)
+    } else {
+      console.error('NO DATA SELECTED TO DELETE')
+    }
+  }
+
+  const saveNewKnowledge = async (
+    knowledge: UpdateKnowledge
+  ): Promise<true | string> => {
+    const outcome = await saveKnowledgeMutation(knowledge)
+    if (typeof outcome === 'string') {
+      return outcome
+    }
+    setData([outcome, ...data])
+    return true
+  }
+
+  const updateKnowledgeData = async (
+    knowledge: Knowledge
+  ): Promise<string | true> => {
+    const isSame = dash.isEqual(knowledge, knowledgeToEdit)
+    if (isSame) return true
+    const outcome = await updateKnowledgeMutation(knowledge)
+    if (typeof outcome == 'string') {
+      return outcome
+    }
+
+    setData(
+      data.map((item: QuizData) => {
+        if (item.id == outcome.id) {
+          return outcome
+        }
+        return item
+      })
+    )
+    setKnowledgeToEdit(null)
+    return true
+  }
+
+  const getKnowledgeDataById = async (
+    id: string,
+    setLoadingState: Dispatch<SetStateAction<boolean>>
+  ): Promise<true | string> => {
+    setLoadingState(true)
+    const outcome = await getKnowledgeDataByIdQuery(id)
+    if (typeof outcome != 'string') {
+      setKnowledgeToEdit(outcome)
+    }
+    setLoadingState(false)
+    return true
+  }
+
+  return (
+    <knowledgeContext.Provider
+      value={{
+        topicId,
+        setTopicId,
+        warningModalOpen,
+        setWarningModalOpen,
+        loading,
+        setLoading,
+        knowledgeToEdit,
+        setKnowledgeToEdit,
+        knowledgeToDelete,
+        setKnowledgeToDelete,
+        topicDetails,
+        topicOptionList,
+        data,
+        setData,
+        page,
+        setPage,
+        pageCount,
+        setPageCount,
+        limit,
+        setLimit,
+        expanded,
+        setExpanded,
+        closeModal,
+        fetchData,
+        getKnowledgeDataById,
+        saveNewKnowledge,
+        updateKnowledgeData,
+        deleteKnowledgeById
+      }}
+    >
+      {children}
+    </knowledgeContext.Provider>
+  )
+}
+
+export const useKnowledgeContext = (): KnowledgeContext => {
+  const context = useContext(knowledgeContext)
+  return context
+}

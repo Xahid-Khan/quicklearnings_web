@@ -2,10 +2,14 @@
 import Loading from '@/src/components/LoadingScreen'
 import QuizScreen from '@/src/components/Quiz'
 import QuizOptions from '@/src/components/QuizOptions'
+import { useAuthModalContext } from '@/src/contexts/authContext'
+import { useUserContext } from '@/src/contexts/userContext'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useState } from 'react'
 
 const DynamicQuiz = () => {
+  const { userId } = useUserContext()
+  const { setAuthModalIsOpen } = useAuthModalContext()
   const router = useRouter()
   const searchParams = useSearchParams()
   const quizStarted = searchParams?.get('quiz_started')
@@ -22,10 +26,14 @@ const DynamicQuiz = () => {
   )
 
   const handleStartQuizButton = () => {
-    router.push(
-      `/quiz?quiz_started=true&subjectId=${subjectId}&topicId=${topicId}&limit=${limit}`
-    )
-    setStartQuiz(true)
+    if (userId) {
+      router.push(
+        `/quiz?quiz_started=true&subjectId=${subjectId}&topicId=${topicId}&limit=${limit}`
+      )
+      setStartQuiz(true)
+    } else {
+      setAuthModalIsOpen(true)
+    }
   }
   return (
     <main className='flex min-h-[90vh] flex-col items-center justify-center'>

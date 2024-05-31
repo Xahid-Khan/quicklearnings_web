@@ -19,7 +19,10 @@ export const getQuizData = async ({
 }: QuizProps): Promise<QuizViewData[]> => {
   const supabase = getSupabaseInstance()
   const randomize = [0, '0']
-  let query = supabase.from('random_data').select('*').limit(Number(limit))
+  let query = supabase
+    .from('random_knowledge_base')
+    .select('*')
+    .limit(Number(limit))
   if (!randomize.includes(topicId)) query = query.eq('topic_id', topicId)
   if (!randomize.includes(subjectId)) query = query.eq('subject_id', subjectId)
 

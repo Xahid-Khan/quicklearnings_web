@@ -34,47 +34,121 @@ export type Database = {
   }
   public: {
     Tables: {
-      data: {
+      knowledge_base: {
         Row: {
           answer: string
           created_at: string
+          updated_at: string
+          examples: Json[]
+          grammar: Json[]
           hint: string | null
           id: number
           notes: string | null
+          options: Json[]
           question: string
           topic_id: number
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           answer: string
           created_at?: string
+          examples?: Json[]
+          grammar?: Json[]
           hint?: string | null
           id?: number
           notes?: string | null
+          options?: Json[]
           question: string
           topic_id: number
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           answer?: string
           created_at?: string
+          examples?: Json[]
+          grammar?: Json[]
           hint?: string | null
           id?: number
           notes?: string | null
+          options?: Json[]
           question?: string
           topic_id?: number
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: 'public_data_topic_id_fkey'
+            foreignKeyName: 'public_knowledge_base_topic_id_fkey'
             columns: ['topic_id']
             referencedRelation: 'topic'
             referencedColumns: ['id']
           },
           {
-            foreignKeyName: 'public_data_user_id_fkey'
+            foreignKeyName: 'public_knowledge_base_topic_id_fkey'
+            columns: ['topic_id']
+            referencedRelation: 'topic_view'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'public_knowledge_base_user_id_fkey'
             columns: ['user_id']
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      profile: {
+        Row: {
+          blocked: boolean
+          created_at: string
+          date_of_birth: string | null
+          description: string | null
+          email: string
+          first_name: string | null
+          id: string
+          is_active: boolean
+          is_public: boolean
+          last_login: string | null
+          last_login_ip: string | null
+          last_name: string | null
+          phone: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          blocked?: boolean
+          created_at?: string
+          date_of_birth?: string | null
+          description?: string | null
+          email: string
+          first_name?: string | null
+          id: string
+          is_active?: boolean
+          is_public?: boolean
+          last_login?: string | null
+          last_login_ip?: string | null
+          last_name?: string | null
+          phone?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          blocked?: boolean
+          created_at?: string
+          date_of_birth?: string | null
+          description?: string | null
+          email?: string
+          first_name?: string | null
+          id?: string
+          is_active?: boolean
+          is_public?: boolean
+          last_login?: string | null
+          last_login_ip?: string | null
+          last_name?: string | null
+          phone?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'profile_id_fkey'
+            columns: ['id']
             referencedRelation: 'users'
             referencedColumns: ['id']
           }
@@ -85,95 +159,192 @@ export type Database = {
           created_at: string
           description: string
           id: number
+          is_public: boolean
           public: boolean
           title: string
-          user_id: string | null
+          updated_at: string
+          user_id: string
         }
         Insert: {
           created_at?: string
           description: string
           id?: number
+          is_public?: boolean
           public?: boolean
           title: string
-          user_id?: string | null
+          updated_at?: string
+          user_id: string
         }
         Update: {
           created_at?: string
           description?: string
           id?: number
+          is_public?: boolean
           public?: boolean
           title?: string
-          user_id?: string | null
+          updated_at?: string
+          user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'subject_user_id_fkey'
+            columns: ['user_id']
+            referencedRelation: 'profile'
+            referencedColumns: ['id']
+          }
+        ]
       }
       topic: {
         Row: {
           created_at: string
           description: string
           id: number
+          is_public: boolean
           public: boolean
-          subject: number
+          subject_id: number
           title: string
-          user_id: string | null
+          updated_at: string
+          user_id: string
         }
         Insert: {
           created_at?: string
           description: string
           id?: number
+          is_public?: boolean
           public?: boolean
-          subject: number
+          subject_id: number
           title: string
-          user_id?: string | null
+          updated_at?: string
+          user_id: string
         }
         Update: {
           created_at?: string
           description?: string
           id?: number
+          is_public?: boolean
           public?: boolean
-          subject?: number
+          subject_id?: number
           title?: string
-          user_id?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: [
           {
             foreignKeyName: 'public_topic_subject_fkey'
-            columns: ['subject']
+            columns: ['subject_id']
             referencedRelation: 'subject'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'public_topic_subject_fkey'
+            columns: ['subject_id']
+            referencedRelation: 'subject_view'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'topic_user_id_fkey'
+            columns: ['user_id']
+            referencedRelation: 'profile'
             referencedColumns: ['id']
           }
         ]
       }
     }
     Views: {
-      random_data: {
+      random_knowledge_base: {
         Row: {
           answer: string | null
           created_at: string | null
           hint: string | null
           id: number | null
           question: string | null
-          subject: number | null
+          subject_id: number | null
           topic_id: number | null
           user_id: string | null
         }
         Relationships: [
           {
-            foreignKeyName: 'public_data_topic_id_fkey'
+            foreignKeyName: 'public_knowledge_base_topic_id_fkey'
             columns: ['topic_id']
             referencedRelation: 'topic'
             referencedColumns: ['id']
           },
           {
-            foreignKeyName: 'public_data_user_id_fkey'
+            foreignKeyName: 'public_knowledge_base_topic_id_fkey'
+            columns: ['topic_id']
+            referencedRelation: 'topic_view'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'public_knowledge_base_user_id_fkey'
             columns: ['user_id']
             referencedRelation: 'users'
             referencedColumns: ['id']
           },
           {
             foreignKeyName: 'public_topic_subject_fkey'
-            columns: ['subject']
+            columns: ['subject_id']
             referencedRelation: 'subject'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'public_topic_subject_fkey'
+            columns: ['subject_id']
+            referencedRelation: 'subject_view'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      subject_view: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          first_name: string | null
+          id: number | null
+          is_public: boolean | null
+          title: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'subject_user_id_fkey'
+            columns: ['user_id']
+            referencedRelation: 'profile'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      topic_view: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          first_name: string | null
+          id: number | null
+          is_public: boolean | null
+          subject_id: number | null
+          subject_name: string | null
+          title: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'public_topic_subject_fkey'
+            columns: ['subject_id']
+            referencedRelation: 'subject'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'public_topic_subject_fkey'
+            columns: ['subject_id']
+            referencedRelation: 'subject_view'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'topic_user_id_fkey'
+            columns: ['user_id']
+            referencedRelation: 'profile'
             referencedColumns: ['id']
           }
         ]
@@ -183,7 +354,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      roles: 'student' | 'teacher' | 'admin'
     }
     CompositeTypes: {
       [_ in never]: never

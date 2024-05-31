@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getDataByTopicId } from '@/src/app/api/data/data'
+import { getKnowledgeDisplayDataByTopicId } from '@/src/app/api/knowledge/knowledge'
 import { getPaginationParams } from '@/src/utils/utils'
 import { QuizDataResponse } from '@/src/lib/data_types'
 
@@ -10,7 +10,11 @@ export async function GET(
   { params }: { params: { topic_id: string } }
 ): Promise<NextResponse<QuizDataResponse>> {
   const { page, limit } = getPaginationParams(req)
-  const { data, count } = await getDataByTopicId(params.topic_id, limit, page)
+  const { data, count } = await getKnowledgeDisplayDataByTopicId(
+    params.topic_id,
+    limit,
+    page
+  )
   return NextResponse.json(
     { data, count: Math.ceil(count / limit) },
     { status: 200 }

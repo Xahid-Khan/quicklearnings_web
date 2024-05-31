@@ -1,9 +1,12 @@
 import { Database } from './supabase'
 
-export type Subject = Database['public']['Tables']['subject']['Row']
-export type Topic = Database['public']['Tables']['topic']['Row']
-export type QuizData = Database['public']['Tables']['data']['Row']
-export type QuizViewData = Database['public']['Views']['random_data']['Row']
+export type Subject = Database['public']['Views']['subject_view']['Row']
+export type Topic = Database['public']['Views']['topic_view']['Row']
+export type KnowledgeBase =
+  Database['public']['Tables']['knowledge_base']['Row']
+export type QuizData = Database['public']['Tables']['knowledge_base']['Row']
+export type QuizViewData =
+  Database['public']['Views']['random_knowledge_base']['Row']
 
 export interface QuizDataResponse {
   data: QuizData[]
