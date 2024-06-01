@@ -16,7 +16,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import AuthenticationModal from './authentication/AuthenticationModal'
-import { useAuthModalContext } from '@/src/contexts/authModal'
+import { useAuthModalContext } from '@/src/contexts/authContext'
 import { useUserContext } from '@/src/contexts/userContext'
 
 const NavigationBar = () => {
@@ -29,7 +29,7 @@ const NavigationBar = () => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
 
   const pages = ['Subjects', 'Topics']
-  const settings = ['Account', userId ? 'Sign Out' : 'Sign In']
+  const settings = userId ? ['Account', 'Log Out'] : ['Sign In']
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
@@ -44,6 +44,22 @@ const NavigationBar = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null)
+  }
+
+  const handleNavAction = (selection: string) => {
+    if (selection === 'Subjects') {
+      router.push('/')
+    } else if (selection === 'Topics') {
+      const route = `${selection.toLowerCase()}/all`
+      router.push('/' + route)
+    } else if (selection === 'Account') {
+      userId ? router.push('/account') : setAuthModalIsOpen(true)
+    } else if (selection === 'Log Out') {
+      signOut()
+      router.push('/')
+    } else if (selection === 'Sign In') {
+      setAuthModalIsOpen(true)
+    }
   }
 
   return (
@@ -105,51 +121,30 @@ const NavigationBar = () => {
                   key={'quiz'}
                   onClick={() => {
                     handleCloseNavMenu()
-                    router.push('/quiz')
+                    if (userId) {
+                      router.push('/quiz')
+                    } else {
+                      setAuthModalIsOpen(true)
+                    }
                   }}
                 >
                   {quizStarted ? null : (
-                    <Button variant='contained' color='primary'>
+                    <Button variant='contained' className={'buttonColourDark'}>
                       <Typography textAlign='center'>{'Start Quiz'}</Typography>
                     </Button>
                   )}
                 </MenuItem>
-                {pages.map((page) => (
+                {pages.concat(settings).map((page) => (
                   <MenuItem
                     key={page}
                     onClick={() => {
                       handleCloseNavMenu()
-                      const route =
-                        page == 'Subjects' ? '' : `${page.toLowerCase()}/0`
-                      router.push('/' + route)
+                      handleNavAction(page)
                     }}
                   >
                     <Typography textAlign='center'>{page}</Typography>
                   </MenuItem>
                 ))}
-                <MenuItem
-                  key={'account'}
-                  onClick={() => {
-                    handleCloseNavMenu()
-                    userId ? router.push('/') : setAuthModalIsOpen(true)
-                  }}
-                >
-                  <Typography textAlign='center'>{'Account'}</Typography>
-                </MenuItem>
-                {userId ? (
-                  <>
-                    <Divider />
-                    <MenuItem
-                      key={'log-out'}
-                      onClick={() => {
-                        signOut()
-                        router.push('/')
-                      }}
-                    >
-                      <Typography textAlign='center'>{'Log out'}</Typography>
-                    </MenuItem>
-                  </>
-                ) : null}
               </Menu>
             </Box>
             <Typography
@@ -176,9 +171,7 @@ const NavigationBar = () => {
                   key={page}
                   onClick={() => {
                     handleCloseNavMenu()
-                    const route =
-                      page == 'Subjects' ? '' : `${page.toLowerCase()}/all`
-                    router.push('/' + route)
+                    handleNavAction(page)
                   }}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
@@ -192,11 +185,16 @@ const NavigationBar = () => {
                   key={'QuizPage'}
                   onClick={() => {
                     handleCloseNavMenu()
-                    router.push('/quiz')
+                    if (userId) {
+                      router.push('/quiz')
+                    } else {
+                      setAuthModalIsOpen(true)
+                    }
                   }}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                   variant='contained'
                   color={`${quizStarted ? 'error' : 'primary'}`}
+                  className='buttonColourDark'
                 >
                   Start Quiz
                 </Button>
@@ -228,12 +226,8 @@ const NavigationBar = () => {
                   <MenuItem
                     key={setting}
                     onClick={() => {
-                      if (setting == 'Sign Out') {
-                        signOut()
-                      } else if (setting == 'Sign In') {
-                        setAuthModalIsOpen(true)
-                      }
                       handleCloseUserMenu()
+                      handleNavAction(setting)
                     }}
                   >
                     <Typography textAlign='center'>{setting}</Typography>

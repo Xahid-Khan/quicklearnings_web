@@ -9,6 +9,7 @@ export default function Loading() {
         width={1080}
         height={1020}
         priority
+        style={{ width: '1080px', height: 'auto' }}
       />
     </main>
   )

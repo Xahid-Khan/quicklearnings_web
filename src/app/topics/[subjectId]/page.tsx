@@ -1,10 +1,16 @@
 'use client'
 import Loading from '@/src/components/LoadingScreen'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import SelectionCard from '@/src/components/SelectionCard'
 import { useRouter } from 'next/navigation'
-import { SpeedDial, SpeedDialIcon } from '@mui/material'
-import { Subject, Topic } from '@/src/lib/data_types'
+import { Fab } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
+import { useUserContext } from '@/src/contexts/userContext'
+import TopicCrudModal from '@/src/components/topic/TopicCRUDModal'
+import { useTopicContext } from '@/src/contexts/topicContext'
+import { TopicView } from '@/src/lib/topicContacts'
+import WarningModal from '@/src/components/WarningModal'
+import { useAuthModalContext } from '@/src/contexts/authContext'
 
 export default function TopicPage({
   params
@@ -12,24 +18,33 @@ export default function TopicPage({
   params: { subjectId: string }
 }) {
   const router = useRouter()
-  const [loading, setLoading] = useState<boolean>(true)
-  const [data, setData] = useState<Subject[] | Topic[]>([])
+  const { userId } = useUserContext()
+  const { setAuthModalIsOpen } = useAuthModalContext()
+  const {
+    setTopicModalOpen,
+    setEditTopic,
+    deleteTopic,
+    setDeleteTopic,
+    data,
+    getTopicData,
+    loading,
+    warningModalOpen,
+    setWarningModalOpen,
+    deleteTopicById
+  } = useTopicContext()
 
   useEffect(() => {
-    const getData = async () => {
-      const response = await fetch('/api/topic/' + params.subjectId)
-      if (response.ok) {
-        const topics = await response.json()
-        setData(topics)
-        setTimeout(() => {
-          setLoading(false)
-        }, 2000)
-      }
-    }
-    getData()
-
+    getTopicData(params.subjectId)
     return
-  }, [params.subjectId])
+  }, [params.subjectId, userId])
+
+  const handleCRUDTopic = () => {
+    if (userId) {
+      setTopicModalOpen(true)
+    } else {
+      setAuthModalIsOpen(true)
+    }
+  }
 
   if (loading) {
     return <Loading />
@@ -37,32 +52,64 @@ export default function TopicPage({
 
   return (
     <main className='flex min-h-[90vh] flex-row flex-wrap items-center justify-center'>
-      <SpeedDial
-        ariaLabel='SpeedDial basic example'
-        sx={{ position: 'fixed', bottom: 16, right: 16 }}
-        icon={<SpeedDialIcon />}
-        onClick={() => {
-          console.log('ADD NEW TOPIC')
-        }}
-      />
+      <Fab
+        color='primary'
+        aria-label='add'
+        sx={{ position: 'fixed', bottom: 15, right: 15 }}
+        className='buttonColourDark'
+        onClick={handleCRUDTopic}
+      >
+        <AddIcon />
+      </Fab>
+      <TopicCrudModal />
+      {deleteTopic ? (
+        <WarningModal
+          message={deleteTopic?.title}
+          isOpen={warningModalOpen}
+          cancelAction={() => {
+            setWarningModalOpen(false)
+            setDeleteTopic(null)
+          }}
+          deleteAction={() => {
+            deleteTopicById()
+          }}
+        />
+      ) : null}
       {data.length == 0 ? (
         <SelectionCard
           title={'NO DATA FOUND'}
           description={'CLICK HERE TO GO BACK TO HOME PAGE'}
+          created_at=''
+          created_by={null}
+          updatable={false}
           action={() => {
             router.push('/')
           }}
+          editAction={() => {}}
+          deleteAction={() => {}}
           key={'TOPIC-DATA'}
         />
       ) : (
-        data.map((val: Subject, index) => (
+        data.map((val: TopicView, index) => (
           <SelectionCard
             title={val.title}
             description={val.description ?? null}
+            created_at={val.created_at}
+            created_by={val.firstName}
+            updatable={userId != null && val.userId == userId}
+            isPublic={val.isPublic}
             action={() => {
-              router.push('/data/' + val.id)
+              router.push('/knowledge/' + val.id)
             }}
-            key={'subject' + index}
+            editAction={() => {
+              setEditTopic(val)
+              setTopicModalOpen(true)
+            }}
+            deleteAction={() => {
+              setDeleteTopic(val)
+              setWarningModalOpen(true)
+            }}
+            key={'topic' + index}
           />
         ))
       )}

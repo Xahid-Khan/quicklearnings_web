@@ -23,12 +23,22 @@ body {
 }
 
 .primaryContainer {
-  background-color: rgb(25, 31, 38);
+  background-color: rgb(25, 31, 38) !important;
 }
 
 .secondaryContainer {
   background-color: #0ee1db;
-  background-color: rgb(14, 225, 219);
+  background-color: rgb(14, 225, 219) !important;
+}
+
+.buttonColourBright {
+  background-color: rgb(14, 225, 219) !important;
+  background-color: #0ee1db;
+}
+
+.buttonColourDark {
+  background-color: rgb(1, 114, 111) !important;
+  background-color: #01726f;
 }
 
 @layer utilities {

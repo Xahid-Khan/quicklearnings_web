@@ -1,22 +1,93 @@
 import { Subject } from '@/src/lib/data_types'
 import getSupabaseInstance from '@/src/utils/config'
-import { cookies } from 'next/headers'
-import { USER_SESSION_COOKIE_NAME } from '../constants'
+import { getUserId, getUserIdOrNull } from '@/src/app/api/utils'
+import { AddSubject, EditSubject } from '@/src/lib/subjectContracts'
 
-export const getAllSubjects = async (): Promise<Subject[]> => {
+export const getAllSubjects = async (
+  subjectId?: number
+): Promise<Subject[]> => {
+  const userId = await getUserIdOrNull()
   const supabase = getSupabaseInstance()
-  const session = cookies().get(USER_SESSION_COOKIE_NAME)?.value
 
-  let query = supabase.from('subject').select('*').or('public.eq.true')
-
-  if (session) {
-    supabase.auth.setSession(JSON.parse(session))
-    const userId = (await supabase.auth.getSession()).data.session?.user.id
-    if (userId) query = query.or(`public.eq.true, user_id.eq.${userId}`)
+  let query = supabase.from('subject_view').select('*')
+  // Get all for the user and the public ones
+  if (userId) {
+    query = query.or(`is_public.eq.true,and(user_id.eq.${userId})`)
+  } else {
+    // Get only those which are public
+    query = query.eq('is_public', true)
   }
+  // Filter by subject ID
+  if (subjectId) query = query.eq('id', subjectId)
+
   const { data, error } = await query
   if (error) {
     throw new Error(error.message, { cause: 502 })
   }
   return data
+}
+
+export const insertNewSubject = async (
+  subject: AddSubject
+): Promise<Subject> => {
+  const supabase = getSupabaseInstance()
+  const userId = await getUserId()
+  const { data, error } = await supabase
+    .from('subject')
+    .insert({
+      title: subject.title.trim(),
+      description: subject.description.trim(),
+      is_public: subject.isPublic,
+      user_id: userId
+    })
+    .select('*')
+  if (error) {
+    throw new Error(error.message, { cause: 502 })
+  } else if (!data[0].id) {
+    throw new Error('Failed to save the data, please try again.', {
+      cause: '502'
+    })
+  }
+
+  const getSavedSubject = await getAllSubjects(data[0].id)
+  return getSavedSubject[0]
+}
+
+export const updateNewSubject = async (
+  subject: EditSubject
+): Promise<Subject> => {
+  const supabase = getSupabaseInstance()
+  const userId = await getUserId()
+  const { error } = await supabase
+    .from('subject')
+    .update({
+      title: subject.title.trim(),
+      description: subject.description.trim(),
+      is_public: subject.isPublic,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', subject.id)
+    .eq('user_id', userId)
+  if (error) {
+    throw new Error(error.message, { cause: 502 })
+  }
+
+  const getSavedSubject = await getAllSubjects(subject.id)
+  return getSavedSubject[0]
+}
+
+export const deleteSubjectById = async (
+  subjectId: number,
+  userId: string
+): Promise<true> => {
+  const supabase = getSupabaseInstance()
+  const { error } = await supabase
+    .from('subject')
+    .delete()
+    .eq('user_id', userId)
+    .eq('id', subjectId)
+  if (error) {
+    throw new Error(error.message, { cause: 502 })
+  }
+  return true
 }

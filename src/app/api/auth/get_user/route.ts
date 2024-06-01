@@ -5,7 +5,7 @@ import {
   USER_SESSION_COOKIE_NAME,
   USER_TOKEN_COOKIE_NAME
 } from '@/src/app/api/constants'
-import { getSessionByToken, getUserByToken } from '@/src/app/api/auth/auth'
+import { getUserByToken } from '@/src/app/api/auth/auth'
 import { ErrorResponse, UserSession } from '@/src/lib/data_types'
 
 export const dynamic = 'force-dynamic'
@@ -17,7 +17,7 @@ export async function GET(
     const token = cookies().get(USER_TOKEN_COOKIE_NAME)?.value
     const session = cookies().get(USER_SESSION_COOKIE_NAME)?.value
     if (token && session) {
-      const userData = await getUserByToken(token)
+      const userData = await getUserByToken()
       return NextResponse.json(
         { userId: userData.user.id, session: JSON.parse(session) },
         { status: 200 }
