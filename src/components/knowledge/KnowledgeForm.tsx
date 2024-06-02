@@ -80,9 +80,14 @@ const KnowledgeForm = () => {
         } else {
           router.back()
         }
-
-        setLoading(false)
+      } else {
+        setError(
+          newKnowledge?.error.message
+            .split(',')
+            .filter((item) => item.includes('message'))[0] ?? 'Unknown Error'
+        )
       }
+      setLoading(false)
     } else {
       const newKnowledge = updateKnowledge.safeParse(knowledgeData)
       if (newKnowledge.success) {
@@ -92,16 +97,14 @@ const KnowledgeForm = () => {
         } else {
           router.back()
         }
-
         setLoading(false)
+      } else {
+        setError(
+          newKnowledge?.error.message
+            .split(',')
+            .filter((item) => item.includes('message'))[0] ?? 'Unknown Error'
+        )
       }
-    }
-    if (newKnowledge && !newKnowledge.success) {
-      setError(
-        newKnowledge?.error.message
-          .split(',')
-          .filter((item) => item.includes('message'))[0] ?? 'Unknown Error'
-      )
       setLoading(false)
     }
   }

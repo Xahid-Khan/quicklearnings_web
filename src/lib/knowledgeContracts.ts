@@ -71,7 +71,7 @@ export const updateKnowledge = z.object({
       required_error: 'Prompt is required',
       invalid_type_error: 'Prompt must be a string'
     })
-    .min(5, { message: 'Prompt Must be between 1 and 256 characters' })
+    .min(1, { message: 'Prompt Must be between 1 and 256 characters' })
     .max(256, { message: 'Prompt Must be between 1 and 256 characters' })
     .readonly(),
   solution: z
