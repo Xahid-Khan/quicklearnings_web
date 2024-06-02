@@ -4,9 +4,9 @@ export const possibleOption = z.object({
   option: z
     .string()
     .min(1, { message: 'Option Must be between 1 and 128 characters' })
-    .max(128, { message: 'Option Must be between 1 and 128 characters' })
+    .max(256, { message: 'Option Must be between 1 and 128 characters' })
     .readonly(),
-  usage: z.string().min(1).max(128).readonly()
+  usage: z.string().min(1).max(256).readonly()
 })
 
 export type PossibleOption = z.infer<typeof possibleOption>
@@ -26,7 +26,7 @@ export const grammarOption = z.object({
     .min(1, {
       message: 'Usage/Explanation Must be between 1 and 128 characters'
     })
-    .max(128, {
+    .max(256, {
       message: 'Usage/Explanation Must be between 1 and 128 characters'
     })
     .readonly()
@@ -82,7 +82,7 @@ export const updateKnowledge = z.object({
     .min(1, { message: 'Solution Must be between 1 and 256 characters' })
     .max(256, { message: 'Solution Must be between 1 and 256 characters' })
     .readonly(),
-  hint: z.string().min(0).max(128).nullable().readonly(),
+  hint: z.string().min(0).max(256).nullable().readonly(),
   notes: z.string().min(0).max(512).nullable().readonly(),
   topicId: z.number().min(1, { message: 'You must select a topic' }).readonly(),
   options: possibleOptions,
