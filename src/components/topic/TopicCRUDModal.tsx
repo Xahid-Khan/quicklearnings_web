@@ -55,6 +55,7 @@ const TopicCRUDForm = (): ReactElement => {
       <FormControl className='w-full pt-10'>
         <TextField
           className='mt-4'
+          autoComplete='off'
           required
           id='new-subject-title'
           label='Title'
@@ -86,6 +87,7 @@ const TopicCRUDForm = (): ReactElement => {
         />
         <TextField
           className='mt-4'
+          autoComplete='off'
           required
           multiline
           rows={5}

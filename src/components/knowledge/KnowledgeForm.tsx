@@ -17,7 +17,7 @@ import {
   GrammarOptions,
   knowledge,
   PossibleOptions,
-  updateKnowledge
+  expandKnowledge
 } from '@/src/lib/knowledgeContracts'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useKnowledgeContext } from '@/src/contexts/knowledgeContext'
@@ -42,15 +42,9 @@ const KnowledgeForm = () => {
   const [topicId, setTopicId] = useState<number>(knowledgeToEdit?.topicId ?? -1)
   const [hint, setHint] = useState<string>(knowledgeToEdit?.hint ?? '')
   const [notes, setNotes] = useState<string>(knowledgeToEdit?.notes ?? '')
-  const [options, setOptions] = useState<PossibleOptions>(
-    knowledgeToEdit?.options ?? []
-  )
-  const [grammarOptions, setGrammarOptions] = useState<GrammarOptions>(
-    knowledgeToEdit?.grammarOptions ?? []
-  )
-  const [examples, setExamples] = useState<Examples>(
-    knowledgeToEdit?.examples ?? []
-  )
+  const [options, setOptions] = useState<PossibleOptions>([])
+  const [grammarOptions, setGrammarOptions] = useState<GrammarOptions>([])
+  const [examples, setExamples] = useState<Examples>([])
 
   const handleFormSubmission = async (e: FormEvent) => {
     e.preventDefault()
@@ -89,7 +83,7 @@ const KnowledgeForm = () => {
       }
       setLoading(false)
     } else {
-      const newKnowledge = updateKnowledge.safeParse(knowledgeData)
+      const newKnowledge = expandKnowledge.safeParse(knowledgeData)
       if (newKnowledge.success) {
         const outcome = await saveNewKnowledge(newKnowledge.data)
         if (typeof outcome == 'string') {

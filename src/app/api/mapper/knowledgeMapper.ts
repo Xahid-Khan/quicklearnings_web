@@ -11,9 +11,14 @@ export const knowledgeBaseToContract = (data: KnowledgeBase): Knowledge => {
     hint: data.hint,
     notes: data.notes,
     topicId: data.topic_id,
-    options: data.options,
-    grammarOptions: data.grammar,
-    examples: data.examples
+    userId: data.user_id
   })
+  return parsedData
+}
+
+export const knowledgeBaseArrayToContract = (
+  data: KnowledgeBase[]
+): Knowledge[] => {
+  const parsedData = data.map((item) => knowledgeBaseToContract(item))
   return parsedData
 }

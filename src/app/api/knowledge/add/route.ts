@@ -1,7 +1,7 @@
 import { getErrorResponseWithStatusCode } from '@/src/lib/errorHandler'
 import { NextRequest, NextResponse } from 'next/server'
 import { ErrorResponse } from '@/src/lib/data_types'
-import { Knowledge, updateKnowledge } from '@/src/lib/knowledgeContracts'
+import { Knowledge, expandKnowledge } from '@/src/lib/knowledgeContracts'
 import { expandKnowledgeBase } from '@/src/app/api/knowledge/knowledge'
 import { getUserId } from '@/src/app/api/utils'
 import { knowledgeBaseToContract } from '@/src/app/api/mapper/knowledgeMapper'
@@ -13,7 +13,7 @@ export async function POST(
 ): Promise<NextResponse<Knowledge | ErrorResponse>> {
   try {
     const userId = await getUserId()
-    const parsedData = updateKnowledge.safeParse(await req.json())
+    const parsedData = expandKnowledge.safeParse(await req.json())
     if (!parsedData.success)
       throw new Error(parsedData.error.message, { cause: 400 })
     const data = await expandKnowledgeBase(parsedData.data, userId)

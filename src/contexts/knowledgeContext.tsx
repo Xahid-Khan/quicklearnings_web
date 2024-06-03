@@ -9,14 +9,13 @@ import {
   useEffect,
   useState
 } from 'react'
-import { QuizData } from '@/src/lib/data_types'
 import { TopicDropDownArray, TopicView } from '@/src/lib/topicContacts'
 import {
   getTopicDetailsById,
   getTopicOptionsQuery
 } from '@/src/app/api-client/topic/useTopicQuery'
 import { useSearchParams } from 'next/navigation'
-import { Knowledge, UpdateKnowledge } from '@/src/lib/knowledgeContracts'
+import { Knowledge, ExpandKnowledge } from '@/src/lib/knowledgeContracts'
 import {
   deleteKnowledgeByIdMutation,
   saveKnowledgeMutation,
@@ -30,6 +29,8 @@ import {
 import * as dash from 'lodash'
 
 interface KnowledgeContext {
+  readonly knowledgeModalOpen: boolean
+  readonly setKnowledgeModalOpen: Dispatch<SetStateAction<boolean>>
   readonly topicId: number | null
   readonly setTopicId: Dispatch<SetStateAction<number | null>>
   readonly warningModalOpen: boolean
@@ -38,11 +39,11 @@ interface KnowledgeContext {
   readonly setLoading: Dispatch<SetStateAction<boolean>>
   readonly knowledgeToEdit: Knowledge | null
   readonly setKnowledgeToEdit: Dispatch<SetStateAction<Knowledge | null>>
-  readonly knowledgeToDelete: QuizData | null
-  readonly setKnowledgeToDelete: Dispatch<SetStateAction<QuizData | null>>
+  readonly knowledgeToDelete: Knowledge | null
+  readonly setKnowledgeToDelete: Dispatch<SetStateAction<Knowledge | null>>
   readonly topicOptionList: TopicDropDownArray
-  readonly data: QuizData[]
-  readonly setData: Dispatch<SetStateAction<QuizData[]>>
+  readonly data: Knowledge[]
+  readonly setData: Dispatch<SetStateAction<Knowledge[]>>
   readonly page: number
   readonly setPage: Dispatch<SetStateAction<number>>
   readonly pageCount: number
@@ -54,7 +55,7 @@ interface KnowledgeContext {
   readonly topicDetails: TopicView | null
   readonly closeModal: () => void
   readonly fetchData: () => void
-  readonly saveNewKnowledge: (knowledge: UpdateKnowledge) => void
+  readonly saveNewKnowledge: (knowledge: ExpandKnowledge) => void
   readonly updateKnowledgeData: (Knowledge: Knowledge) => void
   readonly getKnowledgeDataById: (
     id: string,
@@ -64,6 +65,8 @@ interface KnowledgeContext {
 }
 
 const knowledgeContext = createContext<KnowledgeContext>({
+  knowledgeModalOpen: false,
+  setKnowledgeModalOpen: () => {},
   topicId: null,
   setTopicId: () => {},
   warningModalOpen: false,
@@ -88,7 +91,7 @@ const knowledgeContext = createContext<KnowledgeContext>({
   setExpanded: () => {},
   closeModal: () => {},
   fetchData: () => {},
-  saveNewKnowledge: async (knowledge: UpdateKnowledge) => {},
+  saveNewKnowledge: async (knowledge: ExpandKnowledge) => {},
   updateKnowledgeData: async (knowledge: Knowledge) => {},
   getKnowledgeDataById: async (
     id: string,
@@ -106,8 +109,9 @@ export const KnowledgeProvider = ({
   const currentPage = searchParams?.get('page')
   const currentLimit = searchParams?.get('limit')
 
+  const [knowledgeModalOpen, setKnowledgeModalOpen] = useState<boolean>(false)
   const [topicId, setTopicId] = useState<number | null>(null)
-  const [data, setData] = useState<QuizData[]>([])
+  const [data, setData] = useState<Knowledge[]>([])
   const [page, setPage] = useState<number>(
     currentPage ? Number(currentPage) : 1
   )
@@ -120,7 +124,7 @@ export const KnowledgeProvider = ({
   const [warningModalOpen, setWarningModalOpen] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(true)
   const [knowledgeToEdit, setKnowledgeToEdit] = useState<Knowledge | null>(null)
-  const [knowledgeToDelete, setKnowledgeToDelete] = useState<QuizData | null>(
+  const [knowledgeToDelete, setKnowledgeToDelete] = useState<Knowledge | null>(
     null
   )
   const [topicDetails, setTopicDetails] = useState<TopicView | null>(null)
@@ -164,6 +168,7 @@ export const KnowledgeProvider = ({
   }, [topicId])
 
   const closeModal = () => {
+    setKnowledgeModalOpen(false)
     setWarningModalOpen(false)
     setKnowledgeToDelete(null)
     setKnowledgeToEdit(null)
@@ -185,7 +190,7 @@ export const KnowledgeProvider = ({
   }
 
   const saveNewKnowledge = async (
-    knowledge: UpdateKnowledge
+    knowledge: ExpandKnowledge
   ): Promise<true | string> => {
     const outcome = await saveKnowledgeMutation(knowledge)
     if (typeof outcome === 'string') {
@@ -206,7 +211,7 @@ export const KnowledgeProvider = ({
     }
 
     setData(
-      data.map((item: QuizData) => {
+      data.map((item: Knowledge) => {
         if (item.id == outcome.id) {
           return outcome
         }
@@ -233,6 +238,8 @@ export const KnowledgeProvider = ({
   return (
     <knowledgeContext.Provider
       value={{
+        knowledgeModalOpen,
+        setKnowledgeModalOpen,
         topicId,
         setTopicId,
         warningModalOpen,

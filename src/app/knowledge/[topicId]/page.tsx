@@ -20,6 +20,8 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import WarningModal from '@/src/components/WarningModal'
 import { useUserContext } from '@/src/contexts/userContext'
 import { useAuthModalContext } from '@/src/contexts/authContext'
+import KnowledgeCrudModal from '@/src/components/knowledge/KnowledgeCRUDModal'
+import { Knowledge } from '@/src/lib/knowledgeContracts'
 
 const ShowTopicDetails = () => {
   const { topicDetails } = useKnowledgeContext()
@@ -66,11 +68,13 @@ const GetDataAccordion = ({
     page,
     limit,
     setKnowledgeToDelete,
+    setKnowledgeToEdit,
     knowledgeToDelete,
     warningModalOpen,
     setWarningModalOpen,
     closeModal,
-    deleteKnowledgeById
+    deleteKnowledgeById,
+    setKnowledgeModalOpen
   } = useKnowledgeContext()
 
   useEffect(() => {
@@ -90,9 +94,9 @@ const GetDataAccordion = ({
           key={'knowledgeDeletionModal'}
           isOpen={warningModalOpen}
           message={
-            knowledgeToDelete.question.length > 25
-              ? knowledgeToDelete.question.slice(0, 25) + '...'
-              : knowledgeToDelete.question
+            knowledgeToDelete.prompt.length > 25
+              ? knowledgeToDelete.prompt.slice(0, 25) + '...'
+              : knowledgeToDelete.prompt
           }
           cancelAction={closeModal}
           deleteAction={() => {
@@ -117,7 +121,7 @@ const GetDataAccordion = ({
           />
         </div>
       ) : (
-        data.map((val: QuizData, index: number) => (
+        data.map((val: Knowledge, index: number) => (
           <Accordion
             key={val.id}
             expanded={expanded === String(val.id)}
@@ -138,10 +142,10 @@ const GetDataAccordion = ({
                 {index + 1 + (Number(page) - 1) * Number(limit)}.{' '}
               </Typography>
               <Typography sx={{ width: '45%', flexShrink: 0 }}>
-                {val.question}
+                {val.prompt}
               </Typography>
               <Typography sx={{ color: 'text.secondary' }}>
-                {val.answer}
+                {val.solution}
               </Typography>
             </AccordionSummary>
             <AccordionDetails className='bg-gray-200'>
@@ -149,14 +153,15 @@ const GetDataAccordion = ({
                 className='flex flex-row float-end'
                 style={{ width: '100%', justifyContent: 'end' }}
               >
-                {userId && userId == val.user_id ? (
+                {userId && userId == val.userId ? (
                   <>
                     <BorderColorIcon
                       className='cursor-pointer mx-1'
                       fontSize='small'
                       color='primary'
                       onClick={() => {
-                        router.push('/knowledge/form?editId=' + val.id)
+                        setKnowledgeToEdit(val)
+                        setKnowledgeModalOpen(true)
                       }}
                     />
                     <DeleteForeverIcon
@@ -172,10 +177,10 @@ const GetDataAccordion = ({
                 ) : null}
               </span>
               <Typography sx={{ width: '45%', flexShrink: 0 }}>
-                Q: {val.question}
+                Q: {val.prompt}
               </Typography>
               <Typography sx={{ color: 'text.secondary' }}>
-                A: {val.answer}
+                A: {val.solution}
               </Typography>
               <Typography sx={{ fontStyle: 'italic' }}>
                 Hint: {val.hint}
@@ -200,8 +205,16 @@ export default function KnowledgePage({
   const router = useRouter()
   const { userId } = useUserContext()
   const { setAuthModalIsOpen } = useAuthModalContext()
-  const { setTopicId, loading, page, setPage, pageCount, limit, fetchData } =
-    useKnowledgeContext()
+  const {
+    setTopicId,
+    loading,
+    page,
+    setPage,
+    pageCount,
+    limit,
+    fetchData,
+    setKnowledgeModalOpen
+  } = useKnowledgeContext()
 
   useEffect(() => {
     setTopicId(Number(params.topicId))
@@ -220,7 +233,7 @@ export default function KnowledgePage({
         className='buttonColourDark'
         onClick={() => {
           if (userId) {
-            router.push('/knowledge/form')
+            setKnowledgeModalOpen(true)
           } else {
             setAuthModalIsOpen(true)
           }
@@ -236,6 +249,7 @@ export default function KnowledgePage({
           <ShowTopicDetails />
           <GetDataAccordion fetchData={fetchData} />
         </div>
+        <KnowledgeCrudModal />
         <div className='w-full flex justify-center items-center my-5 pt-5'>
           <Pagination
             count={pageCount}

@@ -1,14 +1,9 @@
-import {
-  knowledge,
-  Knowledge,
-  UpdateKnowledge
-} from '@/src/lib/knowledgeContracts'
+import { Knowledge, ExpandKnowledge } from '@/src/lib/knowledgeContracts'
 import { routeRequestHandler } from '@/src/app/api-client/utils'
-import { QuizData } from '@/src/lib/data_types'
 
 export const saveKnowledgeMutation = async (
-  knowledge: UpdateKnowledge
-): Promise<QuizData | string> => {
+  knowledge: ExpandKnowledge
+): Promise<Knowledge | string> => {
   const response = await routeRequestHandler({
     method: 'POST',
     path: '/knowledge/add',
@@ -26,7 +21,7 @@ export const saveKnowledgeMutation = async (
 
 export const updateKnowledgeMutation = async (
   knowledge: Knowledge
-): Promise<QuizData | string> => {
+): Promise<Knowledge | string> => {
   const response = await routeRequestHandler({
     method: 'POST',
     path: '/knowledge/update',

@@ -65,7 +65,7 @@ export const examples = z.array(example).min(0).max(20).readonly()
 
 export type Examples = z.infer<typeof examples>
 
-export const updateKnowledge = z.object({
+export const expandKnowledge = z.object({
   prompt: z
     .string({
       required_error: 'Prompt is required',
@@ -84,24 +84,29 @@ export const updateKnowledge = z.object({
     .readonly(),
   hint: z.string().min(0).max(256).nullable().readonly(),
   notes: z.string().min(0).max(512).nullable().readonly(),
-  topicId: z.number().min(1, { message: 'You must select a topic' }).readonly(),
-  options: possibleOptions,
-  grammarOptions: grammarOptions,
-  examples: examples
+  topicId: z.number().min(1, { message: 'You must select a topic' }).readonly()
 })
 
-export type UpdateKnowledge = z.infer<typeof updateKnowledge>
+export type ExpandKnowledge = z.infer<typeof expandKnowledge>
 
 export const knowledge = z
   .object({
     id: z.number().readonly(),
     created_at: z.string().readonly(),
-    updated_at: z.string().readonly()
+    updated_at: z.string().readonly(),
+    userId: z.string().readonly()
   })
-  .merge(updateKnowledge)
+  .merge(expandKnowledge)
 
 export type Knowledge = z.infer<typeof knowledge>
 
 export const knowledgeData = z.array(knowledge).readonly()
 
 export type KnowledgeData = z.infer<typeof knowledgeData>
+
+export const knowledgeDataResponse = z.object({
+  data: knowledgeData,
+  count: z.number().readonly()
+})
+
+export type KnowledgeDataResponse = z.infer<typeof knowledgeDataResponse>

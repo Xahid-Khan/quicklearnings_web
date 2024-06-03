@@ -1,5 +1,5 @@
 import { KnowledgeBase, QuizData, QuizDataResponse } from '@/src/lib/data_types'
-import { Knowledge, UpdateKnowledge } from '@/src/lib/knowledgeContracts'
+import { Knowledge, ExpandKnowledge } from '@/src/lib/knowledgeContracts'
 import getSupabaseInstance from '@/src/utils/config'
 
 export const getKnowledgeDisplayDataByTopicId = async (
@@ -56,7 +56,7 @@ export const getKnowledgeDataById = async (id: string, userId: string) => {
 }
 
 export const expandKnowledgeBase = async (
-  knowledge: UpdateKnowledge,
+  knowledge: ExpandKnowledge,
   userId: string
 ): Promise<KnowledgeBase> => {
   const supabase = getSupabaseInstance()
@@ -69,9 +69,6 @@ export const expandKnowledgeBase = async (
         hint: knowledge.hint,
         notes: knowledge.notes,
         topic_id: knowledge.topicId,
-        options: [...knowledge.options],
-        grammar: [...knowledge.grammarOptions],
-        examples: [...knowledge.examples],
         user_id: userId,
         updated_at: new Date().toISOString()
       }
@@ -96,9 +93,6 @@ export const updatedKnowledgeBase = async (
       hint: knowledge.hint,
       notes: knowledge.notes,
       topic_id: knowledge.topicId,
-      options: [...knowledge.options],
-      grammar: [...knowledge.grammarOptions],
-      examples: [...knowledge.examples],
       user_id: userId,
       updated_at: new Date().toISOString()
     })
