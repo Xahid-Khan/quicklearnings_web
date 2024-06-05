@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getAllSubjects } from '@/src/app/api/subject/subject'
-import { getErrorResponseWithStatusCode } from '@/src/lib/errorHandler'
-import { ErrorResponse } from '@/src/lib/data_types'
-import { dataToSubjectOptions } from '@/src/app/api/mapper/subjectMapper'
-import { SubjectDropDownArray } from '@/src/lib/subjectContracts'
-import { getUserId } from '@/src/app/api/utils'
+import { getAllSubjects } from '@/app/api/subject/subject'
+import { getErrorResponseWithStatusCode } from '@/lib/errorHandler'
+import { ErrorResponse } from '@/lib/data_types'
+import { dataToSubjectOptions } from '@/app/api/mapper/subjectMapper'
+import { SubjectDropDownArray } from '@/lib/subjectContracts'
+import { getUserId } from '@/app/api/utils'
 
 export const dynamic = 'force-dynamic'
 

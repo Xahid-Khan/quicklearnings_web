@@ -1,6 +1,6 @@
-import { useAuthModalContext } from '@/src/contexts/authContext'
-import { useUserContext } from '@/src/contexts/userContext'
-import { validateEmail } from '@/src/utils/utils'
+import { useAuthModalContext } from '@/contexts/authContext'
+import { useUserContext } from '@/contexts/userContext'
+import { validateEmail } from '@/utils/utils'
 import Image from 'next/image'
 import {
   Divider,

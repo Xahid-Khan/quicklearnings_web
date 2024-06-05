@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { TopicProvider } from '@/src/contexts/topicContext'
+import { TopicProvider } from '@/contexts/topicContext'
 
 const inter = Inter({ subsets: ['latin'] })
 

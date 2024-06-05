@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { ErrorResponse } from '@/src/lib/data_types'
+import { ErrorResponse } from '@/lib/data_types'
 
 export const getErrorResponseWithStatusCode = (
   err: unknown,

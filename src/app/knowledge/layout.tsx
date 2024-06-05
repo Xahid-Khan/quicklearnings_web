@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { KnowledgeProvider } from '@/src/contexts/knowledgeContext'
+import { KnowledgeProvider } from '@/contexts/knowledgeContext'
 import { Suspense } from 'react'
-import Loading from '@/src/components/LoadingScreen'
+import Loading from '@/components/LoadingScreen'
 
 const inter = Inter({ subsets: ['latin'] })
 

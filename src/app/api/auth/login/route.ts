@@ -1,14 +1,14 @@
-import { getErrorResponseWithStatusCode } from '@/src/lib/errorHandler'
-import getSupabaseInstance from '@/src/utils/config'
-import { validateEmail, validatePassword } from '@/src/utils/utils'
+import { getErrorResponseWithStatusCode } from '@/lib/errorHandler'
+import getSupabaseInstance from '@/utils/config'
+import { validateEmail, validatePassword } from '@/utils/utils'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 import {
   USER_SESSION_COOKIE_NAME,
   USER_TOKEN_COOKIE_NAME
-} from '@/src/app/api/constants'
-import { ErrorResponse, UserSession } from '@/src/lib/data_types'
-import { loginRequest } from '@/src/lib/authContracts'
+} from '@/app/api/constants'
+import { ErrorResponse, UserSession } from '@/lib/data_types'
+import { loginRequest } from '@/lib/authContracts'
 
 export const dynamic = 'force-dynamic'
 

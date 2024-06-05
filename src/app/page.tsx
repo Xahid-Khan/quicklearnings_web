@@ -1,14 +1,14 @@
 'use client'
-import Loading from '@/src/components/LoadingScreen'
-import SelectionCard from '@/src/components/SelectionCard'
+import Loading from '@/components/LoadingScreen'
+import SelectionCard from '@/components/SelectionCard'
 import { useRouter } from 'next/navigation'
 import Fab from '@mui/material/Fab'
 import AddIcon from '@mui/icons-material/Add'
-import { useSubjectContext } from '@/src/contexts/subjectContext'
-import SubjectCrudModal from '@/src/components/subject/SubjectCRUDModal'
-import { Subject } from '@/src/lib/subjectContracts'
-import { useUserContext } from '@/src/contexts/userContext'
-import WarningModal from '@/src/components/WarningModal'
+import { useSubjectContext } from '@/contexts/subjectContext'
+import SubjectCrudModal from '@/components/subject/SubjectCRUDModal'
+import { Subject } from '@/lib/subjectContracts'
+import { useUserContext } from '@/contexts/userContext'
+import WarningModal from '@/components/WarningModal'
 import { useAuthModalContext } from '../contexts/authContext'
 
 export default function Home() {
@@ -88,6 +88,10 @@ export default function Home() {
             updatable={userId != null && val.userId == userId}
             isPublic={val.isPublic}
             action={() => {
+              localStorage.setItem(
+                'subjectEditable',
+                val.userId == userId ? 'yes' : 'no'
+              )
               router.push('/topics/' + val.id)
             }}
             editAction={() => {

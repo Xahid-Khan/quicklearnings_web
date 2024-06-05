@@ -1,10 +1,10 @@
-import { getErrorResponseWithStatusCode } from '@/src/lib/errorHandler'
+import { getErrorResponseWithStatusCode } from '@/lib/errorHandler'
 import { NextRequest, NextResponse } from 'next/server'
-import { ErrorResponse, QuizData } from '@/src/lib/data_types'
-import { Knowledge, knowledge } from '@/src/lib/knowledgeContracts'
-import { getUserId } from '@/src/app/api/utils'
-import { updatedKnowledgeBase } from '@/src/app/api/knowledge/knowledge'
-import { knowledgeBaseToContract } from '@/src/app/api/mapper/knowledgeMapper'
+import { ErrorResponse } from '@/lib/data_types'
+import { Knowledge, knowledge } from '@/lib/knowledgeContracts'
+import { getUserId } from '@/app/api/utils'
+import { updatedKnowledgeBase } from '@/app/api/knowledge/knowledge'
+import { knowledgeBaseToContract } from '@/app/api/mapper/knowledgeMapper'
 
 export const dynamic = 'force-dynamic'
 

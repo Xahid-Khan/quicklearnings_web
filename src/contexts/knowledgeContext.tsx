@@ -9,22 +9,22 @@ import {
   useEffect,
   useState
 } from 'react'
-import { TopicDropDownArray, TopicView } from '@/src/lib/topicContacts'
+import { TopicDropDownArray, TopicView } from '@/lib/topicContacts'
 import {
   getTopicDetailsById,
   getTopicOptionsQuery
-} from '@/src/app/api-client/topic/useTopicQuery'
+} from '@/app/api-client/topic/useTopicQuery'
 import { useSearchParams } from 'next/navigation'
-import { Knowledge, ExpandKnowledge } from '@/src/lib/knowledgeContracts'
+import { Knowledge, ExpandKnowledge } from '@/lib/knowledgeContracts'
 import {
   deleteKnowledgeByIdMutation,
   saveKnowledgeMutation,
   updateKnowledgeMutation
-} from '@/src/app/api-client/knowledge/useKnowledgeMutation'
+} from '@/app/api-client/knowledge/useKnowledgeMutation'
 import {
   getKnowledgeDataByIdQuery,
   getKnowledgeDataQuery
-} from '@/src/app/api-client/knowledge/useKnowledgeQuery'
+} from '@/app/api-client/knowledge/useKnowledgeQuery'
 
 import * as dash from 'lodash'
 

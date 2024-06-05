@@ -9,17 +9,15 @@ import {
   useEffect,
   useState
 } from 'react'
-import { AddTopic, EditTopic, TopicView } from '@/src/lib/topicContacts'
-import { getTopicsQuery } from '@/src/app/api-client/topic/useTopicQuery'
+import { AddTopic, EditTopic, TopicView } from '@/lib/topicContacts'
+import { getTopicsQuery } from '@/app/api-client/topic/useTopicQuery'
 import {
   addTopicMutation,
   deleteTopicMutation,
   editTopicMutation
-} from '@/src/app/api-client/topic/useTopicMutation'
-import { SubjectDropDownArray } from '@/src/lib/subjectContracts'
-import { getSubjectOptionsQuery } from '@/src/app/api-client/subject/useSubjectQuery'
-import { string } from 'zod'
-import { useSearchParams } from 'next/navigation'
+} from '@/app/api-client/topic/useTopicMutation'
+import { SubjectDropDownArray } from '@/lib/subjectContracts'
+import { getSubjectOptionsQuery } from '@/app/api-client/subject/useSubjectQuery'
 
 interface TopicContext {
   readonly urlSubjectId: string

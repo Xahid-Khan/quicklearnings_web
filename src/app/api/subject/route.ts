@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAllSubjects } from './subject'
-import { getErrorResponseWithStatusCode } from '@/src/lib/errorHandler'
-import { ErrorResponse } from '@/src/lib/data_types'
+import { getErrorResponseWithStatusCode } from '@/lib/errorHandler'
+import { ErrorResponse } from '@/lib/data_types'
 import { dataArrayToSubjectContract } from '../mapper/subjectMapper'
-import { Subject } from '@/src/lib/subjectContracts'
+import { Subject } from '@/lib/subjectContracts'
 
 export const dynamic = 'force-dynamic'
 

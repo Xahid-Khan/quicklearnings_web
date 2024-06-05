@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { randomUUID } from 'crypto'
-import { Topic } from '@/src/lib/data_types'
+import { Topic } from '@/lib/data_types'
 
 export async function POST(req: NextRequest) {
   console.log('here>>>', req.body)

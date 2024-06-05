@@ -1,7 +1,7 @@
-import { Topic } from '@/src/lib/data_types'
-import { AddTopic, EditTopic, TopicView } from '@/src/lib/topicContacts'
-import getSupabaseInstance from '@/src/utils/config'
-import { getUserId, getUserIdOrNull } from '@/src/app/api/utils'
+import { Topic } from '@/lib/data_types'
+import { AddTopic, EditTopic, TopicView } from '@/lib/topicContacts'
+import getSupabaseInstance from '@/utils/config'
+import { getUserId, getUserIdOrNull } from '@/app/api/utils'
 
 interface TopicParams {
   subjectId: string | number
@@ -15,7 +15,6 @@ export const getAllTopics = async ({
   currentUserId
 }: TopicParams): Promise<Topic[]> => {
   const supabase = getSupabaseInstance()
-
   const userId = currentUserId ?? (await getUserIdOrNull())
   let query = supabase.from('topic_view').select('*')
 
@@ -44,9 +43,11 @@ export const getAllTopics = async ({
   return data
 }
 
-export const insertNewTopic = async (topic: AddTopic): Promise<Topic> => {
+export const insertNewTopic = async (
+  topic: AddTopic,
+  userId: string
+): Promise<Topic> => {
   const supabase = getSupabaseInstance()
-  const userId = await getUserId()
   const { data, error } = await supabase
     .from('topic')
     .insert({
@@ -72,9 +73,11 @@ export const insertNewTopic = async (topic: AddTopic): Promise<Topic> => {
   return getSavedTopic[0]
 }
 
-export const updateNewTopic = async (topic: EditTopic): Promise<Topic> => {
+export const updateNewTopic = async (
+  topic: EditTopic,
+  userId: string
+): Promise<Topic> => {
   const supabase = getSupabaseInstance()
-  const userId = await getUserId()
   const { error } = await supabase
     .from('topic')
     .update({

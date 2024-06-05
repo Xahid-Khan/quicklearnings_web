@@ -18,9 +18,9 @@ import {
   knowledge,
   PossibleOptions,
   expandKnowledge
-} from '@/src/lib/knowledgeContracts'
+} from '@/lib/knowledgeContracts'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useKnowledgeContext } from '@/src/contexts/knowledgeContext'
+import { useKnowledgeContext } from '@/contexts/knowledgeContext'
 
 const KnowledgeForm = () => {
   const router = useRouter()

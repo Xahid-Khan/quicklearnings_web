@@ -6,10 +6,9 @@ export default function Loading() {
       <Image
         src={'/loading.gif'}
         alt='Loading Screen'
-        width={1080}
-        height={1020}
+        width={1280}
+        height={1080}
         priority
-        style={{ width: '1080px', height: 'auto' }}
       />
     </main>
   )

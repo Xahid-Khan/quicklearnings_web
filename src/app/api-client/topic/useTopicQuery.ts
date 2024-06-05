@@ -1,4 +1,4 @@
-import { TopicDropDownArray, TopicView } from '@/src/lib/topicContacts'
+import { TopicDropDownArray, TopicView } from '@/lib/topicContacts'
 import { routeRequestHandler } from '../utils'
 
 export const getTopicsQuery = async (

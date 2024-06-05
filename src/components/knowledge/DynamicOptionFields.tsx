@@ -1,7 +1,7 @@
 import { TextField, Typography } from '@mui/material'
 import { ChangeEvent, Dispatch, ReactElement, SetStateAction } from 'react'
 import ClearIcon from '@mui/icons-material/Clear'
-import { PossibleOptions } from '@/src/lib/knowledgeContracts'
+import { PossibleOptions } from '@/lib/knowledgeContracts'
 import EastIcon from '@mui/icons-material/East'
 
 const DynamicOptionFields = ({

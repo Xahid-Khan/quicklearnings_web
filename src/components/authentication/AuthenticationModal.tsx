@@ -1,11 +1,11 @@
 import { Modal, Box } from '@mui/material'
 import { useRef } from 'react'
-import { useAuthModalContext } from '@/src/contexts/authContext'
+import { useAuthModalContext } from '@/contexts/authContext'
 import CloseIcon from '@mui/icons-material/Close'
-import WebTitle from '@/src/components/WebTitle'
-import { ShowPasswordResetModal } from '@/src/components/authentication/ShowPasswordResetModal'
-import { ShowSignUpModal } from '@/src/components/authentication/ShowSignUpModal'
-import { ShowLoginModal } from '@/src/components/authentication/ShowLoginModal'
+import WebTitle from '@/components/WebTitle'
+import { ShowPasswordResetModal } from '@/components/authentication/ShowPasswordResetModal'
+import { ShowSignUpModal } from '@/components/authentication/ShowSignUpModal'
+import { ShowLoginModal } from '@/components/authentication/ShowLoginModal'
 
 const AuthenticationModal = () => {
   const rootRef = useRef<HTMLDivElement>(null)

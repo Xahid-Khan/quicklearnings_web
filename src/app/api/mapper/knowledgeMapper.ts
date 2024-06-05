@@ -1,5 +1,5 @@
-import { KnowledgeBase } from '@/src/lib/data_types'
-import { knowledge, Knowledge } from '@/src/lib/knowledgeContracts'
+import { KnowledgeBase } from '@/lib/data_types'
+import { knowledge, Knowledge } from '@/lib/knowledgeContracts'
 
 export const knowledgeBaseToContract = (data: KnowledgeBase): Knowledge => {
   const parsedData = knowledge.parse({

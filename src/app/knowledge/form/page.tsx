@@ -1,11 +1,11 @@
 'use client'
 import { ReactElement, Suspense, useEffect, useState } from 'react'
-import KnowledgeForm from '@/src/components/knowledge/KnowledgeForm'
+import KnowledgeForm from '@/components/knowledge/KnowledgeForm'
 import Image from 'next/image'
 import { Typography } from '@mui/material'
-import { useKnowledgeContext } from '@/src/contexts/knowledgeContext'
+import { useKnowledgeContext } from '@/contexts/knowledgeContext'
 import { useSearchParams } from 'next/navigation'
-import Loading from '@/src/components/LoadingScreen'
+import Loading from '@/components/LoadingScreen'
 
 const UpdateKnowledgeSuspended = (): ReactElement => {
   const searchParams = useSearchParams()
@@ -22,6 +22,7 @@ const UpdateKnowledgeSuspended = (): ReactElement => {
       setGettingEditData(false)
     }
     return
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editId])
 
   if (gettingEditData) {

@@ -9,13 +9,13 @@ import {
   useEffect,
   useState
 } from 'react'
-import { AddSubject, EditSubject, Subject } from '@/src/lib/subjectContracts'
+import { AddSubject, EditSubject, Subject } from '@/lib/subjectContracts'
 import {
   addSubjectMutation,
   deleteSubjectMutation,
   editSubjectMutation
-} from '@/src/app/api-client/subject/useSubjectMutation'
-import { getSubjects } from '@/src/app/api-client/subject/useSubjectQuery'
+} from '@/app/api-client/subject/useSubjectMutation'
+import { getSubjects } from '@/app/api-client/subject/useSubjectQuery'
 import { useUserContext } from './userContext'
 
 interface SubjectContext {

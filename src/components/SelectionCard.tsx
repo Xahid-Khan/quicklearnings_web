@@ -2,11 +2,17 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  Tooltip,
   Typography
 } from '@mui/material'
 import Card from '@mui/material/Card'
 import BorderColorIcon from '@mui/icons-material/BorderColor'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import TimerOffOutlinedIcon from '@mui/icons-material/TimerOffOutlined'
+import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined'
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
+import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
+import PublicOffOutlinedIcon from '@mui/icons-material/PublicOffOutlined'
 
 interface SelectionCardProps {
   title: string
@@ -18,6 +24,7 @@ interface SelectionCardProps {
   action: () => void
   editAction: () => void
   deleteAction: () => void
+  extraDetails?: { [key: string]: string | boolean | number }
 }
 
 const SelectionCard = ({
@@ -29,7 +36,8 @@ const SelectionCard = ({
   isPublic,
   action,
   editAction,
-  deleteAction
+  deleteAction,
+  extraDetails = {}
 }: SelectionCardProps) => {
   return (
     <Card sx={{ width: 340, margin: '10px' }} className='relative'>
@@ -56,20 +64,86 @@ const SelectionCard = ({
           image='/TopicBG.png'
           alt='Missing Topic Background Image...'
         />
-        <CardContent className='relative'>
-          {isPublic != null ? (
+      </CardActionArea>
+      <CardContent className='relative'>
+        {
+          <div className='absolute top-[-25px] right-1 z-10'>
+            {extraDetails.hasTimeLimit ? (
+              <span
+                className={`${
+                  extraDetails.hasTimeLimit
+                    ? 'bg-orange-100 text-orange-700'
+                    : 'bg-blue-100 text-blue-700'
+                } rounded m-1 p-1`}
+              >
+                <TimerOutlinedIcon />
+                <Typography variant='caption'>
+                  {extraDetails.timeInMinutes + ' Minutes'}
+                </Typography>
+              </span>
+            ) : null}
+
             <span
               className={`${
                 isPublic
                   ? 'bg-orange-100 text-orange-700'
-                  : 'bg-green-100 text-green-700'
-              } rounded absolute top-[-25px] right-1`}
+                  : 'bg-blue-100 text-blue-700'
+              } rounded m-1 p-1`}
             >
-              <Typography variant='caption' className='p-3'>
+              {isPublic ? <PublicOutlinedIcon /> : <PublicOffOutlinedIcon />}
+              <Typography variant='caption'>
                 {isPublic ? 'Public' : 'Private'}
               </Typography>
             </span>
-          ) : null}
+
+            {extraDetails.hasAccessibilityConstraint ? (
+              <span
+                className={`${
+                  extraDetails.hasAccessibilityConstraint
+                    ? 'bg-green-100 text-green-700'
+                    : 'bg-orange-100 text-orange-700'
+                } rounded m-1 p-1`}
+              >
+                <Tooltip
+                  title={
+                    <Typography variant='caption'>
+                      <table>
+                        <tbody>
+                          <tr>
+                            <td className='min-w-14'>Start At: </td>
+                            <td>
+                              {new Date(
+                                String(extraDetails.startTime)
+                              ).toDateString()}{' '}
+                              {new Date(
+                                String(extraDetails.startTime)
+                              ).toTimeString()}
+                            </td>
+                          </tr>
+                          <tr className='border-t-2'>
+                            <td>Ends At: </td>
+                            <td>
+                              {new Date(
+                                String(extraDetails.endTime)
+                              ).toDateString()}
+                              {new Date(
+                                String(extraDetails.endTime)
+                              ).toTimeString()}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </Typography>
+                  }
+                >
+                  <CalendarMonthOutlinedIcon />
+                </Tooltip>
+              </span>
+            ) : null}
+          </div>
+        }
+
+        <CardActionArea onClick={action}>
           <Typography
             gutterBottom
             variant='h5'
@@ -87,26 +161,27 @@ const SelectionCard = ({
               ? description
               : 'No description provided...'}
           </Typography>
-          <span className='flex flex-row flex-wrap justify-between'>
-            <Typography
-              variant='caption'
-              className='px-1 rounded bg-gray-200 text-gray-600'
-            >
-              {new Date(created_at).toDateString()}
-            </Typography>
-            <Typography
-              variant='caption'
-              className={`px-1 rounded  ${
-                created_by
-                  ? 'bg-blue-100 text-blue-700'
-                  : 'bg-gray-100 text-gray-700'
-              }`}
-            >
-              By {created_by ? created_by : 'Anonymous'}
-            </Typography>
-          </span>
-        </CardContent>
-      </CardActionArea>
+        </CardActionArea>
+        <span className='flex flex-row flex-wrap justify-between'>
+          <Typography
+            variant='caption'
+            className='px-1 rounded bg-gray-200 text-gray-600'
+          >
+            {created_at ? new Date(created_at).toDateString() : ''}
+          </Typography>
+          <Typography
+            variant='caption'
+            className={`px-1 rounded  ${
+              created_by
+                ? 'bg-blue-100 text-blue-700'
+                : 'bg-gray-100 text-gray-700'
+            }`}
+          >
+            {created_by ? 'By ' + created_by : ''}
+          </Typography>
+        </span>
+      </CardContent>
+      {/* </CardActionArea> */}
     </Card>
   )
 }

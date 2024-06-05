@@ -9,7 +9,7 @@ import {
 import Image from 'next/image'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import Loading from './LoadingScreen'
-import { QuizSubjectOption, QuizTopicOption } from '@/src/lib/data_types'
+import { QuizSubjectOption, QuizTopicOption } from '@/lib/data_types'
 
 interface QuizOptionProps {
   subjectId: string | number | null
@@ -44,9 +44,10 @@ const QuizOptions = ({
   )
   const [error, setError] = useState<string | null>(null)
 
-  const fetchData = async (subject_id: number | string | null) => {
+  const fetchData = async (selectedSubjectId: string | number | null) => {
     const response = await fetch(
-      `/api/quiz${subject_id ? '?subjectId=' + subject_id : ''}`
+      `/api/quiz/test` +
+        (selectedSubjectId ? '?subjectId=' + selectedSubjectId : '')
     )
     if (response.ok) {
       setLoadingTopics(true)
@@ -77,7 +78,6 @@ const QuizOptions = ({
   useEffect(() => {
     fetchData(null)
     return
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (loading) return <Loading />
@@ -105,7 +105,6 @@ const QuizOptions = ({
               disablePortal
               disableClearable
               id='autocomplete-subject-selection'
-              // defaultValue={{ id: 0, label: 'Random' }}
               options={subjects}
               isOptionEqualToValue={(
                 option: { id: number | string; label: string },
@@ -137,7 +136,6 @@ const QuizOptions = ({
                 disablePortal
                 id='autocomplete-topic-selection'
                 disableClearable
-                // defaultValue={{ id: 0, label: 'Random' }}
                 options={topics}
                 isOptionEqualToValue={(
                   option: { id: number | string; label: string },

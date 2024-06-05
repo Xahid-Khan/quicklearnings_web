@@ -1,7 +1,7 @@
-import { Subject } from '@/src/lib/data_types'
-import getSupabaseInstance from '@/src/utils/config'
-import { getUserId, getUserIdOrNull } from '@/src/app/api/utils'
-import { AddSubject, EditSubject } from '@/src/lib/subjectContracts'
+import { Subject } from '@/lib/data_types'
+import getSupabaseInstance from '@/utils/config'
+import { getUserId, getUserIdOrNull } from '@/app/api/utils'
+import { AddSubject, EditSubject } from '@/lib/subjectContracts'
 
 export const getAllSubjects = async ({
   subjectId,

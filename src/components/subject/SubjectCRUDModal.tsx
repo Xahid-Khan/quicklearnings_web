@@ -1,6 +1,6 @@
 import { Modal, Box } from '@mui/material'
-import WebTitle from '@/src/components/WebTitle'
-import { useSubjectContext } from '@/src/contexts/subjectContext'
+import WebTitle from '@/components/WebTitle'
+import { useSubjectContext } from '@/contexts/subjectContext'
 import CloseIcon from '@mui/icons-material/Close'
 import { useRef } from 'react'
 import { AddSubject } from './AddEditSubject'

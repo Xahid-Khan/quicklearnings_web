@@ -1,5 +1,5 @@
-import { Knowledge, ExpandKnowledge } from '@/src/lib/knowledgeContracts'
-import { routeRequestHandler } from '@/src/app/api-client/utils'
+import { Knowledge, ExpandKnowledge } from '@/lib/knowledgeContracts'
+import { routeRequestHandler } from '@/app/api-client/utils'
 
 export const saveKnowledgeMutation = async (
   knowledge: ExpandKnowledge

@@ -1,12 +1,16 @@
-import { KnowledgeBase, QuizData, QuizDataResponse } from '@/src/lib/data_types'
-import { Knowledge, ExpandKnowledge } from '@/src/lib/knowledgeContracts'
-import getSupabaseInstance from '@/src/utils/config'
+import {
+  KnowledgeBase,
+  KnowledgeData,
+  KnowledgeDataResponse
+} from '@/lib/data_types'
+import { Knowledge, ExpandKnowledge } from '@/lib/knowledgeContracts'
+import getSupabaseInstance from '@/utils/config'
 
 export const getKnowledgeDisplayDataByTopicId = async (
   topicId: string,
   limit: number,
   page: number
-): Promise<QuizDataResponse> => {
+): Promise<KnowledgeDataResponse> => {
   const from = page * limit
   const supabase = getSupabaseInstance()
   const { data, error, count } = await supabase
@@ -27,7 +31,7 @@ export const getKnowledgeDisplayDataByTopicId = async (
 
 export const getKnowledgeDisplayDataById = async (
   id: number
-): Promise<QuizData> => {
+): Promise<KnowledgeData> => {
   const supabase = getSupabaseInstance()
   const { data, error } = await supabase
     .from('knowledge_base')
@@ -83,7 +87,7 @@ export const expandKnowledgeBase = async (
 export const updatedKnowledgeBase = async (
   knowledge: Knowledge,
   userId: string
-): Promise<QuizData> => {
+): Promise<KnowledgeData> => {
   const supabase = getSupabaseInstance()
   const { error } = await supabase
     .from('knowledge_base')
