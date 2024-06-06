@@ -213,11 +213,13 @@ export default function KnowledgePage({
     pageCount,
     limit,
     fetchData,
-    setKnowledgeModalOpen
+    setKnowledgeModalOpen,
+    topicDetails
   } = useKnowledgeContext()
 
   useEffect(() => {
     setTopicId(Number(params.topicId))
+    return
   }, [params.topicId, setTopicId])
 
   if (loading) {
@@ -226,21 +228,23 @@ export default function KnowledgePage({
 
   return (
     <main className='flex min-h-screen flex-col items-center justify-center'>
-      <Fab
-        color='primary'
-        aria-label='add'
-        sx={{ position: 'fixed', bottom: 15, right: 15 }}
-        className='buttonColourDark'
-        onClick={() => {
-          if (userId) {
-            setKnowledgeModalOpen(true)
-          } else {
-            setAuthModalIsOpen(true)
-          }
-        }}
-      >
-        <AddIcon />
-      </Fab>
+      {topicDetails?.userId == userId ? (
+        <Fab
+          color='primary'
+          aria-label='add'
+          sx={{ position: 'fixed', bottom: 15, right: 15 }}
+          className='buttonColourDark'
+          onClick={() => {
+            if (userId) {
+              setKnowledgeModalOpen(true)
+            } else {
+              setAuthModalIsOpen(true)
+            }
+          }}
+        >
+          <AddIcon />
+        </Fab>
+      ) : null}
       <div
         style={{ minWidth: '75%', borderRadius: 5 }}
         className='bg-slate-300 p-5 my-5 min-h-[80vh] flex flex-col justify-between'

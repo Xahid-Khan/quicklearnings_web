@@ -17,14 +17,17 @@ const TopicCRUDForm = (): ReactElement => {
     editTopic,
     saveNewTopic,
     saveEditedTopic,
-    subjectOptions
+    subjectOptions,
+    urlSubjectId
   } = useTopicContext()
 
   const [title, setTitle] = useState<string>(editTopic?.title ?? '')
   const [description, setDescription] = useState<string>(
     editTopic?.description ?? ''
   )
-  const [subjectId, setSubjectId] = useState<number>(editTopic?.subjectId ?? -1)
+  const [subjectId, setSubjectId] = useState<number>(
+    editTopic?.subjectId ?? (urlSubjectId == 'all' ? -1 : Number(urlSubjectId))
+  )
   const [isPublic, setIsPublic] = useState<boolean>(
     editTopic?.isPublic ?? false
   )
@@ -53,6 +56,26 @@ const TopicCRUDForm = (): ReactElement => {
   return (
     <>
       <FormControl className='w-full pt-10'>
+        {urlSubjectId == 'all' ? (
+          <Autocomplete
+            className='mt-4'
+            disablePortal
+            id='combo-box-subject-selection'
+            disabled={loading}
+            value={
+              subjectOptions.find((option) => option.id === subjectId) || null
+            }
+            options={subjectOptions}
+            getOptionLabel={(option) => option.title}
+            getOptionKey={(option) => option.id}
+            renderInput={(params) => (
+              <TextField required {...params} label='Subjects' />
+            )}
+            onChange={(_, val) => {
+              val ? setSubjectId(val.id) : setSubjectId(-1)
+            }}
+          />
+        ) : null}
         <TextField
           className='mt-4'
           autoComplete='off'
@@ -65,24 +88,6 @@ const TopicCRUDForm = (): ReactElement => {
           onChange={(e) => {
             setError('')
             setTitle(e.target.value)
-          }}
-        />
-        <Autocomplete
-          className='mt-4'
-          disablePortal
-          id='combo-box-subject-selection'
-          disabled={loading}
-          value={
-            subjectOptions.find((option) => option.id === subjectId) || null
-          }
-          options={subjectOptions}
-          getOptionLabel={(option) => option.title}
-          getOptionKey={(option) => option.id}
-          renderInput={(params) => (
-            <TextField required {...params} label='Subjects' />
-          )}
-          onChange={(_, val) => {
-            val ? setSubjectId(val.id) : setSubjectId(-1)
           }}
         />
         <TextField

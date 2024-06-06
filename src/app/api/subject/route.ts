@@ -11,7 +11,7 @@ export async function GET(
   req: NextRequest
 ): Promise<NextResponse<Subject[] | ErrorResponse>> {
   try {
-    const data = await getAllSubjects()
+    const data = await getAllSubjects({})
     const mappedData = dataArrayToSubjectContract(data)
     return NextResponse.json(mappedData, { status: 200 })
   } catch (err) {

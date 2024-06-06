@@ -84,6 +84,7 @@ export const SubjectProvider = ({
 
   useEffect(() => {
     getSubjectData()
+    return
   }, [userId])
 
   const closeModal = () => {

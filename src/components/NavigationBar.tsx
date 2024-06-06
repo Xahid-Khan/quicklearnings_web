@@ -64,7 +64,10 @@ const NavigationBar = () => {
 
   return (
     <div className='w-full flex justify-center'>
-      <div className='min-w-[75%] w-full px-5'>
+      <div
+        className='min-w-[75%] w-full px-5'
+        style={{ display: quizStarted ? 'none' : 'flex' }}
+      >
         <AppBar
           position='static'
           sx={{ width: '100%', backgroundColor: 'transparent' }}

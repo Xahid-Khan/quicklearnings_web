@@ -30,12 +30,14 @@ export default function TopicPage({
     loading,
     warningModalOpen,
     setWarningModalOpen,
-    deleteTopicById
+    deleteTopicById,
+    urlSubjectId
   } = useTopicContext()
 
   useEffect(() => {
     getTopicData(params.subjectId)
     return
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.subjectId, userId])
 
   const handleCRUDTopic = () => {
@@ -52,15 +54,17 @@ export default function TopicPage({
 
   return (
     <main className='flex min-h-[90vh] flex-row flex-wrap items-center justify-center'>
-      <Fab
-        color='primary'
-        aria-label='add'
-        sx={{ position: 'fixed', bottom: 15, right: 15 }}
-        className='buttonColourDark'
-        onClick={handleCRUDTopic}
-      >
-        <AddIcon />
-      </Fab>
+      {urlSubjectId == 'all' || data[0]?.userId == userId ? (
+        <Fab
+          color='primary'
+          aria-label='add'
+          sx={{ position: 'fixed', bottom: 15, right: 15 }}
+          className='buttonColourDark'
+          onClick={handleCRUDTopic}
+        >
+          <AddIcon />
+        </Fab>
+      ) : null}
       <TopicCrudModal />
       {deleteTopic ? (
         <WarningModal

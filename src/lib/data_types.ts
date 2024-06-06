@@ -25,6 +25,7 @@ export interface QuizSubjectOption {
 export interface QuizTopicOption {
   id: number | string
   label: string
+  questionsCount: number
 }
 
 export interface QuizOptionResponse {

@@ -6,14 +6,17 @@ import { getUserId, getUserIdOrNull } from '@/src/app/api/utils'
 interface TopicParams {
   subjectId: string | number
   topicId?: string | number
+  currentUserId?: string
 }
 
 export const getAllTopics = async ({
   subjectId,
-  topicId
+  topicId,
+  currentUserId
 }: TopicParams): Promise<Topic[]> => {
   const supabase = getSupabaseInstance()
-  const userId = await getUserIdOrNull()
+
+  const userId = currentUserId ?? (await getUserIdOrNull())
   let query = supabase.from('topic_view').select('*')
 
   // Get all for the user and the public ones

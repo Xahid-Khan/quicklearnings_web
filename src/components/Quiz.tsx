@@ -86,6 +86,9 @@ const QuizScreen = ({ subjectId, topicId, limit }: QuizProps) => {
       }
     }
     fetchQuizData()
+
+    return
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (loading) {
@@ -122,8 +125,10 @@ const QuizScreen = ({ subjectId, topicId, limit }: QuizProps) => {
   }
 
   return (
-    <div className='min-w-[75%] min-h-[75vh] rounded flex flex-col justify-between bg-slate-300 p-3 my-5'>
-      <QuizStepper activeIndex={quizIndex + 1} limit={quizLimit} />
+    <div className='min-w-[75%] min-h-[100vh] rounded flex flex-col justify-between bg-slate-300 p-3'>
+      <div className='px-1'>
+        <QuizStepper activeIndex={quizIndex + 1} limit={quizLimit} />
+      </div>
       <Divider sx={{ margin: '10px 0' }} />
       <div className='min-w-full min-h-full flex flex-row flex-wrap justify-around'>
         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>

@@ -3,19 +3,25 @@ import getSupabaseInstance from '@/src/utils/config'
 import { getUserId, getUserIdOrNull } from '@/src/app/api/utils'
 import { AddSubject, EditSubject } from '@/src/lib/subjectContracts'
 
-export const getAllSubjects = async (
+export const getAllSubjects = async ({
+  subjectId,
+  currentUserId,
+  showPublic = true
+}: {
   subjectId?: number
-): Promise<Subject[]> => {
-  const userId = await getUserIdOrNull()
+  currentUserId?: string
+  showPublic?: boolean
+}): Promise<Subject[]> => {
+  const userId = currentUserId ?? (await getUserIdOrNull())
   const supabase = getSupabaseInstance()
 
   let query = supabase.from('subject_view').select('*')
   // Get all for the user and the public ones
   if (userId) {
-    query = query.or(`is_public.eq.true,and(user_id.eq.${userId})`)
+    query = query.or(`is_public.eq.${showPublic},and(user_id.eq.${userId})`)
   } else {
     // Get only those which are public
-    query = query.eq('is_public', true)
+    query = query.eq('is_public', showPublic)
   }
   // Filter by subject ID
   if (subjectId) query = query.eq('id', subjectId)
@@ -49,7 +55,7 @@ export const insertNewSubject = async (
     })
   }
 
-  const getSavedSubject = await getAllSubjects(data[0].id)
+  const getSavedSubject = await getAllSubjects({ subjectId: data[0].id })
   return getSavedSubject[0]
 }
 
@@ -72,7 +78,7 @@ export const updateNewSubject = async (
     throw new Error(error.message, { cause: 502 })
   }
 
-  const getSavedSubject = await getAllSubjects(subject.id)
+  const getSavedSubject = await getAllSubjects({ subjectId: subject.id })
   return getSavedSubject[0]
 }
 
