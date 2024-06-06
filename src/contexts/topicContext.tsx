@@ -19,8 +19,11 @@ import {
 import { SubjectDropDownArray } from '@/src/lib/subjectContracts'
 import { getSubjectOptionsQuery } from '@/src/app/api-client/subject/useSubjectQuery'
 import { string } from 'zod'
+import { useSearchParams } from 'next/navigation'
 
 interface TopicContext {
+  readonly urlSubjectId: string
+  readonly setUrlSubjectId: Dispatch<SetStateAction<string>>
   readonly topicModalOpen: boolean
   readonly setTopicModalOpen: Dispatch<SetStateAction<boolean>>
   readonly warningModalOpen: boolean
@@ -48,6 +51,8 @@ interface TopicContext {
 }
 
 const topicContext = createContext<TopicContext>({
+  urlSubjectId: 'all',
+  setUrlSubjectId: () => {},
   topicModalOpen: false,
   setTopicModalOpen: () => {},
   warningModalOpen: false,
@@ -74,6 +79,7 @@ export const TopicProvider = ({
 }: {
   readonly children: ReactNode
 }): ReactElement => {
+  const [urlSubjectId, setUrlSubjectId] = useState<string>('all')
   const [topicModalOpen, setTopicModalOpen] = useState<boolean>(false)
   const [warningModalOpen, setWarningModalOpen] = useState<boolean>(false)
   const [data, setData] = useState<TopicView[]>([])
@@ -96,6 +102,7 @@ export const TopicProvider = ({
 
   const getTopicData = async (subjectId: string) => {
     setLoading(true)
+    setUrlSubjectId(subjectId)
     const outcome = await getTopicsQuery(subjectId)
     typeof outcome == 'string' ? null : setData(outcome)
     setLoading(false)
@@ -149,6 +156,8 @@ export const TopicProvider = ({
   return (
     <topicContext.Provider
       value={{
+        urlSubjectId,
+        setUrlSubjectId,
         topicModalOpen,
         setTopicModalOpen,
         warningModalOpen,

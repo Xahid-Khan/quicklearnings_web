@@ -42,13 +42,13 @@ const QuizStepper = ({ activeIndex, limit }: QuizStepperProps) => {
       borderRadius: '50% 50% 50% 0',
       backgroundColor: '#52af77',
       transformOrigin: 'bottom left',
-      transform: 'translate(50%, -100%) rotate(-45deg) scale(0)',
+      transform: 'translate(50%, 0) rotate(135deg) scale(0)',
       '&::before': { display: 'none' },
       '&.MuiSlider-valueLabelOpen': {
-        transform: 'translate(50%, -100%) rotate(-45deg) scale(1)'
+        transform: 'translate(50%, 0) rotate(135deg) scale(1)'
       },
       '& > *': {
-        transform: 'rotate(45deg)'
+        transform: 'rotate(-135deg)'
       }
     }
   })

@@ -18,6 +18,7 @@ import {
 
 const KnowledgeCRUDForm = (): ReactElement => {
   const {
+    topicId,
     closeModal,
     knowledgeToEdit,
     saveNewKnowledge,
@@ -31,13 +32,15 @@ const KnowledgeCRUDForm = (): ReactElement => {
   const [solution, setSolution] = useState<string>(
     knowledgeToEdit?.solution ?? ''
   )
-  const [topicId, setTopicId] = useState<number>(knowledgeToEdit?.topicId ?? -1)
+  const [inputTopicId, setInputTopicId] = useState<number>(
+    knowledgeToEdit?.topicId ?? topicId ?? -1
+  )
   const [hint, setHint] = useState<string>(knowledgeToEdit?.hint ?? '')
   const [notes, setNotes] = useState<string>(knowledgeToEdit?.notes ?? '')
 
   const isInputDataValid = (): Knowledge | ExpandKnowledge | null => {
     const knowledgeData = {
-      topicId,
+      topicId: inputTopicId,
       prompt,
       solution: solution,
       hint,
@@ -57,6 +60,7 @@ const KnowledgeCRUDForm = (): ReactElement => {
     if (outcome.success) {
       return outcome.data
     } else {
+      console.log(outcome.error.message)
       setError(
         outcome.error.message
           .split(',')
@@ -87,24 +91,27 @@ const KnowledgeCRUDForm = (): ReactElement => {
   return (
     <>
       <FormControl className='w-full pt-10'>
-        <Autocomplete
-          className='mt-4'
-          disablePortal
-          id='combo-box-topic-selection'
-          disabled={loading}
-          value={
-            topicOptionList.find((option) => option.id === topicId) || null
-          }
-          options={topicOptionList}
-          getOptionLabel={(option) => option.title}
-          getOptionKey={(option) => option.id}
-          renderInput={(params) => (
-            <TextField required {...params} label='Subjects' />
-          )}
-          onChange={(_, val) => {
-            val ? setTopicId(val.id) : setTopicId(-1)
-          }}
-        />
+        {topicId ? null : (
+          <Autocomplete
+            className='mt-4'
+            disablePortal
+            id='combo-box-topic-selection'
+            disabled={loading}
+            value={
+              topicOptionList.find((option) => option.id === inputTopicId) ||
+              null
+            }
+            options={topicOptionList}
+            getOptionLabel={(option) => option.title}
+            getOptionKey={(option) => option.id}
+            renderInput={(params) => (
+              <TextField required {...params} label='Subjects' />
+            )}
+            onChange={(_, val) => {
+              val ? setInputTopicId(val.id) : setInputTopicId(-1)
+            }}
+          />
+        )}
         <TextField
           className='mt-4'
           required
