@@ -4,6 +4,7 @@ import { ErrorResponse } from '@/lib/data_types'
 import { getAllTopics } from '@/app/api/topic/topic'
 import { dataToTopicOptions } from '@/app/api/mapper/topicMapper'
 import { TopicDropDownArray } from '@/lib/topicContacts'
+import { getUserId } from '@/app/api/utils'
 
 export const dynamic = 'force-dynamic'
 
