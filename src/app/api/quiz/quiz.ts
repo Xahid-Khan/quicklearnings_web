@@ -1,5 +1,6 @@
-import { QuizViewData } from '@/src/lib/data_types'
-import getSupabaseInstance from '@/src/utils/config'
+import { DBQuizView, KnowledgeViewData } from '@/lib/data_types'
+import { NewQuizRequest, Quiz } from '@/lib/quizContracts'
+import getSupabaseInstance from '@/utils/config'
 
 interface QuizOptionProps {
   userId: string
@@ -59,6 +60,38 @@ export const getAllTopics = async (options: QuizOptionProps) => {
   if (options.subjectId) query = query.eq('subject_id', options.subjectId)
 
   const { data, error } = await query
+  if (error) {
+    throw new Error(error.message, { cause: 502 })
+  }
+
+  const dataWithCount = await Promise.all(
+    data.map(async (item) => {
+      const count = await getQuizQuestionsCount({
+        subjectId: options.subjectId ?? 0,
+        topicId: item.id,
+        limit: 0
+      })
+      return { ...item, questionsCount: count }
+    })
+  )
+
+  return dataWithCount
+}
+
+export const getQuizQuestionsCount = async ({
+  subjectId,
+  topicId
+}: QuizProps): Promise<number> => {
+  const supabase = getSupabaseInstance()
+  let query = supabase
+    .from('random_knowledge_base')
+    .select('*', { count: 'exact', head: true })
+    .eq('subject_id', subjectId)
+  if (Number(topicId) > 0) {
+    query = query.eq('topic_id', topicId)
+  }
+  const { count, error } = await query
+
   if (error) {
     throw new Error(error.message, { cause: 502 })
   }
