@@ -38,62 +38,55 @@ export type Database = {
         Row: {
           answer: string
           created_at: string
-          updated_at: string
-          examples: Json[]
-          grammar: Json[]
           hint: string | null
           id: number
           notes: string | null
-          options: Json[]
           question: string
           topic_id: number
+          updated_at: string
           user_id: string
         }
         Insert: {
           answer: string
           created_at?: string
-          examples?: Json[]
-          grammar?: Json[]
           hint?: string | null
           id?: number
           notes?: string | null
-          options?: Json[]
           question: string
           topic_id: number
+          updated_at?: string
           user_id: string
         }
         Update: {
           answer?: string
           created_at?: string
-          examples?: Json[]
-          grammar?: Json[]
           hint?: string | null
           id?: number
           notes?: string | null
-          options?: Json[]
           question?: string
           topic_id?: number
+          updated_at?: string
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: 'public_knowledge_base_topic_id_fkey'
-            columns: ['topic_id']
-            referencedRelation: 'topic'
-            referencedColumns: ['id']
+            foreignKeyName: "public_knowledge_base_topic_id_fkey"
+            columns: ["topic_id"]
+            referencedRelation: "topic"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'public_knowledge_base_topic_id_fkey'
-            columns: ['topic_id']
-            referencedRelation: 'topic_view'
-            referencedColumns: ['id']
+            foreignKeyName: "public_knowledge_base_topic_id_fkey"
+            columns: ["topic_id"]
+            referencedRelation: "topic_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'public_knowledge_base_user_id_fkey'
-            columns: ['user_id']
-            referencedRelation: 'users'
-            referencedColumns: ['id']
-          }
+            foreignKeyName: "public_knowledge_base_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
         ]
       }
       profile: {
@@ -147,11 +140,99 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'profile_id_fkey'
-            columns: ['id']
-            referencedRelation: 'users'
-            referencedColumns: ['id']
-          }
+            foreignKeyName: "profile_id_fkey"
+            columns: ["id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quiz: {
+        Row: {
+          access_code: string | null
+          accessible_from: string
+          accessible_till: string
+          created_at: string
+          creator_id: string
+          description: string
+          has_accessibility_constrain: boolean
+          has_time_limit: boolean
+          id: number
+          is_protected: boolean
+          is_public: boolean
+          subject_id: number | null
+          time_limit_in_minutes: number | null
+          title: string
+          topic_id: number | null
+          updated_at: string
+        }
+        Insert: {
+          access_code?: string | null
+          accessible_from?: string
+          accessible_till?: string
+          created_at?: string
+          creator_id: string
+          description: string
+          has_accessibility_constrain?: boolean
+          has_time_limit?: boolean
+          id?: number
+          is_protected?: boolean
+          is_public?: boolean
+          subject_id?: number | null
+          time_limit_in_minutes?: number | null
+          title: string
+          topic_id?: number | null
+          updated_at?: string
+        }
+        Update: {
+          access_code?: string | null
+          accessible_from?: string
+          accessible_till?: string
+          created_at?: string
+          creator_id?: string
+          description?: string
+          has_accessibility_constrain?: boolean
+          has_time_limit?: boolean
+          id?: number
+          is_protected?: boolean
+          is_public?: boolean
+          subject_id?: number | null
+          time_limit_in_minutes?: number | null
+          title?: string
+          topic_id?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_creator_id_fkey"
+            columns: ["creator_id"]
+            referencedRelation: "profile"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_subject_id_fkey"
+            columns: ["subject_id"]
+            referencedRelation: "subject"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_subject_id_fkey"
+            columns: ["subject_id"]
+            referencedRelation: "subject_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_topic_id_fkey"
+            columns: ["topic_id"]
+            referencedRelation: "topic"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_topic_id_fkey"
+            columns: ["topic_id"]
+            referencedRelation: "topic_view"
+            referencedColumns: ["id"]
+          },
         ]
       }
       subject: {
@@ -187,11 +268,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'subject_user_id_fkey'
-            columns: ['user_id']
-            referencedRelation: 'profile'
-            referencedColumns: ['id']
-          }
+            foreignKeyName: "subject_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "profile"
+            referencedColumns: ["id"]
+          },
         ]
       }
       topic: {
@@ -200,7 +281,6 @@ export type Database = {
           description: string
           id: number
           is_public: boolean
-          public: boolean
           subject_id: number
           title: string
           updated_at: string
@@ -211,7 +291,6 @@ export type Database = {
           description: string
           id?: number
           is_public?: boolean
-          public?: boolean
           subject_id: number
           title: string
           updated_at?: string
@@ -222,7 +301,6 @@ export type Database = {
           description?: string
           id?: number
           is_public?: boolean
-          public?: boolean
           subject_id?: number
           title?: string
           updated_at?: string
@@ -230,27 +308,82 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'public_topic_subject_fkey'
-            columns: ['subject_id']
-            referencedRelation: 'subject'
-            referencedColumns: ['id']
+            foreignKeyName: "public_topic_subject_fkey"
+            columns: ["subject_id"]
+            referencedRelation: "subject"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'public_topic_subject_fkey'
-            columns: ['subject_id']
-            referencedRelation: 'subject_view'
-            referencedColumns: ['id']
+            foreignKeyName: "public_topic_subject_fkey"
+            columns: ["subject_id"]
+            referencedRelation: "subject_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'topic_user_id_fkey'
-            columns: ['user_id']
-            referencedRelation: 'profile'
-            referencedColumns: ['id']
-          }
+            foreignKeyName: "topic_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "profile"
+            referencedColumns: ["id"]
+          },
         ]
       }
     }
     Views: {
+      quiz_view: {
+        Row: {
+          accessible_from: string | null
+          accessible_till: string | null
+          created_at: string | null
+          creator_id: string | null
+          description: string | null
+          first_name: string | null
+          has_accessibility_constrain: boolean | null
+          has_time_limit: boolean | null
+          id: number | null
+          is_protected: boolean | null
+          is_public: boolean | null
+          last_name: string | null
+          subject_id: number | null
+          subject_title: string | null
+          time_limit_in_minutes: number | null
+          title: string | null
+          topic_id: number | null
+          topic_title: string | null
+          updated_at: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_creator_id_fkey"
+            columns: ["creator_id"]
+            referencedRelation: "profile"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_subject_id_fkey"
+            columns: ["subject_id"]
+            referencedRelation: "subject"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_subject_id_fkey"
+            columns: ["subject_id"]
+            referencedRelation: "subject_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_topic_id_fkey"
+            columns: ["topic_id"]
+            referencedRelation: "topic"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_topic_id_fkey"
+            columns: ["topic_id"]
+            referencedRelation: "topic_view"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       random_knowledge_base: {
         Row: {
           answer: string | null
@@ -264,35 +397,35 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'public_knowledge_base_topic_id_fkey'
-            columns: ['topic_id']
-            referencedRelation: 'topic'
-            referencedColumns: ['id']
+            foreignKeyName: "public_knowledge_base_topic_id_fkey"
+            columns: ["topic_id"]
+            referencedRelation: "topic"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'public_knowledge_base_topic_id_fkey'
-            columns: ['topic_id']
-            referencedRelation: 'topic_view'
-            referencedColumns: ['id']
+            foreignKeyName: "public_knowledge_base_topic_id_fkey"
+            columns: ["topic_id"]
+            referencedRelation: "topic_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'public_knowledge_base_user_id_fkey'
-            columns: ['user_id']
-            referencedRelation: 'users'
-            referencedColumns: ['id']
+            foreignKeyName: "public_knowledge_base_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'public_topic_subject_fkey'
-            columns: ['subject_id']
-            referencedRelation: 'subject'
-            referencedColumns: ['id']
+            foreignKeyName: "public_topic_subject_fkey"
+            columns: ["subject_id"]
+            referencedRelation: "subject"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'public_topic_subject_fkey'
-            columns: ['subject_id']
-            referencedRelation: 'subject_view'
-            referencedColumns: ['id']
-          }
+            foreignKeyName: "public_topic_subject_fkey"
+            columns: ["subject_id"]
+            referencedRelation: "subject_view"
+            referencedColumns: ["id"]
+          },
         ]
       }
       subject_view: {
@@ -308,11 +441,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'subject_user_id_fkey'
-            columns: ['user_id']
-            referencedRelation: 'profile'
-            referencedColumns: ['id']
-          }
+            foreignKeyName: "subject_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "profile"
+            referencedColumns: ["id"]
+          },
         ]
       }
       topic_view: {
@@ -330,23 +463,23 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'public_topic_subject_fkey'
-            columns: ['subject_id']
-            referencedRelation: 'subject'
-            referencedColumns: ['id']
+            foreignKeyName: "public_topic_subject_fkey"
+            columns: ["subject_id"]
+            referencedRelation: "subject"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'public_topic_subject_fkey'
-            columns: ['subject_id']
-            referencedRelation: 'subject_view'
-            referencedColumns: ['id']
+            foreignKeyName: "public_topic_subject_fkey"
+            columns: ["subject_id"]
+            referencedRelation: "subject_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'topic_user_id_fkey'
-            columns: ['user_id']
-            referencedRelation: 'profile'
-            referencedColumns: ['id']
-          }
+            foreignKeyName: "topic_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "profile"
+            referencedColumns: ["id"]
+          },
         ]
       }
     }
@@ -354,7 +487,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      roles: 'student' | 'teacher' | 'admin'
+      roles: "student" | "teacher" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -464,11 +597,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'objects_bucketId_fkey'
-            columns: ['bucket_id']
-            referencedRelation: 'buckets'
-            referencedColumns: ['id']
-          }
+            foreignKeyName: "objects_bucketId_fkey"
+            columns: ["bucket_id"]
+            referencedRelation: "buckets"
+            referencedColumns: ["id"]
+          },
         ]
       }
       s3_multipart_uploads: {
@@ -504,11 +637,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 's3_multipart_uploads_bucket_id_fkey'
-            columns: ['bucket_id']
-            referencedRelation: 'buckets'
-            referencedColumns: ['id']
-          }
+            foreignKeyName: "s3_multipart_uploads_bucket_id_fkey"
+            columns: ["bucket_id"]
+            referencedRelation: "buckets"
+            referencedColumns: ["id"]
+          },
         ]
       }
       s3_multipart_uploads_parts: {
@@ -550,17 +683,17 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 's3_multipart_uploads_parts_bucket_id_fkey'
-            columns: ['bucket_id']
-            referencedRelation: 'buckets'
-            referencedColumns: ['id']
+            foreignKeyName: "s3_multipart_uploads_parts_bucket_id_fkey"
+            columns: ["bucket_id"]
+            referencedRelation: "buckets"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 's3_multipart_uploads_parts_upload_id_fkey'
-            columns: ['upload_id']
-            referencedRelation: 's3_multipart_uploads'
-            referencedColumns: ['id']
-          }
+            foreignKeyName: "s3_multipart_uploads_parts_upload_id_fkey"
+            columns: ["upload_id"]
+            referencedRelation: "s3_multipart_uploads"
+            referencedColumns: ["id"]
+          },
         ]
       }
     }
@@ -663,84 +796,84 @@ export type Database = {
   }
 }
 
-type PublicSchema = Database[Extract<keyof Database, 'public'>]
+type PublicSchema = Database[Extract<keyof Database, "public">]
 
 export type Tables<
   PublicTableNameOrOptions extends
-    | keyof (PublicSchema['Tables'] & PublicSchema['Views'])
+    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof (Database[PublicTableNameOrOptions['schema']]['Tables'] &
-        Database[PublicTableNameOrOptions['schema']]['Views'])
-    : never = never
+    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+        Database[PublicTableNameOrOptions["schema"]]["Views"])
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[PublicTableNameOrOptions['schema']]['Tables'] &
-      Database[PublicTableNameOrOptions['schema']]['Views'])[TableName] extends {
+  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R
     }
     ? R
     : never
-  : PublicTableNameOrOptions extends keyof (PublicSchema['Tables'] &
-      PublicSchema['Views'])
-  ? (PublicSchema['Tables'] &
-      PublicSchema['Views'])[PublicTableNameOrOptions] extends {
-      Row: infer R
-    }
-    ? R
+  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
+        PublicSchema["Views"])
+    ? (PublicSchema["Tables"] &
+        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
     : never
-  : never
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
-    | keyof PublicSchema['Tables']
+    | keyof PublicSchema["Tables"]
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions['schema']]['Tables']
-    : never = never
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions['schema']]['Tables'][TableName] extends {
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I
     }
     ? I
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema['Tables']
-  ? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
-      Insert: infer I
-    }
-    ? I
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
     : never
-  : never
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
-    | keyof PublicSchema['Tables']
+    | keyof PublicSchema["Tables"]
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions['schema']]['Tables']
-    : never = never
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions['schema']]['Tables'][TableName] extends {
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
     }
     ? U
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema['Tables']
-  ? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
-      Update: infer U
-    }
-    ? U
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
     : never
-  : never
 
 export type Enums<
   PublicEnumNameOrOptions extends
-    | keyof PublicSchema['Enums']
+    | keyof PublicSchema["Enums"]
     | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicEnumNameOrOptions['schema']]['Enums']
-    : never = never
+    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
+    : never = never,
 > = PublicEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicEnumNameOrOptions['schema']]['Enums'][EnumName]
-  : PublicEnumNameOrOptions extends keyof PublicSchema['Enums']
-  ? PublicSchema['Enums'][PublicEnumNameOrOptions]
-  : never
+  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
+    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never

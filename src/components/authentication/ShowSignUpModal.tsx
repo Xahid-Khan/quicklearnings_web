@@ -1,6 +1,6 @@
-import { useAuthModalContext } from '@/src/contexts/authContext'
-import { useUserContext } from '@/src/contexts/userContext'
-import { validateEmail, validatePassword } from '@/src/utils/utils'
+import { useAuthModalContext } from '@/contexts/authContext'
+import { useUserContext } from '@/contexts/userContext'
+import { validateEmail, validatePassword } from '@/utils/utils'
 import {
   Divider,
   Typography,

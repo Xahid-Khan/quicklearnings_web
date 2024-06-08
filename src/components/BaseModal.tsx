@@ -1,6 +1,6 @@
 import { Modal, Box, Divider, Typography } from '@mui/material'
 import { ReactElement, ReactNode, RefObject } from 'react'
-import WebTitle from '@/src/components/WebTitle'
+import WebTitle from '@/components/WebTitle'
 import CloseIcon from '@mui/icons-material/Close'
 
 const BaseModal = ({
@@ -42,6 +42,7 @@ const BaseModal = ({
           boxShadow: (theme) => theme.shadows[5],
           p: 3,
           maxHeight: '100vh',
+          minWidth: '360px',
           overflowY: 'scroll',
           scrollbarWidth: 'none'
         }}

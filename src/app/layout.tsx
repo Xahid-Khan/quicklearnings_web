@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import NavigationBar from '@/src/components/NavigationBar'
+import NavigationBar from '@/components/NavigationBar'
 import { Suspense } from 'react'
-import { AuthModalProvider } from '@/src/contexts/authContext'
-import { UserProvider } from '@/src/contexts/userContext'
-import { SubjectProvider } from '@/src/contexts/subjectContext'
+import { AuthModalProvider } from '@/contexts/authContext'
+import { UserProvider } from '@/contexts/userContext'
+import { SubjectProvider } from '@/contexts/subjectContext'
 
 const inter = Inter({ subsets: ['latin'] })
 

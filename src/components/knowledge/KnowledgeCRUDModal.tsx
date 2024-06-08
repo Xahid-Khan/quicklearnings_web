@@ -8,13 +8,13 @@ import {
   Button,
   Autocomplete
 } from '@mui/material'
-import { useKnowledgeContext } from '@/src/contexts/knowledgeContext'
+import { useKnowledgeContext } from '@/contexts/knowledgeContext'
 import {
   Knowledge,
   ExpandKnowledge,
   expandKnowledge,
   knowledge
-} from '@/src/lib/knowledgeContracts'
+} from '@/lib/knowledgeContracts'
 
 const KnowledgeCRUDForm = (): ReactElement => {
   const {
@@ -60,12 +60,8 @@ const KnowledgeCRUDForm = (): ReactElement => {
     if (outcome.success) {
       return outcome.data
     } else {
-      console.log(outcome.error.message)
-      setError(
-        outcome.error.message
-          .split(',')
-          .filter((item) => item.includes('message'))[0] ?? 'Unknown Error'
-      )
+      const parsedError = JSON.parse(outcome.error.message)
+      setError(parsedError[0].message)
     }
     return null
   }
@@ -105,7 +101,7 @@ const KnowledgeCRUDForm = (): ReactElement => {
             getOptionLabel={(option) => option.title}
             getOptionKey={(option) => option.id}
             renderInput={(params) => (
-              <TextField required {...params} label='Subjects' />
+              <TextField required {...params} label='Topics' />
             )}
             onChange={(_, val) => {
               val ? setInputTopicId(val.id) : setInputTopicId(-1)

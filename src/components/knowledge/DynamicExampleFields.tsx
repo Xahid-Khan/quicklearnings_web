@@ -2,7 +2,7 @@ import { TextField, Typography } from '@mui/material'
 import { ChangeEvent, Dispatch, ReactElement, SetStateAction } from 'react'
 import ClearIcon from '@mui/icons-material/Clear'
 import EastIcon from '@mui/icons-material/East'
-import { Examples } from '@/src/lib/knowledgeContracts'
+import { Examples } from '@/lib/knowledgeContracts'
 
 const DynamicExampleFields = ({
   examples,

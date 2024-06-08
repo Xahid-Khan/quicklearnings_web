@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
-import QuizStepper from '@/src/components/QuizStepper'
-// import QuizElement from '@/src/components/QuizElement'
+import QuizStepper from '@/components/QuizStepper'
+// import QuizElement from '@/components/QuizElement'
 import {
   Box,
   Button,
@@ -13,7 +13,7 @@ import {
 } from '@mui/material'
 import Loading from './LoadingScreen'
 import Image from 'next/image'
-import { QuizViewData } from '../lib/data_types'
+import { KnowledgeViewData } from '../lib/data_types'
 import { useRouter } from 'next/navigation'
 
 interface QuizProps {
@@ -32,7 +32,7 @@ const QuizScreen = ({ subjectId, topicId, limit }: QuizProps) => {
   const router = useRouter()
   const quizLimit = Number(limit)
   const [loading, setLoading] = useState(true)
-  const [quizData, setQuizData] = useState<QuizViewData[]>([])
+  const [quizData, setQuizData] = useState<KnowledgeViewData[]>([])
   const [quizIndex, setQuizIndex] = useState(0)
   const [options, setOptions] = useState<OptionsProps[]>([])
   const [selected, setSelected] = useState<string>('')
@@ -42,7 +42,7 @@ const QuizScreen = ({ subjectId, topicId, limit }: QuizProps) => {
 
   const generateOptions = (
     currentIndex: number,
-    data: QuizViewData[] = []
+    data: KnowledgeViewData[] = []
   ): OptionsProps[] => {
     const optionsList: OptionsProps[] = []
     const idTracker: number[] = []
@@ -73,12 +73,12 @@ const QuizScreen = ({ subjectId, topicId, limit }: QuizProps) => {
   useEffect(() => {
     const fetchQuizData = async () => {
       const response = await fetch(
-        `/api/quiz?subjectId=${subjectId}&topicId=${topicId}&limit=${
+        `/api/quiz/test?subjectId=${subjectId}&topicId=${topicId}&limit=${
           quizLimit + 20
         }`
       )
       if (response.ok) {
-        const data: QuizViewData[] = await response.json()
+        const data: KnowledgeViewData[] = await response.json()
         setQuizData(data)
         const quizOptions = generateOptions(0, data)
         setOptions(quizOptions)
@@ -86,8 +86,6 @@ const QuizScreen = ({ subjectId, topicId, limit }: QuizProps) => {
       }
     }
     fetchQuizData()
-
-    return
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -96,7 +94,7 @@ const QuizScreen = ({ subjectId, topicId, limit }: QuizProps) => {
   }
 
   const quizFinished = () => {
-    router.replace('/quiz/result')
+    router.replace('/quiz/test/result')
   }
 
   const handleAnswerSubmission = () => {

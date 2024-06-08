@@ -1,7 +1,7 @@
 import { TextField, Typography } from '@mui/material'
 import { ChangeEvent, Dispatch, ReactElement, SetStateAction } from 'react'
 import ClearIcon from '@mui/icons-material/Clear'
-import { GrammarOptions } from '@/src/lib/knowledgeContracts'
+import { GrammarOptions } from '@/lib/knowledgeContracts'
 import EastIcon from '@mui/icons-material/East'
 
 const DynamicGrammarFields = ({

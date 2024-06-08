@@ -1,10 +1,5 @@
-import { routeRequestHandler } from '@/src/app/api-client/utils'
-import {
-  AddTopic,
-  EditTopic,
-  topicView,
-  TopicView
-} from '@/src/lib/topicContacts'
+import { routeRequestHandler } from '@/app/api-client/utils'
+import { AddTopic, EditTopic, topicView, TopicView } from '@/lib/topicContacts'
 
 export const addTopicMutation = async (
   newTopic: AddTopic

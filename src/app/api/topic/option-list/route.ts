@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getErrorResponseWithStatusCode } from '@/src/lib/errorHandler'
-import { ErrorResponse } from '@/src/lib/data_types'
-import { getAllTopics } from '@/src/app/api/topic/topic'
-import { dataToTopicOptions } from '@/src/app/api/mapper/topicMapper'
-import { TopicDropDownArray } from '@/src/lib/topicContacts'
-import { getUserId } from '@/src/app/api/utils'
+import { getErrorResponseWithStatusCode } from '@/lib/errorHandler'
+import { ErrorResponse } from '@/lib/data_types'
+import { getAllTopics } from '@/app/api/topic/topic'
+import { dataToTopicOptions } from '@/app/api/mapper/topicMapper'
+import { TopicDropDownArray } from '@/lib/topicContacts'
+import { getUserId } from '@/app/api/utils'
 
 export const dynamic = 'force-dynamic'
 

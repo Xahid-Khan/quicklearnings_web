@@ -1,6 +1,6 @@
-import getSupabaseInstance from '@/src/utils/config'
+import getSupabaseInstance from '@/utils/config'
 import { cookies } from 'next/headers'
-import { USER_SESSION_COOKIE_NAME } from '@/src/app/api/constants'
+import { USER_SESSION_COOKIE_NAME } from '@/app/api/constants'
 
 export const getUserId = async (): Promise<string> => {
   const supabase = getSupabaseInstance()

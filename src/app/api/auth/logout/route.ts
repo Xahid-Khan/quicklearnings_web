@@ -1,11 +1,11 @@
-import { getErrorResponseWithStatusCode } from '@/src/lib/errorHandler'
-import getSupabaseInstance from '@/src/utils/config'
+import { getErrorResponseWithStatusCode } from '@/lib/errorHandler'
+import getSupabaseInstance from '@/utils/config'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 import {
   USER_SESSION_COOKIE_NAME,
   USER_TOKEN_COOKIE_NAME
-} from '@/src/app/api/constants'
+} from '@/app/api/constants'
 
 export const dynamic = 'force-dynamic'
 

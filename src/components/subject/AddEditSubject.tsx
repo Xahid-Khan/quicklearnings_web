@@ -6,9 +6,9 @@ import {
   TextField,
   Typography
 } from '@mui/material'
-import CustomSwitch from '@/src/components/CustomSwitch'
+import CustomSwitch from '@/components/CustomSwitch'
 import { useState } from 'react'
-import { useSubjectContext } from '@/src/contexts/subjectContext'
+import { useSubjectContext } from '@/contexts/subjectContext'
 
 export const AddSubject = () => {
   const { closeModal, editSubject, saveNewSubject, saveEditedSubject } =

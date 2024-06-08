@@ -1,7 +1,7 @@
-import { signUpRequest } from '@/src/lib/authContracts'
-import { getErrorResponseWithStatusCode } from '@/src/lib/errorHandler'
-import getSupabaseInstance from '@/src/utils/config'
-import { validateEmail, validatePassword } from '@/src/utils/utils'
+import { signUpRequest } from '@/lib/authContracts'
+import { getErrorResponseWithStatusCode } from '@/lib/errorHandler'
+import getSupabaseInstance from '@/utils/config'
+import { validateEmail, validatePassword } from '@/utils/utils'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest): Promise<NextResponse> {

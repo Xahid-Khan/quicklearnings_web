@@ -1,12 +1,12 @@
-import { getErrorResponseWithStatusCode } from '@/src/lib/errorHandler'
+import { getErrorResponseWithStatusCode } from '@/lib/errorHandler'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 import {
   USER_SESSION_COOKIE_NAME,
   USER_TOKEN_COOKIE_NAME
-} from '@/src/app/api/constants'
-import { getUserByToken } from '@/src/app/api/auth/auth'
-import { ErrorResponse, UserSession } from '@/src/lib/data_types'
+} from '@/app/api/constants'
+import { getUserByToken } from '@/app/api/auth/auth'
+import { ErrorResponse, UserSession } from '@/lib/data_types'
 
 export const dynamic = 'force-dynamic'
 

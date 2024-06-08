@@ -9,19 +9,19 @@ import {
   useEffect,
   useState
 } from 'react'
-import { routeRequestHandler } from '@/src/app/api-client/utils'
-import { getUserQuery } from '@/src/app/api-client/user/useUserQuery'
+import { routeRequestHandler } from '@/app/api-client/utils'
+import { getUserQuery } from '@/app/api-client/user/useUserQuery'
 import {
   resetPasswordQuery,
   signInUserQuery,
   signUpUserQuery
-} from '@/src/app/api-client/user/useUserMutation'
-import { UserSession } from '@/src/lib/data_types'
+} from '@/app/api-client/user/useUserMutation'
+import { UserSession } from '@/lib/data_types'
 import {
   LoginRequest,
   ResetPasswordRequest,
   SignUpRequest
-} from '@/src/lib/authContracts'
+} from '@/lib/authContracts'
 
 interface UserContext {
   userId: string | null

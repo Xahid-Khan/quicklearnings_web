@@ -1,10 +1,10 @@
-import { Topic } from '@/src/lib/data_types'
+import { Topic } from '@/lib/data_types'
 import {
   topicDropDownArray,
   TopicDropDownArray,
   topicView,
   TopicView
-} from '@/src/lib/topicContacts'
+} from '@/lib/topicContacts'
 
 export const dataToTopicContract = (data: Topic): TopicView => {
   const parsedData = topicView.parse({

@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react'
-import { routeRequestHandler } from '@/src/app/api-client/utils'
-import { UserSession } from '@/src/lib/data_types'
-import { ResetPasswordRequest, SignUpRequest } from '@/src/lib/authContracts'
+import { routeRequestHandler } from '@/app/api-client/utils'
+import { UserSession } from '@/lib/data_types'
+import { ResetPasswordRequest, SignUpRequest } from '@/lib/authContracts'
 
 interface SignInUserProps {
   email: string

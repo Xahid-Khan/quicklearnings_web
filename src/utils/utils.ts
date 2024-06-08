@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server'
-import { EMAIL_REGEX, PASSWORD_REGEX } from '@/src/app/api/constants'
+import { EMAIL_REGEX, PASSWORD_REGEX } from '@/app/api/constants'
 
 export const getPaginationParams = (
   req: NextRequest

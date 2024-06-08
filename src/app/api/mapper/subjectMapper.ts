@@ -1,10 +1,10 @@
-import { Subject } from '@/src/lib/data_types'
+import { Subject } from '@/lib/data_types'
 import {
   SubjectDropDownArray,
   Subject as TargetSubject,
   subject,
   subjectDropDownArray
-} from '@/src/lib/subjectContracts'
+} from '@/lib/subjectContracts'
 
 export const dataToSubjectContract = (data: Subject): TargetSubject => {
   const parsedData = subject.parse({

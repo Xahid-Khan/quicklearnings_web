@@ -1,5 +1,5 @@
 import { ReactElement, useRef, useState } from 'react'
-import { useTopicContext } from '@/src/contexts/topicContext'
+import { useTopicContext } from '@/contexts/topicContext'
 import BaseModal from '../BaseModal'
 import {
   Typography,
@@ -9,7 +9,7 @@ import {
   Button,
   Autocomplete
 } from '@mui/material'
-import CustomSwitch from '@/src/components/CustomSwitch'
+import CustomSwitch from '@/components/CustomSwitch'
 
 const TopicCRUDForm = (): ReactElement => {
   const {

@@ -3,8 +3,8 @@ import {
   EditSubject,
   subject,
   Subject
-} from '@/src/lib/subjectContracts'
-import { routeRequestHandler } from '@/src/app/api-client/utils'
+} from '@/lib/subjectContracts'
+import { routeRequestHandler } from '@/app/api-client/utils'
 
 export const addSubjectMutation = async (
   newSubject: AddSubject

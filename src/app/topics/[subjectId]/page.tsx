@@ -1,16 +1,17 @@
 'use client'
-import Loading from '@/src/components/LoadingScreen'
+import Loading from '@/components/LoadingScreen'
 import { useEffect } from 'react'
-import SelectionCard from '@/src/components/SelectionCard'
+import SelectionCard from '@/components/SelectionCard'
 import { useRouter } from 'next/navigation'
 import { Fab } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
-import { useUserContext } from '@/src/contexts/userContext'
-import TopicCrudModal from '@/src/components/topic/TopicCRUDModal'
-import { useTopicContext } from '@/src/contexts/topicContext'
-import { TopicView } from '@/src/lib/topicContacts'
-import WarningModal from '@/src/components/WarningModal'
-import { useAuthModalContext } from '@/src/contexts/authContext'
+import { useUserContext } from '@/contexts/userContext'
+import TopicCrudModal from '@/components/topic/TopicCRUDModal'
+import { useTopicContext } from '@/contexts/topicContext'
+import { TopicView } from '@/lib/topicContacts'
+import WarningModal from '@/components/WarningModal'
+import { useAuthModalContext } from '@/contexts/authContext'
+import { useSubjectContext } from '@/contexts/subjectContext'
 
 export default function TopicPage({
   params
@@ -20,6 +21,7 @@ export default function TopicPage({
   const router = useRouter()
   const { userId } = useUserContext()
   const { setAuthModalIsOpen } = useAuthModalContext()
+  const subjectContext = useSubjectContext()
   const {
     setTopicModalOpen,
     setEditTopic,
@@ -52,9 +54,14 @@ export default function TopicPage({
     return <Loading />
   }
 
+  const subjectOwner = subjectContext.data.filter(
+    (item) => item.id == Number(urlSubjectId)
+  )[0]?.userId
+
   return (
     <main className='flex min-h-[90vh] flex-row flex-wrap items-center justify-center'>
-      {urlSubjectId == 'all' || data[0]?.userId == userId ? (
+      {urlSubjectId == 'all' ||
+      localStorage.getItem('subjectEditable') === 'yes' ? (
         <Fab
           color='primary'
           aria-label='add'

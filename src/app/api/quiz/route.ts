@@ -1,37 +1,34 @@
+import { getErrorResponseWithStatusCode } from '@/lib/errorHandler'
 import { NextRequest, NextResponse } from 'next/server'
-import { getQuizData, getQuizOptions } from '@/src/app/api/quiz/quiz'
-import { getErrorResponseWithStatusCode } from '@/src/lib/errorHandler'
-import {
-  ErrorResponse,
-  QuizOptionResponse,
-  QuizViewData
-} from '@/src/lib/data_types'
-import { getUserId } from '../utils'
+import { getUserIdOrNull } from '@/app/api/utils'
+import { DBQuizView, ErrorResponse } from '@/lib/data_types'
+import { getPaginatedQuizData } from '@/app/api/quiz/quiz'
+import { getPaginationParams } from '@/utils/utils'
+import { dataArrayToQuizViewContract } from '@/app/api/mapper/quizMapper'
+import { QuizViewResponse } from '@/lib/quizContracts'
 
 export const dynamic = 'force-dynamic'
 
 export async function GET(
   req: NextRequest
-): Promise<NextResponse<QuizOptionResponse | QuizViewData[] | ErrorResponse>> {
+): Promise<NextResponse<QuizViewResponse | ErrorResponse>> {
   try {
-    const userId = await getUserId()
-    const searchParams = new URLSearchParams(new URL(req.url).searchParams)
-    const subjectId = searchParams.get('subjectId')
-    const topicId = searchParams.get('topicId')
-    const limit = searchParams.get('limit') ?? 30
-
-    if (subjectId && topicId && limit) {
-      const data = await getQuizData({ subjectId, topicId, limit })
-      return NextResponse.json(data, { status: 200 })
-    } else {
-      const { subjects, topics } = await getQuizOptions({
-        subjectId,
-        topicId,
-        userId
-      })
-      return NextResponse.json({ subjects, topics }, { status: 200 })
+    const userId = await getUserIdOrNull()
+    const { page, limit } = getPaginationParams(req)
+    if (userId) {
+      const { data, count }: { data: DBQuizView[]; count: number } =
+        await getPaginatedQuizData(userId, page, limit)
+      const parsedData = dataArrayToQuizViewContract(data)
+      return NextResponse.json(
+        { data: parsedData, count: Math.ceil(count / limit) },
+        { status: 200 }
+      )
     }
-  } catch (err) {
-    return getErrorResponseWithStatusCode(err, req.nextUrl.pathname)
+    return NextResponse.json(
+      { message: 'Please log in to access the Quizzes' },
+      { status: 401 }
+    )
+  } catch (e) {
+    return getErrorResponseWithStatusCode(e, req.nextUrl.pathname)
   }
 }

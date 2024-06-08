@@ -1,7 +1,7 @@
-import { getErrorResponseWithStatusCode } from '@/src/lib/errorHandler'
-import getSupabaseInstance from '@/src/utils/config'
+import { getErrorResponseWithStatusCode } from '@/lib/errorHandler'
+import getSupabaseInstance from '@/utils/config'
 import { NextRequest, NextResponse } from 'next/server'
-import { resetPasswordRequest } from '@/src/lib/authContracts'
+import { resetPasswordRequest } from '@/lib/authContracts'
 
 export const dynamic = 'force-dynamic'
 

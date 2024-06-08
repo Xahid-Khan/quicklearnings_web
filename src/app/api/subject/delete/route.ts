@@ -1,8 +1,8 @@
-import { getErrorResponseWithStatusCode } from '@/src/lib/errorHandler'
+import { getErrorResponseWithStatusCode } from '@/lib/errorHandler'
 import { NextRequest, NextResponse } from 'next/server'
-import { ErrorResponse } from '@/src/lib/data_types'
-import { getUserId } from '@/src/app/api/utils'
-import { deleteSubjectById } from '@/src/app/api/subject/subject'
+import { ErrorResponse } from '@/lib/data_types'
+import { getUserId } from '@/app/api/utils'
+import { deleteSubjectById } from '@/app/api/subject/subject'
 
 export const dynamic = 'force-dynamic'
 

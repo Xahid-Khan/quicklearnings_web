@@ -1,4 +1,4 @@
-import { Subject, SubjectDropDownArray } from '@/src/lib/subjectContracts'
+import { Subject, SubjectDropDownArray } from '@/lib/subjectContracts'
 import { routeRequestHandler } from '../utils'
 
 export const getSubjects = async (): Promise<Subject[] | string> => {

@@ -1,5 +1,5 @@
 'use client'
-import Loading from '@/src/components/LoadingScreen'
+import Loading from '@/components/LoadingScreen'
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import {
@@ -12,16 +12,15 @@ import {
   Typography
 } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
-import SelectionCard from '@/src/components/SelectionCard'
-import { QuizData } from '@/src/lib/data_types'
-import { useKnowledgeContext } from '@/src/contexts/knowledgeContext'
+import SelectionCard from '@/components/SelectionCard'
+import { useKnowledgeContext } from '@/contexts/knowledgeContext'
 import BorderColorIcon from '@mui/icons-material/BorderColor'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
-import WarningModal from '@/src/components/WarningModal'
-import { useUserContext } from '@/src/contexts/userContext'
-import { useAuthModalContext } from '@/src/contexts/authContext'
-import KnowledgeCrudModal from '@/src/components/knowledge/KnowledgeCRUDModal'
-import { Knowledge } from '@/src/lib/knowledgeContracts'
+import WarningModal from '@/components/WarningModal'
+import { useUserContext } from '@/contexts/userContext'
+import { useAuthModalContext } from '@/contexts/authContext'
+import KnowledgeCrudModal from '@/components/knowledge/KnowledgeCRUDModal'
+import { Knowledge } from '@/lib/knowledgeContracts'
 
 const ShowTopicDetails = () => {
   const { topicDetails } = useKnowledgeContext()
@@ -80,6 +79,7 @@ const GetDataAccordion = ({
   useEffect(() => {
     fetchData(page)
     return
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topicId])
 
   const handleChange =
@@ -270,7 +270,11 @@ export default function KnowledgePage({
               window.scrollTo({ top: 0, behavior: 'smooth' })
             }}
             sx={{
-              '& .Mui-selected': { backgroundColor: '#01726f', color: 'white' }
+              '& .Mui-selected': {
+                backgroundColor: 'rgb(1, 114, 111)',
+                color: 'white',
+                ':hover': { backgroundColor: 'rgb(1, 114, 111)' }
+              }
             }}
           />
         </div>

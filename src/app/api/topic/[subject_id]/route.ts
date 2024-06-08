@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAllTopics } from '../topic'
-import { getErrorResponseWithStatusCode } from '@/src/lib/errorHandler'
-import { ErrorResponse, Topic } from '@/src/lib/data_types'
-import { TopicView } from '@/src/lib/topicContacts'
-import { dataArrayToTopicContract } from '@/src/app/api/mapper/topicMapper'
+import { getErrorResponseWithStatusCode } from '@/lib/errorHandler'
+import { ErrorResponse, Topic } from '@/lib/data_types'
+import { TopicView } from '@/lib/topicContacts'
+import { dataArrayToTopicContract } from '@/app/api/mapper/topicMapper'
 
 export async function GET(
   req: NextRequest,
