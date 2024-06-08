@@ -34,17 +34,11 @@ export default function QuizPageComponent(): ReactElement {
         <SelectionCard
           title='No Quiz Data Found'
           description={'Use the + button to create a quiz'}
-          action={() => {
-            console.log('ACTION')
-          }}
+          action={() => {}}
           created_at={''}
           created_by={''}
-          deleteAction={() => {
-            console.log('DELETE')
-          }}
-          editAction={() => {
-            console.log('EDIT ACTION')
-          }}
+          deleteAction={() => {}}
+          editAction={() => {}}
           isPublic={false}
           updatable={false}
           key={'no-quiz-data-found'}

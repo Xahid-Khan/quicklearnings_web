@@ -16,7 +16,7 @@ export async function GET(
     limit,
     page
   )
-  console.log('TOPIC-> ', params.topic_id, 'COUNT -> ', count)
+
   const parsedResponse = knowledgeBaseArrayToContract(data)
   return NextResponse.json(
     { data: parsedResponse, count: Math.ceil(count / limit) },

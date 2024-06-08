@@ -16,7 +16,7 @@ export async function POST(
       const parsedError = JSON.parse(parsedData.error.message)
       throw new Error(parsedError[0].message, { cause: 400 })
     }
-    console.log(parsedData.data)
+
     const savedItem = await saveNewQuizToDB(userId, parsedData.data)
     const parsedQuiz = dataToQuizViewContract(savedItem)
     return NextResponse.json(parsedQuiz, { status: 200 })

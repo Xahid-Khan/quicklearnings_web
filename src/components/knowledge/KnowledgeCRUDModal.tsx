@@ -60,12 +60,8 @@ const KnowledgeCRUDForm = (): ReactElement => {
     if (outcome.success) {
       return outcome.data
     } else {
-      console.log(outcome.error.message)
-      setError(
-        outcome.error.message
-          .split(',')
-          .filter((item) => item.includes('message'))[0] ?? 'Unknown Error'
-      )
+      const parsedError = JSON.parse(outcome.error.message)
+      setError(parsedError[0].message)
     }
     return null
   }
