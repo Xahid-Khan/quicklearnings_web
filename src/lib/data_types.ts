@@ -49,3 +49,15 @@ export interface UserSession {
   } | null
   userId: string | null
 }
+
+export const quizTypes = [
+  { id: 'multiple_choice', label: 'Multiple Choice' },
+  // { id: 'fill_in_blanks', label: 'Fill In The Blanks' },
+  { id: 'word_formation', label: 'Word Formation' }
+]
+
+export enum QuizTypes {
+  'multiple_choice' = 'Multiple Choice',
+  'word_formation' = 'Word Formation',
+  'fill_in_blanks' = 'Fill In The Blanks'
+}

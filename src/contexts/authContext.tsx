@@ -30,6 +30,8 @@ interface AuthModalContext {
   readonly setError: Dispatch<SetStateAction<string>>
   readonly resetPassword: boolean
   readonly setResetPassword: Dispatch<SetStateAction<boolean>>
+  readonly quizStarted: boolean
+  readonly setQuizStarted: Dispatch<SetStateAction<boolean>>
 }
 
 const authModalContext = createContext<AuthModalContext>({
@@ -52,7 +54,9 @@ const authModalContext = createContext<AuthModalContext>({
   error: '',
   setError: () => {},
   resetPassword: false,
-  setResetPassword: () => {}
+  setResetPassword: () => {},
+  quizStarted: false,
+  setQuizStarted: () => {}
 })
 
 export const AuthModalProvider = ({
@@ -70,6 +74,7 @@ export const AuthModalProvider = ({
   const [loading, setLoading] = useState<boolean>(false)
   const [successful, setSuccessful] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
+  const [quizStarted, setQuizStarted] = useState<boolean>(false)
 
   return (
     <authModalContext.Provider
@@ -93,7 +98,9 @@ export const AuthModalProvider = ({
         successful,
         setSuccessful,
         error,
-        setError
+        setError,
+        quizStarted,
+        setQuizStarted
       }}
     >
       {children}

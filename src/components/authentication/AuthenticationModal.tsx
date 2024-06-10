@@ -27,11 +27,15 @@ const AuthenticationModal = () => {
       aria-labelledby='server-modal-title'
       aria-describedby='server-modal-description'
       sx={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
         display: 'flex',
         p: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        minWidth: 350
+        minWidth: '100%',
+        '& .MuiBackdrop-root': { minWidth: '100%' }
       }}
       container={() => rootRef.current!}
     >

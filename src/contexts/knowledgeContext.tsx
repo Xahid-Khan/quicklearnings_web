@@ -15,7 +15,11 @@ import {
   getTopicOptionsQuery
 } from '@/app/api-client/topic/useTopicQuery'
 import { useSearchParams } from 'next/navigation'
-import { Knowledge, ExpandKnowledge } from '@/lib/knowledgeContracts'
+import {
+  Knowledge,
+  ExpandKnowledge,
+  KnowledgeData
+} from '@/lib/knowledgeContracts'
 import {
   deleteKnowledgeByIdMutation,
   saveKnowledgeMutation,
@@ -42,8 +46,8 @@ interface KnowledgeContext {
   readonly knowledgeToDelete: Knowledge | null
   readonly setKnowledgeToDelete: Dispatch<SetStateAction<Knowledge | null>>
   readonly topicOptionList: TopicDropDownArray
-  readonly data: Knowledge[]
-  readonly setData: Dispatch<SetStateAction<Knowledge[]>>
+  readonly data: KnowledgeData
+  readonly setData: Dispatch<SetStateAction<KnowledgeData>>
   readonly page: number
   readonly setPage: Dispatch<SetStateAction<number>>
   readonly pageCount: number
@@ -54,14 +58,16 @@ interface KnowledgeContext {
   readonly setExpanded: Dispatch<SetStateAction<string | false>>
   readonly topicDetails: TopicView | null
   readonly closeModal: () => void
-  readonly fetchData: () => void
-  readonly saveNewKnowledge: (knowledge: ExpandKnowledge) => void
-  readonly updateKnowledgeData: (Knowledge: Knowledge) => void
+  readonly fetchData: () => Promise<void>
+  readonly saveNewKnowledge: (
+    knowledge: ExpandKnowledge
+  ) => Promise<string | true>
+  readonly updateKnowledgeData: (Knowledge: Knowledge) => Promise<string | true>
   readonly getKnowledgeDataById: (
     id: string,
     setLoadingState: Dispatch<SetStateAction<boolean>>
-  ) => void
-  readonly deleteKnowledgeById: () => void
+  ) => Promise<string | true>
+  readonly deleteKnowledgeById: () => Promise<void>
 }
 
 const knowledgeContext = createContext<KnowledgeContext>({
@@ -90,14 +96,24 @@ const knowledgeContext = createContext<KnowledgeContext>({
   expanded: false,
   setExpanded: () => {},
   closeModal: () => {},
-  fetchData: () => {},
-  saveNewKnowledge: async (knowledge: ExpandKnowledge) => {},
-  updateKnowledgeData: async (knowledge: Knowledge) => {},
+  fetchData: () => {
+    return Promise.resolve(undefined)
+  },
+  saveNewKnowledge: (knowledge: ExpandKnowledge) => {
+    return Promise.resolve('')
+  },
+  updateKnowledgeData: (knowledge: Knowledge) => {
+    return Promise.resolve('')
+  },
   getKnowledgeDataById: async (
     id: string,
     setLoadingState: Dispatch<SetStateAction<boolean>>
-  ) => {},
-  deleteKnowledgeById: () => {}
+  ) => {
+    return Promise.resolve('')
+  },
+  deleteKnowledgeById: () => {
+    return Promise.resolve(undefined)
+  }
 })
 
 export const KnowledgeProvider = ({
@@ -111,7 +127,7 @@ export const KnowledgeProvider = ({
 
   const [knowledgeModalOpen, setKnowledgeModalOpen] = useState<boolean>(false)
   const [topicId, setTopicId] = useState<number | null>(null)
-  const [data, setData] = useState<Knowledge[]>([])
+  const [data, setData] = useState<KnowledgeData>([])
   const [page, setPage] = useState<number>(
     currentPage ? Number(currentPage) : 1
   )
@@ -158,11 +174,18 @@ export const KnowledgeProvider = ({
   }
 
   useEffect(() => {
-    if (topicId) {
-      getTopicDetails()
+    const getAsyncData = async () => {
+      if (data.length === 0) {
+        await fetchData()
+      }
+      if (!topicDetails) {
+        await getTopicDetails()
+      }
+      // if (topicOptionList.length == 0) {
+      //   await getTopicOptionList()
+      // }
     }
-    if (topicOptionList.length == 0) getTopicOptionList()
-    fetchData()
+    getAsyncData()
     return
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topicId])
