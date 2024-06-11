@@ -52,12 +52,14 @@ export interface UserSession {
 
 export const quizTypes = [
   { id: 'multiple_choice', label: 'Multiple Choice' },
-  // { id: 'fill_in_blanks', label: 'Fill In The Blanks' },
+  { id: 'practice_hints', label: 'Practice Hints' },
   { id: 'word_formation', label: 'Word Formation' }
+  // { id: 'fill_in_blanks', label: 'Fill In The Blanks' },
 ]
 
 export enum QuizTypes {
   'multiple_choice' = 'Multiple Choice',
+  'practice_hints' = 'Practice Hints',
   'word_formation' = 'Word Formation',
   'fill_in_blanks' = 'Fill In The Blanks'
 }

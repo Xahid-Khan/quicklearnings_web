@@ -38,6 +38,7 @@ const DynamicQuiz = () => {
           subjectId={quizOptions.subjectId}
           topicId={quizOptions.topicId}
           limit={quizOptions.limit}
+          quizType={quizOptions.quizType}
         />
       ) : (
         <>
