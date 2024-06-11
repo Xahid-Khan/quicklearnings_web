@@ -9,15 +9,17 @@ import {
 import Image from 'next/image'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import Loading from './LoadingScreen'
-import { QuizSubjectOption, QuizTopicOption } from '@/lib/data_types'
+import { QuizSubjectOption, QuizTopicOption, quizTypes } from '@/lib/data_types'
 
 interface QuizOptionProps {
   subjectId: string | number | null
   topicId: string | number | null
+  quizType: string | null
   limit: string | number | null
   setSubjectId: Dispatch<SetStateAction<string | number | null>>
   setTopicId: Dispatch<SetStateAction<string | number | null>>
-  setLimit: Dispatch<SetStateAction<string | number | null>>
+  setQuizType: Dispatch<SetStateAction<string | null>>
+  setLimit: Dispatch<SetStateAction<string | number>>
   handleStartQuizButton: () => void
 }
 
@@ -29,9 +31,10 @@ const QUIZ_STEP = 10
 const QuizOptions = ({
   subjectId,
   topicId,
-  limit,
+  quizType,
   setSubjectId,
   setTopicId,
+  setQuizType,
   setLimit,
   handleStartQuizButton
 }: QuizOptionProps) => {
@@ -45,12 +48,12 @@ const QuizOptions = ({
   const [error, setError] = useState<string | null>(null)
 
   const fetchData = async (selectedSubjectId: string | number | null) => {
+    setLoadingTopics(true)
     const response = await fetch(
-      `/api/quiz/test` +
+      `/api/quiz/attempt` +
         (selectedSubjectId ? '?subjectId=' + selectedSubjectId : '')
     )
     if (response.ok) {
-      setLoadingTopics(true)
       const data = await response.json()
       data.subjects?.length > 0 ? setSubjects(data.subjects) : setSubjects([])
       data.topics?.length > 0
@@ -164,6 +167,30 @@ const QuizOptions = ({
         <div className='w-full flex justify-center'>
           <div className='quizOptionList flex flex-row flex-wrap items-center my-5'>
             <label className='w-52'>
+              <Typography>QUIZ TYPE</Typography>
+            </label>
+
+            <Autocomplete
+              disablePortal
+              id='autocomplete-quiz-type-selection'
+              disableClearable
+              options={quizTypes}
+              isOptionEqualToValue={(
+                option: { id: number | string; label: string },
+                value: { id: number | string; label: string }
+              ) => option.id === value.id && option.label === value.label}
+              sx={{ width: 300 }}
+              onChange={async (_, value) => {
+                setQuizType(value.id)
+                setError(null)
+              }}
+              renderInput={(params) => <TextField {...params} label='Types' />}
+            />
+          </div>
+        </div>
+        <div className='w-full flex justify-center'>
+          <div className='quizOptionList flex flex-row flex-wrap items-center my-5'>
+            <label className='w-52'>
               <Typography>NUMBER OF QUIZ</Typography>
             </label>
             <Slider
@@ -203,7 +230,7 @@ const QuizOptions = ({
       </div>
       {error ? (
         <div>
-          <span className='flex bg-red-100 text-red-700 p-1 rounded'>
+          <span className='flex bg-red-100 text-red-700 p-1 rounded my-5'>
             <Typography>{error}</Typography>
           </span>
         </div>
@@ -216,6 +243,7 @@ const QuizOptions = ({
           disabled={
             subjectId == null ||
             topicId == null ||
+            quizType == null ||
             (selectedTopic
               ? selectedTopic.questionsCount < MIN_QUIZ_LIMIT
               : false)

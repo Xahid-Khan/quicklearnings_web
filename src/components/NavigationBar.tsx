@@ -42,7 +42,7 @@ const MobileNavigation = ({
       <IconButton
         size='large'
         aria-label='account of current user'
-        aria-controls='menu-appbar'
+        aria-controls='navigation-menu'
         aria-haspopup='true'
         onClick={handleOpenNavMenu}
         color='inherit'
@@ -50,7 +50,7 @@ const MobileNavigation = ({
         <MenuIcon />
       </IconButton>
       <Menu
-        id='menu-appbar'
+        id='navigation-menu'
         anchorEl={anchorElNav}
         anchorOrigin={{
           vertical: 'bottom',
@@ -72,7 +72,7 @@ const MobileNavigation = ({
           onClick={() => {
             handleCloseNavMenu()
             if (userId) {
-              router.push('/quiz/test')
+              router.push('/quiz/attempt/options')
             } else {
               setAuthModalIsOpen(true)
             }
@@ -155,7 +155,7 @@ const DesktopNavigation = ({
             key={'QuizPage'}
             onClick={() => {
               if (userId) {
-                router.push('/quiz/test')
+                router.push('/quiz/attempt/options')
               } else {
                 setAuthModalIsOpen(true)
               }
@@ -171,12 +171,12 @@ const DesktopNavigation = ({
         <div className='flex flex-row'>
           <Tooltip title='Open settings'>
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar alt='Remy Sharp' src='/logo.png' />
+              <Avatar alt='quicklearnings logo' src='/logo.png' />
             </IconButton>
           </Tooltip>
           <Menu
             sx={{ mt: '45px' }}
-            id='menu-appbar'
+            id='navigation-menu'
             anchorEl={anchorElUser}
             anchorOrigin={{
               vertical: 'top',
@@ -198,7 +198,9 @@ const DesktopNavigation = ({
                   handleNavAction(setting)
                 }}
               >
-                <Typography textAlign='center'>{setting}</Typography>
+                <Typography textAlign='center' color={'inherit'}>
+                  {setting}
+                </Typography>
               </MenuItem>
             ))}
           </Menu>
@@ -210,9 +212,7 @@ const DesktopNavigation = ({
 
 const NavigationBar = () => {
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const quizStarted = searchParams?.get('quiz_started')
-  const { setAuthModalIsOpen } = useAuthModalContext()
+  const { setAuthModalIsOpen, quizStarted } = useAuthModalContext()
   const { userId, signOut } = useUserContext()
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
@@ -257,14 +257,15 @@ const NavigationBar = () => {
   return (
     <div className='w-full flex justify-center'>
       <div
-        className='min-w-[75%] w-full px-5'
+        className='min-w-[75%] w-full'
         style={{ display: quizStarted ? 'none' : 'flex' }}
       >
         <AppBar
           position='static'
           sx={{ width: '100%', backgroundColor: 'transparent' }}
+          className='px-5 text-[#0ee1db]'
         >
-          <Toolbar disableGutters>
+          <Toolbar disableGutters className='text-[#0ee1db]'>
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
               <MobileNavigation
                 anchorElNav={anchorElNav}

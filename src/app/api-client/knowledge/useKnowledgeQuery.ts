@@ -1,3 +1,4 @@
+import { KnowledgeDataResponse } from '@/lib/knowledgeContracts'
 import { routeRequestHandler } from '../utils'
 
 export const getKnowledgeDataQuery = async ({
@@ -8,7 +9,7 @@ export const getKnowledgeDataQuery = async ({
   topicId: number
   page: number
   limit: number
-}) => {
+}): Promise<string | KnowledgeDataResponse> => {
   const response = await routeRequestHandler({
     path: '/knowledge/' + topicId + `?page=${page}&limit=${limit}`,
     method: 'GET'

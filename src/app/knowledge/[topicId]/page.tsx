@@ -52,19 +52,15 @@ const ShowTopicDetails = () => {
   )
 }
 
-const GetDataAccordion = ({
-  fetchData
-}: {
-  fetchData: (page: number) => void
-}) => {
+const GetDataAccordion = () => {
   const router = useRouter()
   const { userId } = useUserContext()
   const {
     data,
-    topicId,
     expanded,
     setExpanded,
     page,
+    topicId,
     limit,
     setKnowledgeToDelete,
     setKnowledgeToEdit,
@@ -73,14 +69,15 @@ const GetDataAccordion = ({
     setWarningModalOpen,
     closeModal,
     deleteKnowledgeById,
-    setKnowledgeModalOpen
+    setKnowledgeModalOpen,
+    fetchData
   } = useKnowledgeContext()
 
   useEffect(() => {
-    fetchData(page)
+    fetchData()
     return
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [topicId])
+  }, [page])
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -141,10 +138,24 @@ const GetDataAccordion = ({
               <Typography sx={{ minWidth: '35px', flexShrink: 0 }}>
                 {index + 1 + (Number(page) - 1) * Number(limit)}.{' '}
               </Typography>
-              <Typography sx={{ width: '45%', flexShrink: 0 }}>
+              <Typography
+                sx={{
+                  width: '45%',
+                  flexShrink: 0,
+                  borderRight: '1px solid gray'
+                }}
+              >
                 {val.prompt}
               </Typography>
-              <Typography sx={{ color: 'text.secondary' }}>
+              <Typography
+                sx={{
+                  fontWeight: '600',
+                  color: 'text.secondary',
+                  borderLeft: '1px solid gray',
+                  paddingLeft: '5px',
+                  fontSize: '1.5rem'
+                }}
+              >
                 {val.solution}
               </Typography>
             </AccordionSummary>
@@ -212,7 +223,6 @@ export default function KnowledgePage({
     setPage,
     pageCount,
     limit,
-    fetchData,
     setKnowledgeModalOpen,
     topicDetails
   } = useKnowledgeContext()
@@ -220,7 +230,8 @@ export default function KnowledgePage({
   useEffect(() => {
     setTopicId(Number(params.topicId))
     return
-  }, [params.topicId, setTopicId])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.topicId])
 
   if (loading) {
     return <Loading />
@@ -251,7 +262,7 @@ export default function KnowledgePage({
       >
         <div className='flex flex-col'>
           <ShowTopicDetails />
-          <GetDataAccordion fetchData={fetchData} />
+          <GetDataAccordion />
         </div>
         <KnowledgeCrudModal />
         <div className='w-full flex justify-center items-center my-5 pt-5'>
@@ -260,7 +271,6 @@ export default function KnowledgePage({
             page={Number(page)}
             onChange={(_, value) => {
               setPage(value)
-              fetchData()
               router.push(
                 `/knowledge/${params.topicId}?page=${value}&limit=${limit}`,
                 {
