@@ -168,7 +168,10 @@ const QuizScreen = ({ subjectId, topicId, limit, quizType }: QuizProps) => {
                 component='div'
                 sx={{ textAlign: 'center' }}
               >
-                {quizData[quizIndex].question}
+                {QuizTypes[quizType as keyof typeof QuizTypes] ==
+                QuizTypes.practice_hints
+                  ? quizData[quizIndex].answer
+                  : quizData[quizIndex].question}
               </Typography>
             </Box>
             {/* OPTIONS ARE HERE */}
