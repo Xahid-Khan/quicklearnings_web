@@ -31,8 +31,8 @@ interface QuizProps {
 const QuizScreen = ({ subjectId, topicId, limit }: QuizProps) => {
   const router = useRouter()
   const quizLimit = Number(limit)
-  const { setQuizStarted } = useAuthModalContext()
   const [quizIndex, setQuizIndex] = useState(0)
+  const [disableSelection, setDisableSelection] = useState<boolean>(false)
   const {
     showOutcomeModal,
     setShowOutcomeModal,
@@ -64,12 +64,11 @@ const QuizScreen = ({ subjectId, topicId, limit }: QuizProps) => {
 
   const quizFinished = () => {
     localStorage.removeItem('quiz_started')
-    setQuizStarted(false)
     router.replace('/quiz/attempt/result')
-    setQuizData([])
   }
 
   const handleAnswerSubmission = () => {
+    setDisableSelection(true)
     if (selected?.answer == quizData[quizIndex].answer) {
       setCorrectAnswer(true)
     } else {
@@ -91,6 +90,7 @@ const QuizScreen = ({ subjectId, topicId, limit }: QuizProps) => {
     }
     setCorrectAnswer(false)
     setShowOutcomeModal(false)
+    setDisableSelection(false)
   }
 
   return (
@@ -165,7 +165,7 @@ const QuizScreen = ({ subjectId, topicId, limit }: QuizProps) => {
               {options.map((value) => (
                 <Card
                   key={value.answer}
-                  onClick={() => setSelected(value)}
+                  onClick={() => (disableSelection ? {} : setSelected(value))}
                   sx={{
                     minWidth: 340,
                     maxWidth: 450,
@@ -176,7 +176,7 @@ const QuizScreen = ({ subjectId, topicId, limit }: QuizProps) => {
                         : ''
                   }}
                 >
-                  <CardActionArea>
+                  <CardActionArea disabled={disableSelection}>
                     <CardContent>
                       <Typography
                         gutterBottom
@@ -207,7 +207,7 @@ const QuizScreen = ({ subjectId, topicId, limit }: QuizProps) => {
             variant='contained'
             color='success'
             sx={{ width: 300, height: 50, fontSize: '1.25rem' }}
-            disabled={selected == null}
+            disabled={selected == null || disableSelection}
             onClick={finished ? quizFinished : handleAnswerSubmission}
           >
             {finished ? 'Finished' : 'Check Answer'}
