@@ -10,7 +10,6 @@ import {
   ReactNode,
   SetStateAction,
   useContext,
-  useEffect,
   useState
 } from 'react'
 
@@ -26,6 +25,8 @@ interface QuizAttempt {
   readonly setLoading: Dispatch<SetStateAction<boolean>>
   readonly quizData: KnowledgeViewData[]
   readonly setQuizData: Dispatch<SetStateAction<KnowledgeViewData[]>>
+  readonly quizType: string
+  readonly setQuizType: Dispatch<SetStateAction<string>>
   readonly options: OptionsProps[]
   readonly setOptions: Dispatch<SetStateAction<OptionsProps[]>>
   readonly selected: OptionsProps | null
@@ -55,6 +56,8 @@ const quizAttemptContext = createContext<QuizAttempt>({
   setLoading: () => {},
   quizData: [],
   setQuizData: () => {},
+  quizType: '',
+  setQuizType: () => {},
   options: [],
   setOptions: () => {},
   selected: null,
@@ -90,6 +93,7 @@ export const QuizAttemptProvider = ({
 }): ReactElement => {
   const [loading, setLoading] = useState<boolean>(true)
   const [quizData, setQuizData] = useState<KnowledgeViewData[]>([])
+  const [quizType, setQuizType] = useState<string>('')
   const [options, setOptions] = useState<OptionsProps[]>([])
   const [selected, setSelected] = useState<OptionsProps | null>(null)
   const [correctAnswer, setCorrectAnswer] = useState<boolean>(false)
@@ -157,6 +161,8 @@ export const QuizAttemptProvider = ({
         setLoading,
         quizData,
         setQuizData,
+        quizType,
+        setQuizType,
         options,
         setOptions,
         selected,

@@ -12,7 +12,7 @@ import {
 } from '@mui/material'
 import Loading from './LoadingScreen'
 import Image from 'next/image'
-import { KnowledgeViewData } from '../lib/data_types'
+import { KnowledgeViewData, QuizTypes } from '../lib/data_types'
 import { useRouter } from 'next/navigation'
 import CustomSwitch from './CustomSwitch'
 import { useAuthModalContext } from '@/contexts/authContext'
@@ -26,9 +26,10 @@ interface QuizProps {
   subjectId: string | number
   topicId: string | number
   limit: string | number
+  quizType: string
 }
 
-const QuizScreen = ({ subjectId, topicId, limit }: QuizProps) => {
+const QuizScreen = ({ subjectId, topicId, limit, quizType }: QuizProps) => {
   const router = useRouter()
   const quizLimit = Number(limit)
   const [quizIndex, setQuizIndex] = useState(0)
@@ -39,6 +40,7 @@ const QuizScreen = ({ subjectId, topicId, limit }: QuizProps) => {
     loading,
     quizData,
     setQuizData,
+    setQuizType,
     options,
     setOptions,
     selected,
@@ -53,6 +55,7 @@ const QuizScreen = ({ subjectId, topicId, limit }: QuizProps) => {
   } = useQuizAttemptContext()
 
   useEffect(() => {
+    setQuizType(quizType)
     if (quizData.length == 0) fetchQuizData(quizLimit, subjectId, topicId)
     return
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -69,7 +72,12 @@ const QuizScreen = ({ subjectId, topicId, limit }: QuizProps) => {
 
   const handleAnswerSubmission = () => {
     setDisableSelection(true)
-    if (selected?.answer == quizData[quizIndex].answer) {
+    if (
+      (QuizTypes[quizType as keyof typeof QuizTypes] ==
+        QuizTypes.practice_hints &&
+        selected?.hint == quizData[quizIndex].hint) ||
+      selected?.answer == quizData[quizIndex].answer
+    ) {
       setCorrectAnswer(true)
     } else {
       setCorrectAnswer(false)
@@ -144,7 +152,10 @@ const QuizScreen = ({ subjectId, topicId, limit }: QuizProps) => {
                   />
                   <CardContent>
                     <Typography gutterBottom variant='h4' component='div'>
-                      {quizData[quizIndex].question}
+                      {QuizTypes[quizType as keyof typeof QuizTypes] ==
+                      QuizTypes.practice_hints
+                        ? quizData[quizIndex].answer
+                        : quizData[quizIndex].question}
                     </Typography>
                   </CardContent>
                 </CardActionArea>
@@ -184,7 +195,10 @@ const QuizScreen = ({ subjectId, topicId, limit }: QuizProps) => {
                         component='div'
                         sx={{ fontWeight: '500', fontSize: '22px' }}
                       >
-                        {value.answer}
+                        {QuizTypes[quizType as keyof typeof QuizTypes] ==
+                        QuizTypes.practice_hints
+                          ? value.hint
+                          : value.answer}
                       </Typography>
                       <Typography
                         sx={{ display: showHint ? 'flex' : 'none' }}
@@ -192,7 +206,12 @@ const QuizScreen = ({ subjectId, topicId, limit }: QuizProps) => {
                         variant='body2'
                         component='div'
                       >
-                        ({value.hint})
+                        (
+                        {QuizTypes[quizType as keyof typeof QuizTypes] ==
+                        QuizTypes.practice_hints
+                          ? value.question
+                          : value.hint}
+                        )
                       </Typography>
                     </CardContent>
                   </CardActionArea>
