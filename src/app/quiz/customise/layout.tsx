@@ -5,7 +5,6 @@ import { TopicProvider } from '@/contexts/topicContext'
 import { KnowledgeProvider } from '@/contexts/knowledgeContext'
 import { Suspense } from 'react'
 import Loading from '@/components/LoadingScreen'
-import { CustomQuizProvider } from '@/contexts/customQuizContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,9 +24,7 @@ export default function RootLayout({
       <Suspense fallback={<Loading />}>
         <TopicProvider>
           <KnowledgeProvider>
-            <QuizProvider>
-              <CustomQuizProvider>{children}</CustomQuizProvider>
-            </QuizProvider>
+            <QuizProvider>{children}</QuizProvider>
           </KnowledgeProvider>
         </TopicProvider>
       </Suspense>
