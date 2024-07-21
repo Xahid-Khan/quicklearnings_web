@@ -98,7 +98,7 @@ export const ShowLoginModal = (): ReactElement => {
               setError('')
               const valid = signUp
                 ? validatePassword(e.target.value)
-                : e.target.value.length > 8
+                : true
               valid ? setPassword(e.target.value) : setPassword('')
             }}
           />

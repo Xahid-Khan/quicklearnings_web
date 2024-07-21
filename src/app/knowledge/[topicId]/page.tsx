@@ -6,6 +6,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  CircularProgress,
   Fab,
   Pagination,
   TextField,
@@ -21,6 +22,7 @@ import { useUserContext } from '@/contexts/userContext'
 import { useAuthModalContext } from '@/contexts/authContext'
 import KnowledgeCrudModal from '@/components/knowledge/KnowledgeCRUDModal'
 import { Knowledge } from '@/lib/knowledgeContracts'
+import { Colours } from '@/utils/theme'
 
 const ShowTopicDetails = () => {
   const { topicDetails } = useKnowledgeContext()
@@ -60,7 +62,6 @@ const GetDataAccordion = () => {
     expanded,
     setExpanded,
     page,
-    topicId,
     limit,
     setKnowledgeToDelete,
     setKnowledgeToEdit,
@@ -70,17 +71,10 @@ const GetDataAccordion = () => {
     closeModal,
     deleteKnowledgeById,
     setKnowledgeModalOpen,
-    fetchData
   } = useKnowledgeContext()
 
-  useEffect(() => {
-    fetchData()
-    return
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page])
-
   const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean): void => {
       setExpanded(isExpanded ? panel : false)
     }
 
@@ -218,13 +212,14 @@ export default function KnowledgePage({
   const { setAuthModalIsOpen } = useAuthModalContext()
   const {
     setTopicId,
-    loading,
     page,
+    loading,
     setPage,
     pageCount,
     limit,
     setKnowledgeModalOpen,
-    topicDetails
+    topicDetails,
+    fetchData
   } = useKnowledgeContext()
 
   useEffect(() => {
@@ -233,9 +228,9 @@ export default function KnowledgePage({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.topicId])
 
-  if (loading) {
-    return <Loading />
-  }
+  useEffect(() => {
+    fetchData()
+  }, [page])
 
   return (
     <main className='flex min-h-screen flex-col items-center justify-center'>
@@ -260,9 +255,16 @@ export default function KnowledgePage({
         style={{ minWidth: '75%', borderRadius: 5 }}
         className='bg-slate-300 p-5 my-5 min-h-[80vh] flex flex-col justify-between'
       >
-        <div className='flex flex-col'>
+        <div className='flex flex-col justify-center'>
           <ShowTopicDetails />
-          <GetDataAccordion />
+          {
+            loading ?
+              <div className="flex w-full justify-center py-[2rem]">
+                <CircularProgress sx={{ color: Colours.THEME_GREEN }} />
+              </div>
+              :
+              <GetDataAccordion />
+          }
         </div>
         <KnowledgeCrudModal />
         <div className='w-full flex justify-center items-center my-5 pt-5'>
@@ -277,13 +279,12 @@ export default function KnowledgePage({
                   shallow: true
                 } as any
               )
-              window.scrollTo({ top: 0, behavior: 'smooth' })
             }}
             sx={{
               '& .Mui-selected': {
-                backgroundColor: 'rgb(1, 114, 111)',
+                backgroundColor: `${Colours.THEME_GREEN} !important`,
                 color: 'white',
-                ':hover': { backgroundColor: 'rgb(1, 114, 111)' }
+                ':hover': { backgroundColor: `${Colours.THEME_GREEN} !important` }
               }
             }}
           />

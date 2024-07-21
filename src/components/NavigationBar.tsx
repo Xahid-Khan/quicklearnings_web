@@ -17,6 +17,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import AuthenticationModal from './authentication/AuthenticationModal'
 import { useAuthModalContext } from '@/contexts/authContext'
 import { useUserContext } from '@/contexts/userContext'
+import { Colours } from '@/utils/theme'
 
 const MobileNavigation = ({
   anchorElNav,
@@ -144,7 +145,7 @@ const DesktopNavigation = ({
               onClick={() => {
                 handleNavAction(page)
               }}
-              sx={{ my: 2, color: 'white', display: 'block' }}
+              sx={{ my: 2, color: 'black', display: 'block' }}
             >
               {page}
             </Button>
@@ -262,10 +263,14 @@ const NavigationBar = () => {
       >
         <AppBar
           position='static'
-          sx={{ width: '100%', backgroundColor: 'transparent' }}
-          className='px-5 text-[#0ee1db]'
+          sx={{
+            width: '100%', backgroundColor: 'transparent',
+            boxShadow: "0px 1px 2px 0px rgba(0,0,0,0.2),0px 2px 3px 0px rgba(0,0,0,0.14),0px 0px 5px 0px rgba(0,0,0,0.12)",
+            color: Colours.THEME_GREEN
+          }}
+          className={`px-5`}
         >
-          <Toolbar disableGutters className='text-[#0ee1db]'>
+          <Toolbar disableGutters >
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
               <MobileNavigation
                 anchorElNav={anchorElNav}

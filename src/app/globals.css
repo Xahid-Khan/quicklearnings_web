@@ -18,8 +18,8 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: rgb(25, 31, 38);
-  background: #191f26;
+  background: whitesmoke;
+  /* background: #191f26; */
   /* disabled text selection for the whole application */
   -webkit-touch-callout: none;
   -webkit-user-select: none;

@@ -164,12 +164,13 @@ export const KnowledgeProvider = ({
 
   const fetchData = async () => {
     if (topicId) {
+      setLoading(true)
       const outcome = await getKnowledgeDataQuery({ topicId, page, limit })
       if (typeof outcome != 'string') {
         setData(outcome.data)
         setPageCount(outcome.count)
-        setLoading(false)
       }
+      setLoading(false)
     }
   }
 
