@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import {
   AppBar,
   Toolbar,
@@ -9,15 +9,15 @@ import {
   MenuItem,
   Button,
   Tooltip,
-  Avatar
-} from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu'
-import { useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import AuthenticationModal from './authentication/AuthenticationModal'
-import { useAuthModalContext } from '@/contexts/authContext'
-import { useUserContext } from '@/contexts/userContext'
-import { Colours } from '@/utils/theme'
+  Avatar,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import AuthenticationModal from "./authentication/AuthenticationModal";
+import { useAuthModalContext } from "@/contexts/authContext";
+import { useUserContext } from "@/contexts/userContext";
+import { Colours } from "@/utils/theme";
 
 const MobileNavigation = ({
   anchorElNav,
@@ -25,79 +25,79 @@ const MobileNavigation = ({
   settings,
   handleNavAction,
   handleOpenNavMenu,
-  handleCloseNavMenu
+  handleCloseNavMenu,
 }: {
-  anchorElNav: HTMLElement | null
-  pages: string[]
-  settings: string[]
-  handleNavAction: (selection: string) => void
-  handleOpenNavMenu: (event: React.MouseEvent<HTMLElement>) => void
-  handleCloseNavMenu: () => void
+  anchorElNav: HTMLElement | null;
+  pages: string[];
+  settings: string[];
+  handleNavAction: (selection: string) => void;
+  handleOpenNavMenu: (event: React.MouseEvent<HTMLElement>) => void;
+  handleCloseNavMenu: () => void;
 }) => {
-  const router = useRouter()
-  const { setAuthModalIsOpen } = useAuthModalContext()
-  const { userId } = useUserContext()
+  const router = useRouter();
+  const { setAuthModalIsOpen } = useAuthModalContext();
+  const { userId } = useUserContext();
 
   return (
     <>
       <IconButton
-        size='large'
-        aria-label='account of current user'
-        aria-controls='navigation-menu'
-        aria-haspopup='true'
+        size="large"
+        aria-label="account of current user"
+        aria-controls="navigation-menu"
+        aria-haspopup="true"
         onClick={handleOpenNavMenu}
-        color='inherit'
+        color="inherit"
       >
         <MenuIcon />
       </IconButton>
       <Menu
-        id='navigation-menu'
+        id="navigation-menu"
         anchorEl={anchorElNav}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left'
+          vertical: "bottom",
+          horizontal: "left",
         }}
         keepMounted
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left'
+          vertical: "top",
+          horizontal: "left",
         }}
         open={Boolean(anchorElNav)}
         onClose={handleCloseNavMenu}
         sx={{
-          display: { xs: 'block', md: 'none' }
+          display: { xs: "block", md: "none" },
         }}
       >
         <MenuItem
-          key={'quiz'}
+          key={"quiz"}
           onClick={() => {
-            handleCloseNavMenu()
+            handleCloseNavMenu();
             if (userId) {
-              router.push('/quiz/attempt/options')
+              router.push("/quiz/attempt/options");
             } else {
-              setAuthModalIsOpen(true)
+              setAuthModalIsOpen(true);
             }
           }}
         >
-          <Button variant='contained' className={'buttonColourDark'}>
-            <Typography textAlign='center'>{'Start Quiz'}</Typography>
+          <Button variant="contained" className={"buttonColourDark"}>
+            <Typography textAlign="center">{"Start Quiz"}</Typography>
           </Button>
         </MenuItem>
         {pages.concat(settings).map((page) => (
           <MenuItem
             key={page}
             onClick={() => {
-              handleCloseNavMenu()
-              handleNavAction(page)
+              handleCloseNavMenu();
+              handleNavAction(page);
             }}
           >
-            <Typography textAlign='center'>{page}</Typography>
+            <Typography textAlign="center">{page}</Typography>
           </MenuItem>
         ))}
       </Menu>
     </>
-  )
-}
+  );
+};
 
 const DesktopNavigation = ({
   anchorElUser,
@@ -105,47 +105,47 @@ const DesktopNavigation = ({
   settings,
   handleNavAction,
   handleOpenUserMenu,
-  handleCloseUserMenu
+  handleCloseUserMenu,
 }: {
-  anchorElUser: HTMLElement | null
-  pages: string[]
-  settings: string[]
-  handleNavAction: (selection: string) => void
-  handleOpenUserMenu: (event: React.MouseEvent<HTMLElement>) => void
-  handleCloseUserMenu: () => void
+  anchorElUser: HTMLElement | null;
+  pages: string[];
+  settings: string[];
+  handleNavAction: (selection: string) => void;
+  handleOpenUserMenu: (event: React.MouseEvent<HTMLElement>) => void;
+  handleCloseUserMenu: () => void;
 }) => {
-  const router = useRouter()
-  const { setAuthModalIsOpen } = useAuthModalContext()
-  const { userId } = useUserContext()
+  const router = useRouter();
+  const { setAuthModalIsOpen } = useAuthModalContext();
+  const { userId } = useUserContext();
 
   return (
     <>
       <Typography
-        variant='h6'
+        variant="h6"
         noWrap
-        component='a'
-        href='/'
+        component="a"
+        href="/"
         sx={{
           mr: 4,
-          display: { xs: 'none', md: 'flex' },
-          fontFamily: 'monospace',
+          display: { xs: "none", md: "flex" },
+          fontFamily: "monospace",
           fontWeight: 700,
-          color: 'inherit',
-          textDecoration: 'none',
-          alignItems: 'center'
+          color: "inherit",
+          textDecoration: "none",
+          alignItems: "center",
         }}
       >
         Quick Learnings
       </Typography>
-      <div className='flex flex-row justify-between flex-grow'>
-        <div className='flex flex-row'>
+      <div className="flex flex-row justify-between flex-grow">
+        <div className="flex flex-row">
           {pages.map((page) => (
             <Button
               key={page}
               onClick={() => {
-                handleNavAction(page)
+                handleNavAction(page);
               }}
-              sx={{ my: 2, color: 'black', display: 'block' }}
+              sx={{ my: 2, color: "black", display: "block" }}
             >
               {page}
             </Button>
@@ -153,40 +153,40 @@ const DesktopNavigation = ({
         </div>
         <div>
           <Button
-            key={'QuizPage'}
+            key={"QuizPage"}
             onClick={() => {
               if (userId) {
-                router.push('/quiz/attempt/options')
+                router.push("/quiz/attempt/options");
               } else {
-                setAuthModalIsOpen(true)
+                setAuthModalIsOpen(true);
               }
             }}
-            sx={{ my: 2, color: 'white', display: 'block' }}
-            variant='contained'
-            color={'primary'}
-            className='buttonColourDark'
+            sx={{ my: 2, color: "white", display: "block" }}
+            variant="contained"
+            color={"primary"}
+            className="buttonColourDark"
           >
             Start Quiz
           </Button>
         </div>
-        <div className='flex flex-row'>
-          <Tooltip title='Open settings'>
+        <div className="flex flex-row">
+          <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar alt='quicklearnings logo' src='/logo.png' />
+              <Avatar alt="quicklearnings logo" src="/logo.png" />
             </IconButton>
           </Tooltip>
           <Menu
-            sx={{ mt: '45px' }}
-            id='navigation-menu'
+            sx={{ mt: "45px" }}
+            id="navigation-menu"
             anchorEl={anchorElUser}
             anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right'
+              vertical: "top",
+              horizontal: "right",
             }}
             keepMounted
             transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right'
+              vertical: "top",
+              horizontal: "right",
             }}
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
@@ -195,11 +195,11 @@ const DesktopNavigation = ({
               <MenuItem
                 key={setting}
                 onClick={() => {
-                  handleCloseUserMenu()
-                  handleNavAction(setting)
+                  handleCloseUserMenu();
+                  handleNavAction(setting);
                 }}
               >
-                <Typography textAlign='center' color={'inherit'}>
+                <Typography textAlign="center" color={"inherit"}>
                   {setting}
                 </Typography>
               </MenuItem>
@@ -208,70 +208,72 @@ const DesktopNavigation = ({
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
 const NavigationBar = () => {
-  const router = useRouter()
-  const { setAuthModalIsOpen, quizStarted } = useAuthModalContext()
-  const { userId, signOut } = useUserContext()
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
+  const router = useRouter();
+  const { setAuthModalIsOpen, fullScreenActivity } = useAuthModalContext();
+  const { userId, signOut } = useUserContext();
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
-  const pages = ['Subjects', 'Topics', 'Quiz']
-  const settings = userId ? ['Account', 'Log Out'] : ['Sign In']
+  const pages = ["Subjects", "Topics", "Quiz"];
+  const settings = userId ? ["Account", "Log Out"] : ["Sign In"];
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget)
-  }
+    setAnchorElUser(event.currentTarget);
+  };
 
   const handleCloseUserMenu = () => {
-    setAnchorElUser(null)
-  }
+    setAnchorElUser(null);
+  };
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget)
-  }
+    setAnchorElNav(event.currentTarget);
+  };
 
   const handleCloseNavMenu = () => {
-    setAnchorElNav(null)
-  }
+    setAnchorElNav(null);
+  };
 
   const handleNavAction = (selection: string) => {
-    if (selection === 'Subjects') {
-      router.push('/')
-    } else if (selection === 'Topics') {
-      const route = `${selection.toLowerCase()}/all`
-      router.push('/' + route)
-    } else if (selection === 'Account') {
-      userId ? router.push('/account') : setAuthModalIsOpen(true)
-    } else if (selection === 'Quiz') {
-      router.push('/quiz')
-    } else if (selection === 'Log Out') {
-      signOut()
-      router.push('/')
-    } else if (selection === 'Sign In') {
-      setAuthModalIsOpen(true)
+    if (selection === "Subjects") {
+      router.push("/");
+    } else if (selection === "Topics") {
+      const route = `${selection.toLowerCase()}/all`;
+      router.push("/" + route);
+    } else if (selection === "Account") {
+      userId ? router.push("/account") : setAuthModalIsOpen(true);
+    } else if (selection === "Quiz") {
+      router.push("/quiz");
+    } else if (selection === "Log Out") {
+      signOut();
+      router.push("/");
+    } else if (selection === "Sign In") {
+      setAuthModalIsOpen(true);
     }
-  }
+  };
 
   return (
-    <div className='w-full flex justify-center'>
+    <div className="w-full flex justify-center">
       <div
-        className='min-w-[75%] w-full'
-        style={{ display: quizStarted ? 'none' : 'flex' }}
+        className="min-w-[75%] w-full"
+        style={{ display: fullScreenActivity ? "none" : "flex" }}
       >
         <AppBar
-          position='static'
+          position="static"
           sx={{
-            width: '100%', backgroundColor: 'transparent',
-            boxShadow: "0px 1px 2px 0px rgba(0,0,0,0.2),0px 2px 3px 0px rgba(0,0,0,0.14),0px 0px 5px 0px rgba(0,0,0,0.12)",
-            color: Colours.THEME_GREEN
+            width: "100%",
+            backgroundColor: "transparent",
+            boxShadow:
+              "0px 1px 2px 0px rgba(0,0,0,0.2),0px 2px 3px 0px rgba(0,0,0,0.14),0px 0px 5px 0px rgba(0,0,0,0.12)",
+            color: Colours.THEME_GREEN,
           }}
           className={`px-5`}
         >
-          <Toolbar disableGutters >
-            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Toolbar disableGutters>
+            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <MobileNavigation
                 anchorElNav={anchorElNav}
                 pages={pages}
@@ -282,24 +284,24 @@ const NavigationBar = () => {
               />
             </Box>
             <Typography
-              variant='h5'
+              variant="h5"
               noWrap
-              component='a'
-              href='/'
+              component="a"
+              href="/"
               sx={{
                 mr: 2,
-                display: { xs: 'flex', md: 'none' },
+                display: { xs: "flex", md: "none" },
                 flexGrow: 1,
-                fontFamily: 'monospace',
+                fontFamily: "monospace",
                 fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none'
+                letterSpacing: ".3rem",
+                color: "inherit",
+                textDecoration: "none",
               }}
             >
               Quick Learnings
             </Typography>
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               <DesktopNavigation
                 anchorElUser={anchorElUser}
                 pages={pages}
@@ -314,7 +316,7 @@ const NavigationBar = () => {
       </div>
       <AuthenticationModal />
     </div>
-  )
-}
+  );
+};
 
-export default NavigationBar
+export default NavigationBar;
